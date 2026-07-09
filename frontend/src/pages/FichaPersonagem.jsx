@@ -48,7 +48,7 @@ function FichaPersonagem() {
     arma2_nome: '', arma2_carga: '', arma2_notas: '',
     protecao_cabeca: '', protecao_tronco: '', protecao_msup: '', protecao_minf: '', protecao_notas: [],
     transporte_tronco: '', transporte_msup: '', transporte_minf: '', transporte_notas: [],
-    carga_atual: '', carga_max: '', inventario: '', kit_estruturado: null,
+    carga_atual: '', carga_max: '', itens_gerais_lista: [], inventario: '', kit_estruturado: null,
     talento_exclusivo: '', talentos_lista: [], talentos_obs: '', anotacoes: '',
   })
 
@@ -235,7 +235,14 @@ function FichaPersonagem() {
               <label className="ficha-field sm"><span>Carga Atual</span><input value={ficha.carga_atual} onChange={e => update('carga_atual', e.target.value)} /></label>
               <label className="ficha-field sm"><span>Carga Máxima</span><input value={ficha.carga_max} onChange={e => update('carga_max', e.target.value)} /></label>
             </div>
-            <label className="ficha-field full"><span>Itens Guardados</span><textarea rows="6" value={ficha.inventario} onChange={e => update('inventario', e.target.value)} /></label>
+            <span className="ficha-nota-label">Itens Guardados</span>
+            {ficha.itens_gerais_lista?.length > 0
+              ? ficha.itens_gerais_lista.map((item, i) => <NotaBloco key={i} item={item} />)
+              : <p className="ficha-nota-vazio">—</p>}
+            <label className="ficha-field full" style={{ marginTop: '0.5rem' }}>
+              <span>Outros itens / anotações</span>
+              <textarea rows="3" value={ficha.inventario} onChange={e => update('inventario', e.target.value)} placeholder="Itens adquiridos depois da criação..." />
+            </label>
           </fieldset>
 
           <fieldset className="ficha-fieldset ficha-card">
