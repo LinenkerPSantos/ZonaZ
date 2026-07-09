@@ -1,0 +1,156 @@
+.ficha-page { margin-top:70px; min-height:100vh; background:var(--color-bg-primary); }
+
+/* TOOLBAR */
+.ficha-toolbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:var(--color-bg-secondary); border-bottom:2px solid var(--color-blood-red); position:sticky; top:70px; z-index:50; }
+.ficha-toolbar-title { font-family:var(--font-title); font-size:1.5rem; color:var(--color-blood-red-glow); }
+.ficha-toolbar-actions { display:flex; gap:0.5rem; }
+.ficha-btn { font-family:var(--font-heading); font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; padding:0.5rem 1.25rem; border:1px solid var(--color-border); background:var(--color-bg-card); color:var(--color-text-secondary); border-radius:4px; cursor:pointer; transition:all 0.3s; }
+.ficha-btn:hover { border-color:var(--color-blood-red); color:var(--color-blood-red-glow); }
+.ficha-btn.pdf { background:rgba(139,0,0,0.2); border-color:var(--color-blood-red); color:var(--color-blood-red-glow); }
+.ficha-btn.json { background:rgba(212,160,23,0.15); border-color:var(--color-accent-gold); color:var(--color-accent-gold); }
+.ficha-btn.criar { background:rgba(34,197,94,0.15); border-color:var(--color-biohazard-green); color:var(--color-biohazard-green); text-decoration:none; }
+.ficha-btn.import { display:inline-flex; align-items:center; }
+
+/* SHEET */
+.ficha-sheet { max-width:1100px; margin:2rem auto; padding:2rem; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:8px; }
+.ficha-title { font-family:var(--font-title); font-size:2rem; color:var(--color-blood-red-glow); text-align:center; margin-bottom:2rem; text-shadow:0 0 20px rgba(220,38,38,0.3); }
+
+/* FIELDSET */
+.ficha-fieldset { border:1px solid var(--color-border); border-radius:6px; padding:1rem; margin-bottom:1rem; }
+.ficha-fieldset legend { font-family:var(--font-heading); font-size:0.8rem; color:var(--color-blood-red-light); text-transform:uppercase; letter-spacing:2px; padding:0 0.5rem; }
+
+/* ROWS & FIELDS */
+.ficha-row { display:flex; gap:0.5rem; margin-bottom:0.4rem; flex-wrap:wrap; }
+.ficha-field { display:flex; flex-direction:column; gap:0.15rem; flex:1; min-width:120px; }
+.ficha-field.full { flex:100%; }
+.ficha-field.sm { flex:0 0 80px; min-width:60px; }
+.ficha-field span { font-family:var(--font-heading); font-size:0.6rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:1px; }
+.ficha-field input, .ficha-field textarea { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.85rem; padding:0.35rem 0.5rem; font-family:var(--font-body); }
+.ficha-field input:focus, .ficha-field textarea:focus { outline:none; border-color:var(--color-blood-red); box-shadow:0 0 0 1px rgba(220,38,38,0.3); }
+.ficha-textarea-full { width:100%; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.85rem; padding:0.5rem; font-family:var(--font-body); resize:vertical; }
+.ficha-textarea-full:focus { outline:none; border-color:var(--color-blood-red); }
+
+/* TRIPLE LAYOUT */
+.ficha-triple { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1rem; }
+
+/* CARDS (Inventário/Kits/Armas/Equipamentos) — grid que se auto-organiza,
+   em vez de duas colunas fixas desbalanceadas. */
+.ficha-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:start; }
+.ficha-card { margin-bottom:0; }
+
+/* ATRIBUTOS */
+.ficha-attr-header { display:grid; grid-template-columns:1fr 50px 50px; gap:0.25rem; padding:0 0.25rem; margin-bottom:0.25rem; }
+.ficha-attr-header span { font-family:var(--font-heading); font-size:0.55rem; color:var(--color-text-muted); text-transform:uppercase; text-align:center; }
+.ficha-attr-header span:first-child { text-align:left; }
+.ficha-attr-row { display:grid; grid-template-columns:1fr 50px 50px; gap:0.25rem; margin-bottom:0.2rem; align-items:center; }
+.ficha-attr-name { font-family:var(--font-heading); font-size:0.75rem; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.5px; padding-left:0.25rem; }
+.ficha-attr-row input { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.8rem; padding:0.25rem; text-align:center; width:100%; }
+.ficha-attr-row input:focus { outline:none; border-color:var(--color-blood-red); }
+
+/* PERÍCIAS */
+.ficha-pericias-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:0.75rem; }
+.ficha-pericia-col { }
+.ficha-pericia-cat { font-family:var(--font-heading); font-size:0.7rem; color:var(--color-accent-gold); text-transform:uppercase; letter-spacing:1px; padding-bottom:0.3rem; border-bottom:1px solid rgba(212,160,23,0.3); margin-bottom:0.3rem; }
+.ficha-pericia-header { display:grid; grid-template-columns:40px 30px 30px; gap:0.2rem; justify-content:end; margin-bottom:0.15rem; }
+.ficha-pericia-header span { font-size:0.5rem; color:var(--color-text-muted); text-align:center; font-family:var(--font-heading); text-transform:uppercase; }
+.ficha-pericia-row { display:grid; grid-template-columns:1fr 40px 30px 30px; gap:0.2rem; align-items:center; margin-bottom:0.15rem; }
+.ficha-pericia-name { font-size:0.7rem; color:var(--color-text-secondary); }
+.ficha-pericia-row input { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:2px; color:var(--color-text-primary); font-size:0.75rem; padding:0.15rem; text-align:center; width:100%; }
+.ficha-pericia-row input:focus { outline:none; border-color:var(--color-blood-red); }
+
+/* WEAPON */
+.ficha-weapon { padding-bottom:0.5rem; margin-bottom:0.5rem; border-bottom:1px solid var(--color-border); }
+.ficha-weapon:last-child { border-bottom:none; margin-bottom:0; }
+
+/* NOTA (bloco de leitura estruturado: talento, arma, equipamento, item) */
+.ficha-nota-label { display:block; font-family:var(--font-heading); font-size:0.6rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:1px; margin:0.5rem 0 0.3rem; }
+.ficha-nota-vazio { color:var(--color-text-muted); font-size:0.8rem; font-style:italic; }
+.ficha-nota { background:var(--color-bg-card); border:1px solid var(--color-border); border-left:3px solid var(--color-blood-red); border-radius:4px; padding:0.6rem 0.75rem; margin-bottom:0.5rem; }
+.ficha-nota:last-child { margin-bottom:0; }
+.ficha-nota-header { display:flex; align-items:baseline; justify-content:space-between; gap:0.5rem; }
+.ficha-nota-nome { font-family:var(--font-heading); font-size:0.85rem; color:var(--color-blood-red-glow); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; }
+.ficha-nota-badge { font-family:var(--font-heading); font-size:0.6rem; color:var(--color-accent-gold); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+.ficha-nota-subtitulo { font-size:0.75rem; color:var(--color-text-muted); font-style:italic; margin-top:0.1rem; }
+.ficha-nota-dados { display:flex; flex-wrap:wrap; gap:0.5rem 1rem; font-size:0.75rem; color:var(--color-text-secondary); margin-top:0.35rem; }
+.ficha-nota-dados b { color:var(--color-text-muted); font-weight:600; }
+.ficha-nota-desc { font-size:0.8rem; color:var(--color-text-secondary); line-height:1.5; margin-top:0.35rem; }
+.ficha-nota-efeito { background:rgba(34,197,94,0.08); border-left:2px solid var(--color-biohazard-green); border-radius:0 3px 3px 0; padding:0.35rem 0.5rem; font-size:0.78rem; color:var(--color-text-secondary); margin-top:0.35rem; }
+.ficha-nota-efeito span { font-family:var(--font-heading); font-weight:600; color:var(--color-biohazard-green); text-transform:uppercase; letter-spacing:1px; font-size:0.68rem; }
+
+/* PRINT — compacto, pensado para caber a parte principal (Identificacao ate
+   Equipamentos) em 1 folha e Talentos+Anotacoes numa 2a folha. */
+@page { size: A4; margin: 8mm; }
+
+@media print {
+  .no-print, .navbar, .footer { display:none !important; }
+  html, body { background:#fff !important; }
+  .ficha-page { margin-top:0; background:#fff !important; }
+  .ficha-sheet { border:none; margin:0; padding:0; max-width:100%; background:#fff !important; }
+
+  .ficha-title { font-size:1.1rem; margin:0 0 0.3rem; color:#8B0000; text-shadow:none; }
+
+  .ficha-fieldset { padding:0.2rem 0.35rem; margin-bottom:0.2rem; border-color:#999; break-inside:avoid; }
+  .ficha-fieldset legend { font-size:0.58rem; letter-spacing:0.5px; color:#333; padding:0 0.25rem; }
+
+  .ficha-row { gap:0.3rem; margin-bottom:0.08rem; }
+  .ficha-field { gap:0; }
+  .ficha-field span { font-size:0.45rem; }
+  .ficha-field input, .ficha-field textarea, .ficha-textarea-full, .ficha-attr-row input, .ficha-pericia-row input {
+    border:none; border-bottom:1px solid #999; border-radius:0; background:transparent; color:#000;
+    font-size:0.6rem; padding:0.02rem 0.15rem; line-height:1.1;
+  }
+
+  /* Textareas nao podem cortar conteudo na impressao: crescem com o texto. */
+  .ficha-field textarea, .ficha-textarea-full {
+    field-sizing: content;
+    height: auto;
+    min-height: 1em;
+    overflow: visible;
+    resize: none;
+  }
+
+  .ficha-triple { gap:0.4rem; margin-bottom:0.2rem; }
+
+  /* Cards fluem em colunas balanceadas (o navegador preenche cada coluna
+     antes de passar para a próxima), eliminando o espaço vazio que sobrava
+     com colunas fixas de alturas diferentes. */
+  .ficha-cards { display:block; column-count:2; column-gap:0.5rem; margin-bottom:0.2rem; }
+  .ficha-card { break-inside:avoid; display:inline-block; width:100%; margin-bottom:0.2rem; }
+
+  /* Talentos sempre começam numa nova folha. */
+  .ficha-page2-start { page-break-before:always; break-before:page; }
+
+  .ficha-attr-header span, .ficha-pericia-header span { font-size:0.4rem; }
+  .ficha-attr-name, .ficha-pericia-name, .ficha-field span { color:#333; }
+  .ficha-attr-name { font-size:0.56rem; }
+  .ficha-pericia-name { font-size:0.54rem; }
+  .ficha-attr-header, .ficha-pericia-header { margin-bottom:0.05rem; }
+  .ficha-attr-row, .ficha-pericia-row { margin-bottom:0.02rem; }
+
+  .ficha-pericia-cat { font-size:0.52rem; padding-bottom:0.08rem; margin-bottom:0.08rem; }
+
+  .ficha-weapon { padding-bottom:0.15rem; margin-bottom:0.15rem; }
+
+  .ficha-nota-label { font-size:0.5rem; margin:0.3rem 0 0.15rem; }
+  .ficha-nota-vazio { font-size:0.65rem; color:#666; }
+  .ficha-nota { background:transparent; border-color:#999; border-left-color:#8B0000; padding:0.3rem 0.4rem; margin-bottom:0.25rem; break-inside:avoid; }
+  .ficha-nota-nome { font-size:0.68rem; color:#8B0000; }
+  .ficha-nota-badge { font-size:0.5rem; color:#8a6d00; }
+  .ficha-nota-subtitulo { font-size:0.58rem; color:#555; }
+  .ficha-nota-dados { font-size:0.6rem; color:#222; gap:0.3rem 0.6rem; margin-top:0.15rem; }
+  .ficha-nota-desc { font-size:0.62rem; color:#222; margin-top:0.15rem; }
+  .ficha-nota-efeito { font-size:0.6rem; color:#222; background:transparent; border-left-color:#2a7a2a; padding:0.2rem 0.35rem; margin-top:0.15rem; }
+  .ficha-nota-efeito span { color:#2a7a2a; font-size:0.55rem; }
+}
+
+/* RESPONSIVE */
+@media screen and (max-width:900px) {
+  .ficha-triple { grid-template-columns:1fr; }
+  .ficha-cards { grid-template-columns:1fr; }
+  .ficha-pericias-grid { grid-template-columns:repeat(2, 1fr); }
+  .ficha-sheet { margin:1rem; padding:1rem; }
+}
+@media screen and (max-width:600px) {
+  .ficha-pericias-grid { grid-template-columns:1fr; }
+  .ficha-toolbar { flex-direction:column; gap:0.5rem; }
+}

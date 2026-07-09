@@ -1,0 +1,33 @@
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 4rem 0 3rem;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-blood-red), transparent);
+}
+
+.divider-content {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.divider-title {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  color: var(--color-blood-red-glow);
+  text-shadow: 0 0 30px rgba(220, 38, 38, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.divider-subtitle {
+  font-family: var(--font-special);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
