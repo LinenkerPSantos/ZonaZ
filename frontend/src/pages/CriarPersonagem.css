@@ -7,6 +7,8 @@
 .criar-hero { text-align:center; padding:3rem 2rem 2rem; background:radial-gradient(ellipse at center, #1a0500 0%, #0a0a0a 70%); }
 .criar-title { font-family:var(--font-title); font-size:clamp(2rem,5vw,3rem); color:var(--color-blood-red-glow); text-shadow:0 0 30px rgba(220,38,38,0.5); }
 .criar-subtitle { font-family:var(--font-heading); font-size:0.9rem; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:3px; margin-top:0.5rem; }
+.criar-import-btn { display:inline-flex; align-items:center; margin-top:1.25rem; font-family:var(--font-heading); font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; padding:0.5rem 1.25rem; border:1px solid var(--color-accent-gold); background:rgba(212,160,23,0.12); color:var(--color-accent-gold); border-radius:4px; cursor:pointer; transition:all 0.3s; }
+.criar-import-btn:hover { background:rgba(212,160,23,0.22); }
 
 /* STEPPER */
 .criar-stepper { display:flex; justify-content:center; gap:0.25rem; padding:1.5rem 1rem; background:var(--color-bg-secondary); border-bottom:1px solid var(--color-border); position:sticky; top:70px; z-index:50; }

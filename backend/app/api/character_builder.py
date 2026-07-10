@@ -1,3 +1,4 @@
+import math
 import re
 import unicodedata
 from flask import Blueprint, jsonify
@@ -228,8 +229,90 @@ def _catalogo_equipamentos():
         'protecao': index(protecao),
         'transporte': index(transporte),
         'itens': index(itens_gerais),
+        'municoes': _build_municao_catalogo(data),
     }
     return _catalogo_cache
+
+
+MUNICAO_TIPO_RE = re.compile(
+    r'^([A-Za-zÀ-ÿ]+)\s*\(1/(\d+)\)\s*:\s*1 ponto de carga suporta até \d+ unidades(?:\s*-\s*(.+))?$',
+    re.IGNORECASE
+)
+
+MUNICAO_PACOTE_RE = re.compile(
+    r'Muni[cç][aã]o\s+(\S+?)\s*\((\d+)\s*unidades?\)', re.IGNORECASE
+)
+
+
+def _gender_stem(chave):
+    """Aproxima 'Pequena' de 'Pequeno' etc. (o pacote as vezes flexiona o
+    genero de forma diferente do catalogo de Municoes)."""
+    if len(chave) > 3 and chave[-1] in ('a', 'o'):
+        return chave[:-1]
+    return chave
+
+
+def _build_municao_catalogo(pagina4_data):
+    """A secao 'Municoes' (Equipamentos > Municoes) nao usa o formato de
+    itens com nome/descricao como o resto do catalogo: e so texto corrido
+    com marcadores tipo 'Pequeno (1/15): 1 ponto de carga suporta ate 15
+    unidades'. Parseia isso manualmente para virar um catalogo utilizavel."""
+    tipos = []
+
+    def walk(node):
+        if _normalize_simple(node.get('titulo', '')) == _normalize_simple('Munições'):
+            for p in node.get('intro', []):
+                texto = p['texto'] if isinstance(p, dict) else p
+                m = MUNICAO_TIPO_RE.match(texto.strip())
+                if m:
+                    nome, por_ponto, extra = m.groups()
+                    tipos.append({
+                        'nome': nome.strip(),
+                        'unidades_por_ponto': int(por_ponto),
+                        'extra': (extra or '').strip(),
+                    })
+            return True
+        for key in ('secoes', 'subsecoes'):
+            for child in node.get(key, []) if isinstance(node.get(key), list) else []:
+                if walk(child):
+                    return True
+        return False
+
+    for cap in pagina4_data.get('capitulos', []):
+        if walk(cap):
+            break
+    return tipos
+
+
+def _resolve_municao(texto, municoes):
+    m = MUNICAO_PACOTE_RE.search(texto)
+    if not m or not municoes:
+        return None
+    tipo_raw, qtd_raw = m.groups()
+    tipo_chave = _gender_stem(_normalize_simple(tipo_raw))
+    qtd = int(qtd_raw)
+
+    tipo = next((t for t in municoes if _gender_stem(_normalize_simple(t['nome'])) == tipo_chave), None)
+    if not tipo:
+        return None
+
+    carga = max(1, math.ceil(qtd / tipo['unidades_por_ponto']))
+    descricao = f"Munição solta, sem carregador ou cartucheira. 1 ponto de carga suporta até {tipo['unidades_por_ponto']} unidades deste tipo."
+    if tipo['extra']:
+        descricao += f" {tipo['extra']}."
+    efeito = 'Guardada em carregador, cartucheira ou aljava adequados, até 20 unidades passam a ocupar apenas 1 ponto de carga.'
+
+    return {
+        'tipo': 'item',
+        'nome': texto,
+        'estruturado': {
+            'nome': texto,
+            'carga': str(carga),
+            'dados': [['Carga', str(carga)]],
+            'descricao': descricao,
+            'efeito': efeito,
+        },
+    }
 
 
 def _resolve_item_catalogo(chave, cat):
@@ -322,7 +405,7 @@ def _resolve_pacote(pacote):
                 _aplicar_opcao_pacote(opcoes[0], resultado)
                 continue
         else:
-            op = _resolve_item_catalogo(_normalize_match(texto), cat)
+            op = _resolve_municao(texto, cat['municoes']) or _resolve_item_catalogo(_normalize_match(texto), cat)
             if op:
                 _aplicar_opcao_pacote(op, resultado)
                 continue

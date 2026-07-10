@@ -111,10 +111,11 @@
 
   .ficha-triple { gap:0.4rem; margin-bottom:0.2rem; }
 
-  /* Cards fluem em colunas balanceadas (o navegador preenche cada coluna
-     antes de passar para a próxima), eliminando o espaço vazio que sobrava
-     com colunas fixas de alturas diferentes. */
-  .ficha-cards { display:block; column-count:2; column-gap:0.5rem; margin-bottom:0.2rem; }
+  /* Cards fluem em colunas (preenche a 1a coluna por completo antes de
+     passar pra proxima). column-fill:auto evita que o navegador tente
+     "balancear" as duas colunas e crie espaco em branco artificial no
+     fim de um card pra igualar a altura da outra coluna. */
+  .ficha-cards { display:block; column-count:2; column-gap:0.5rem; column-fill:auto; margin-bottom:0.2rem; }
   .ficha-card { break-inside:avoid; display:inline-block; width:100%; margin-bottom:0.2rem; }
 
   /* Talentos sempre começam numa nova folha. */

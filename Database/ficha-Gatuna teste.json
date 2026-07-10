@@ -1,0 +1,295 @@
+{
+  "ficha": {
+    "nome": "Gatuna",
+    "profissao": "Criminoso",
+    "titulo_sobrevivencia": "Sobrevivente Básico",
+    "idade": "25",
+    "altura": "1,65",
+    "deslocamento": "9m",
+    "observacoes": "",
+    "historico": "Criminosa tecnologica hacker",
+    "forca_atual": "",
+    "forca_max": "0",
+    "agilidade_atual": "",
+    "agilidade_max": "1",
+    "destreza_atual": "",
+    "destreza_max": "2",
+    "intelecto_atual": "",
+    "intelecto_max": "3",
+    "presenca_atual": "",
+    "presenca_max": "2",
+    "infeccao_atual": "",
+    "infeccao_max": "5",
+    "pv_atual": "",
+    "pv_max": "18",
+    "determinacao_atual": "",
+    "determinacao_max": "3",
+    "sanidade_atual": "",
+    "sanidade_max": "6",
+    "ca_atual": "8",
+    "ca_bonus": "",
+    "ca_obs": "",
+    "descricoes": "",
+    "arma1_nome": "Revolver Leve",
+    "arma1_carga": "2",
+    "arma1_estruturada": {
+      "carga": "2",
+      "dados": [
+        [
+          "Tipo",
+          "Perfuração"
+        ],
+        [
+          "Dano",
+          "1d8 +3 em dano Perfurante"
+        ],
+        [
+          "Mod.",
+          "Destreza"
+        ],
+        [
+          "Alcance",
+          "Curto"
+        ],
+        [
+          "Mão",
+          "1M"
+        ],
+        [
+          "Munição",
+          "Pequeno"
+        ]
+      ],
+      "descricao": "Revólver clássico das forças policiais por décadas, confiável e durável",
+      "efeito": "",
+      "nome": "Revolver Leve",
+      "subtitulo": ""
+    },
+    "arma2_nome": "",
+    "arma2_carga": "",
+    "arma2_notas": "",
+    "protecao_cabeca": "Moletom Encapuzado",
+    "protecao_tronco": "Moletom Encapuzado",
+    "protecao_msup": "Moletom Encapuzado",
+    "protecao_minf": "Coturno Velho",
+    "protecao_notas": [
+      {
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Nenhuma proteção real, mas ajuda a se camuflar em ruínas ou à noite.",
+        "efeito": "+1 em testes de Furtividade.",
+        "nome": "Moletom Encapuzado"
+      },
+      {
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Um coturno militar velho, mas ainda tem suas propriedades básicas.",
+        "efeito": "+1 em testes de movimento e resistência a terreno irregular.",
+        "nome": "Coturno Velho"
+      }
+    ],
+    "transporte_tronco": "",
+    "transporte_msup": "Mochila (Item único)",
+    "transporte_minf": "",
+    "transporte_notas": [
+      {
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ]
+        ],
+        "descricao": "Equipamento de transporte reforçado, usado para organizar e carregar suprimentos.",
+        "efeito": "Aumenta a capacidade de carga em +6.",
+        "nome": "Mochila (Item único)"
+      }
+    ],
+    "carga_atual": "4",
+    "carga_max": "16",
+    "itens_gerais_lista": [
+      {
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Ferramenta para abrir portas, cadeados e fechaduras.",
+        "efeito": "Concede +2 em testes de Destreza ou Agilidade para abrir portas, cadeados e fechaduras.",
+        "nome": "Gazua (Item Único)"
+      },
+      {
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Munição solta, sem carregador ou cartucheira. 1 ponto de carga suporta até 15 unidades deste tipo.",
+        "efeito": "Guardada em carregador, cartucheira ou aljava adequados, até 20 unidades passam a ocupar apenas 1 ponto de carga.",
+        "nome": "Munição Pequena (6 unidades)"
+      }
+    ],
+    "inventario": "",
+    "kit_estruturado": null,
+    "talento_exclusivo": "",
+    "talentos_lista": [
+      {
+        "nome": "Ensinamentos da Rua",
+        "subtitulo": "Reação (1x por cena) - Categoria: Utilidade",
+        "descricao": "A vivência nas ruas molda instintos que vão além da lógica comum. O criminoso sabe quando insistir, quando mudar a abordagem e como virar o jogo mesmo após um erro aparente. Essas lições vêm de anos de blefes, fugas e negociações à beira do fracasso.",
+        "efeito": "Sempre que um aliado ou o próprio personagem falhar em um teste de Perícia Sobrevivência, ele pode ativar esta habilidade. O alvo da habilidade pode rolar novamente o teste com Vantagem, utilizando qualquer atributo ou perícia que faça sentido para a situação, conforme o Mestre decidir.",
+        "exclusivo": true
+      },
+      {
+        "nome": "Escalada Instintiva",
+        "subtitulo": "Passiva — Categoria: Movimento",
+        "descricao": "Você escala como se fosse parte da sua natureza.",
+        "efeito": "Move-se durante escaladas com metade do custo normal e tem vantagem em testes de Atletismo relacionados a subir.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Leitor de Mentiras",
+        "subtitulo": "Passivo — Categoria: Interação",
+        "descricao": "Você percebe microexpressões, hesitações e padrões de discurso. Uma vez por cena, se um NPC tentar enganar você, você pode rolar o teste com vantagem.",
+        "efeito": "Você recebe +2 em testes de Percepção ou Empatia para detectar mentiras.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Leitor de Intenções Hostis",
+        "subtitulo": "Passivo — Categoria: Interação",
+        "descricao": "Você sente quando alguém está prestes a trair, atacar ou manipular. “Ele esconde algo”, “Está nervoso demais”, “Parece planejar algo”. Não revela o plano — apenas alerta. Não interfere em combate.",
+        "efeito": "Sempre que conversar com alguém que planeja prejudicá-lo, faça um teste de Percepção. Em caso de sucesso, o Mestre deve revelar:",
+        "exclusivo": false
+      }
+    ],
+    "talentos_obs": "",
+    "anotacoes": ""
+  },
+  "pericias": {
+    "Atletismo": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Constituição": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Furtividade": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Luta": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pontaria": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Pilotagem": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Mecânica": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Medicina": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Percepção": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Sobrevivência": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Tecnologia": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Intimidação": {
+      "bonus": "+2",
+      "nv": "",
+      "esp": ""
+    },
+    "Empatia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Enganação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Liderança": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Persuasão": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Adestramento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Conhecimento": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Estratégia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Iniciativa": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Investigação": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Vontade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    }
+  },
+  "periciasObs": ""
+}

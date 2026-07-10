@@ -96,6 +96,20 @@ function CriarPersonagem() {
   })
   const navigate = useNavigate()
 
+  const handleImportFicha = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result)
+        localStorage.setItem('zona-z-ficha', JSON.stringify(data))
+        navigate('/ficha')
+      } catch { /* ignore */ }
+    }
+    reader.readAsText(file)
+  }
+
   useEffect(() => {
     fetch('/api/builder/data')
       .then(r => r.json())
@@ -271,6 +285,10 @@ function CriarPersonagem() {
       <div className="criar-hero">
         <h1 className="criar-title">Criar Personagem</h1>
         <p className="criar-subtitle">Passo a passo para montar seu sobrevivente</p>
+        <label className="criar-import-btn">
+          Importar Ficha (JSON)
+          <input type="file" accept=".json" onChange={handleImportFicha} hidden />
+        </label>
       </div>
 
       {/* STEPPER */}
