@@ -194,6 +194,47 @@ O site é composto por **7 páginas principais**, cada uma com suas seções e s
 
 ---
 
+## Ferramenta Interativa — Criação de Personagem (`/criar-personagem`)
+
+> Passo a passo fora das 7 páginas do livro de regras. Consome `Database/Título de Sobrevivência.docx` (bônus por título) e `Database/Equipamentos.docx` (catálogo filtrável por tier).
+
+**Arquivos:** `frontend/src/pages/CriarPersonagem.jsx` (wizard) · `backend/app/api/character_builder.py` (`GET /api/builder/data`)
+
+### Passos do wizard
+
+1. Conceito
+2. Nível da Campanha — escolha do Título de Sobrevivência
+3. Antecedente
+4. **Bônus do Título** — abas de armas/equipamentos/aprimoramentos/itens concedidos pelo título (filtrados por tier), mais duas abas sempre presentes quando o título é suportado: **Bazar** (gastar Marcos Narrativos em atributos/perícias/talentos/itens — inclui campo de "Bônus do Mestre" pra Marcos extras liberados à mão) e **Prévia da Ficha**. Sobrevivente Básico não tem bônus fixos, mas ainda mostra Bazar/Prévia (o livro permite ao Mestre liberar Marcos Narrativos mesmo nesse título).
+5. Atributos
+6. Talentos
+7. Perícias
+8. Finalizar
+
+### Desenvolvimento por partes — status de cada Título de Sobrevivência
+
+Todos os 5 títulos estão habilitados (`TITULOS_HABILITADOS` em `CriarPersonagem.jsx` lista os 4 avançados; Sobrevivente Básico é sempre suportado à parte, por não ter bônus fixo). O passo "Bônus do Título" foi validado um título por vez, começando pelo Veterano da Zona (única validação com navegador de verdade, já que este ambiente não tem ferramenta de automação — os demais foram habilitados após revisão de código linha a linha dos caminhos que cada um exercita, comparando com os dados reais do backend).
+
+| Título | Status |
+|---|---|
+| Sobrevivente Básico | ✅ Pronto (sem bônus fixo; Bazar/Prévia sempre disponíveis) |
+| Veterano da Zona | ✅ Habilitado e testado no navegador |
+| Caçador de Ruínas | ✅ Habilitado (revisão de código — aba Aprimoramento(s) `max=1`) |
+| Predador do Apocalipse | ✅ Habilitado (revisão de código — Aprimoramento(s) `max=2`, aba Bônus Extra arma-ou-equipamento) |
+| Lenda da Zona | ✅ Habilitado (revisão de código — Item Especial raro/super-raro, Bônus Extra de 2 aprimoramentos, Munição Extra automática) |
+
+**Bugs encontrados e corrigidos durante essa revisão, antes de habilitar:**
+- Trocar entre "2 Raros" e "1 Super Raro" na aba Item Especial (Lenda) não limpava as escolhas antigas — se o jogador já tivesse selecionado itens no primeiro modo, o limite (`max`) do segundo modo ficava bloqueado por seleções que nem apareciam mais na lista. Corrigido: trocar o tipo agora limpa `itensEspeciais`.
+- Aba "Bônus Extra" (Predador/Lenda) usava botões simples sem tooltip, diferente de todo o resto do passo — trocado pra reaproveitar o mesmo componente `ItemPicker` (com tooltip via portal) usado nas outras abas.
+
+**Vale testar no navegador quando possível** (não foi possível nesta sessão): gerar uma ficha completa pra cada um dos 3 títulos novos e conferir visualmente os campos finais (PV, Marcos Narrativos, aprimoramentos, item do Bônus Extra, item especial, munição extra) — a lógica foi conferida por leitura de código e por scripts diretos contra o catálogo do backend, não por clique real.
+
+### Evolução por Marcos Narrativos (pós-criação)
+
+Painel "Evolução" em `frontend/src/pages/FichaPersonagem.jsx`, para gastar Marcos Narrativos numa ficha já criada (subir PV/atributos/perícias, comprar talentos e recursos narrativos). Reaproveita o mesmo catálogo `titulo_bonus` do backend. Detalhes completos em `Atualizacao - Titulo de Sobrevivencia.md` (raiz do projeto).
+
+---
+
 ## Arquitetura Frontend / Backend
 
 ### Frontend

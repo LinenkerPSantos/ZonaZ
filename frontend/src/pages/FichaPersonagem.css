@@ -77,6 +77,29 @@
 .ficha-nota-efeito { background:rgba(34,197,94,0.08); border-left:2px solid var(--color-biohazard-green); border-radius:0 3px 3px 0; padding:0.35rem 0.5rem; font-size:0.78rem; color:var(--color-text-secondary); margin-top:0.35rem; }
 .ficha-nota-efeito span { font-family:var(--font-heading); font-weight:600; color:var(--color-biohazard-green); text-transform:uppercase; letter-spacing:1px; font-size:0.68rem; }
 
+.ficha-attr-fixo { font-size:0.65rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.5px; text-align:center; }
+
+/* EVOLUÇÃO (MARCOS NARRATIVOS) */
+.ficha-evo-saldo { font-family:var(--font-heading); font-size:0.85rem; color:var(--color-text-secondary); margin-bottom:0.75rem; }
+.ficha-evo-saldo strong { color:var(--color-accent-gold); font-size:1rem; }
+.ficha-evo-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem; }
+.ficha-evo-bloco { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:6px; padding:0.75rem; display:flex; flex-direction:column; gap:0.5rem; }
+.ficha-evo-bloco-wide { grid-column:1 / -1; }
+.ficha-evo-label { font-family:var(--font-heading); font-size:0.65rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:1px; }
+.ficha-evo-linha { display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; }
+.ficha-evo-linha select { flex:1; min-width:140px; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.78rem; padding:0.35rem 0.5rem; }
+.ficha-evo-btn { font-family:var(--font-heading); font-size:0.7rem; padding:0.4rem 0.8rem; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:4px; color:var(--color-text-secondary); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.ficha-evo-btn:hover:not(:disabled) { border-color:var(--color-border-red); color:var(--color-blood-red-glow); }
+.ficha-evo-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.ficha-evo-nota { font-size:0.7rem; color:var(--color-text-muted); font-style:italic; }
+.ficha-evo-historico { margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--color-border); }
+.ficha-evo-historico ul { list-style:none; display:flex; flex-direction:column; gap:0.2rem; font-size:0.78rem; color:var(--color-text-secondary); max-height:180px; overflow-y:auto; }
+.ficha-evo-historico li span { color:var(--color-accent-gold); }
+
+@media (max-width:900px) {
+  .ficha-evo-grid { grid-template-columns:1fr; }
+}
+
 /* PRINT — compacto, pensado para caber a parte principal (Identificacao ate
    Equipamentos) em 1 folha e Talentos+Anotacoes numa 2a folha. */
 @page { size: A4; margin: 8mm; }

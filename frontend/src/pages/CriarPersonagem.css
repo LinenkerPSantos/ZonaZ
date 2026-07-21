@@ -76,6 +76,74 @@
 .criar-titulo-aviso { font-size:0.8rem; color:var(--color-text-muted); font-style:italic; padding:0.75rem 1rem; background:rgba(212,160,23,0.06); border-left:3px solid var(--color-accent-gold); border-radius:0 6px 6px 0; }
 .criar-titulo-aviso strong { color:var(--color-text-secondary); font-style:normal; }
 
+.criar-titulo-picker-list { display:flex; flex-wrap:wrap; gap:0.5rem; max-height:220px; overflow-y:auto; padding:0.25rem; }
+.criar-titulo-picker-grupo { color:var(--color-text-muted); font-size:0.65rem; }
+.criar-titulo-picker-vazio { font-size:0.78rem; color:var(--color-text-muted); font-style:italic; }
+
+/* Tooltip dos itens do picker: renderizado via portal em document.body (ver
+   ItemPicker), por isso e position:fixed em vez de absolute - assim ele nao fica
+   cortado pelo overflow-y:auto de .criar-titulo-picker-list. Largura fixa (mesmo
+   tamanho em todos os itens), altura automatica (cresce pro texto sempre caber
+   inteiro, sem cortar nem precisar rolar) com um teto de seguranca bem folgado
+   pra casos extremos de texto muito longo. */
+.criar-picker-tooltip {
+  position:fixed;
+  transform:translate(-50%, calc(-100% - 10px));
+  width:320px;
+  max-width:90vw;
+  max-height:80vh;
+  overflow-y:auto;
+  background:#1a1a1a;
+  border:1px solid var(--color-blood-red);
+  border-radius:6px;
+  padding:0.75rem 1rem;
+  z-index:500;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  pointer-events:none;
+}
+.criar-picker-tooltip strong { font-family:var(--font-heading); font-size:0.85rem; color:var(--color-blood-red-glow); text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:0.4rem; }
+.criar-picker-tooltip p { font-size:0.78rem; color:var(--color-text-secondary); line-height:1.5; margin-bottom:0.3rem; }
+
+/* ABAS DO PASSO "BONUS DO TITULO" */
+.criar-titulo-tabs { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem; }
+.criar-titulo-tab { flex:1 1 0; min-width:0; display:flex; align-items:center; justify-content:center; gap:0.4rem; font-family:var(--font-heading); font-size:0.72rem; padding:0.5rem 0.6rem; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:6px 6px 0 0; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.5px; cursor:pointer; transition:all 0.2s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.criar-titulo-tab:hover { border-color:var(--color-border-red); color:var(--color-text-primary); }
+.criar-titulo-tab.active { border-color:var(--color-blood-red-glow); background:rgba(139,0,0,0.18); color:var(--color-blood-red-glow); }
+.criar-titulo-tab-badge { font-size:0.62rem; padding:0.1rem 0.4rem; border-radius:8px; background:rgba(255,255,255,0.08); color:var(--color-text-muted); }
+.criar-titulo-tab.active .criar-titulo-tab-badge { background:rgba(220,38,38,0.25); color:var(--color-blood-red-glow); }
+.criar-titulo-tab-content { padding:1rem; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:0 6px 6px 6px; }
+
+/* PREVIA DA FICHA (aba dentro do passo "Bonus do Titulo") */
+.criar-previa-titulo, .criar-bazar-titulo { display:flex; flex-direction:column; gap:1rem; }
+.criar-previa-resumo { display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem; font-size:0.8rem; color:var(--color-text-secondary); padding-bottom:0.75rem; border-bottom:1px solid var(--color-border); }
+.criar-previa-resumo strong { color:var(--color-accent-gold); }
+.criar-previa-secao h4 { font-family:var(--font-heading); font-size:0.65rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem; }
+.criar-previa-item { background:var(--color-bg-secondary); border:1px solid var(--color-border); border-left:3px solid var(--color-blood-red); border-radius:4px; padding:0.5rem 0.7rem; margin-bottom:0.4rem; }
+.criar-previa-item:last-child { margin-bottom:0; }
+.criar-previa-item-nome { font-family:var(--font-heading); font-size:0.78rem; color:var(--color-blood-red-glow); text-transform:uppercase; letter-spacing:0.5px; }
+.criar-previa-item-subtitulo { font-size:0.7rem; color:var(--color-text-muted); font-style:italic; margin-top:0.1rem; }
+.criar-previa-item-dados { display:flex; flex-wrap:wrap; gap:0.4rem 0.8rem; font-size:0.7rem; color:var(--color-text-secondary); margin-top:0.3rem; }
+.criar-previa-item-dados b { color:var(--color-text-muted); }
+.criar-previa-item-efeito { font-size:0.72rem; color:var(--color-text-secondary); margin-top:0.3rem; }
+
+/* GEAR UNIFICADO (armas/equipamentos de Antecedente+Título+Bazar, aba Prévia) */
+.criar-gear-item { background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:6px; padding:0.6rem 0.75rem; margin-bottom:0.6rem; }
+.criar-gear-item:last-child { margin-bottom:0; }
+.criar-gear-item.guardado { border-color:var(--color-accent-gold); }
+.criar-gear-item.removido { opacity:0.5; }
+.criar-gear-item.removido .criar-previa-item { border-left-color:var(--color-text-muted); }
+.criar-gear-item-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem; }
+.criar-gear-item-origem { font-family:var(--font-heading); font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:3px; background:rgba(255,255,255,0.08); color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+.criar-gear-item-duplicado { font-family:var(--font-heading); font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:3px; background:rgba(220,38,38,0.2); color:var(--color-blood-red-glow); text-transform:uppercase; letter-spacing:0.5px; }
+.criar-gear-item-status { margin-left:auto; font-family:var(--font-heading); font-size:0.6rem; color:var(--color-biohazard-green); text-transform:uppercase; letter-spacing:0.5px; }
+.criar-gear-item.guardado .criar-gear-item-status { color:var(--color-accent-gold); }
+.criar-gear-item.removido .criar-gear-item-status { color:var(--color-text-muted); }
+.criar-gear-item .criar-previa-item { margin-bottom:0; }
+.criar-gear-item-acoes { display:flex; gap:0.5rem; margin-top:0.5rem; }
+.criar-gear-btn { font-family:var(--font-heading); font-size:0.68rem; padding:0.3rem 0.7rem; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:4px; color:var(--color-text-secondary); cursor:pointer; transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px; }
+.criar-gear-btn:hover { border-color:var(--color-accent-gold); color:var(--color-accent-gold); }
+.criar-gear-btn.remover:hover { border-color:var(--color-blood-red); color:var(--color-blood-red-glow); }
+
 /* ATRIBUTOS */
 .criar-pontos-info { margin-bottom:1rem; }
 .criar-pontos { font-family:var(--font-heading); font-size:0.9rem; color:var(--color-accent-gold); padding:0.4rem 1rem; background:rgba(212,160,23,0.1); border:1px solid rgba(212,160,23,0.3); border-radius:4px; }
@@ -96,6 +164,8 @@
 .criar-tal-card:hover:not(:disabled) { border-color:var(--color-border-red); }
 .criar-tal-card.selected { border-color:var(--color-blood-red-glow); background:rgba(139,0,0,0.15); }
 .criar-tal-card:disabled { opacity:0.4; cursor:not-allowed; }
+.criar-tal-card.bloqueado { opacity:1; border-color:var(--color-accent-gold); background:rgba(212,160,23,0.1); cursor:default; }
+.criar-tal-badge { display:inline-block; font-family:var(--font-heading); font-size:0.5rem; padding:0.1rem 0.3rem; border-radius:2px; background:var(--color-accent-gold); color:#1a1a1a; text-transform:uppercase; margin-bottom:0.25rem; }
 .criar-tal-name { display:block; font-family:var(--font-heading); font-size:0.8rem; color:var(--color-text-primary); text-transform:uppercase; letter-spacing:0.5px; }
 .criar-tal-tipo { font-size:0.6rem; color:var(--color-text-muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 
@@ -137,10 +207,48 @@
 .criar-pericia-btn { display:flex; align-items:center; gap:0.4rem; width:100%; text-align:left; padding:0.4rem 0.6rem; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:4px; color:var(--color-text-secondary); font-size:0.78rem; cursor:pointer; transition:all 0.2s; margin-bottom:0.3rem; }
 .criar-pericia-btn:hover:not(:disabled) { border-color:var(--color-border-red); }
 .criar-pericia-btn.from-ant { border-color:var(--color-biohazard-dark); background:rgba(34,197,94,0.08); cursor:default; }
+.criar-pericia-btn.from-bazar { border-color:var(--color-accent-gold); background:rgba(212,160,23,0.1); cursor:default; opacity:1; }
 .criar-pericia-btn.selected { border-color:var(--color-blood-red-glow); background:rgba(139,0,0,0.15); }
 .criar-pericia-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.criar-pericia-btn.from-ant:disabled, .criar-pericia-btn.from-bazar:disabled { opacity:1; }
 .criar-pericia-badge { font-family:var(--font-heading); font-size:0.5rem; padding:0.1rem 0.3rem; border-radius:2px; background:var(--color-biohazard-dark); color:white; text-transform:uppercase; }
 .criar-pericia-badge.sel { background:var(--color-blood-red); }
+.criar-pericia-badge.bazar { background:var(--color-accent-gold); color:#1a1a1a; }
+
+/* BAZAR (MARCOS NARRATIVOS) */
+.criar-evo-saldo { font-family:var(--font-heading); font-size:0.85rem; color:var(--color-text-secondary); margin-bottom:0.75rem; }
+.criar-evo-saldo strong { color:var(--color-accent-gold); font-size:1rem; }
+.criar-evo-saldo-detalhe { font-family:var(--font-body); font-size:0.75rem; color:var(--color-text-muted); }
+.criar-evo-input { width:90px; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.85rem; padding:0.35rem 0.5rem; }
+.criar-evo-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem; }
+.criar-evo-bloco { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:6px; padding:0.75rem; display:flex; flex-direction:column; gap:0.5rem; }
+.criar-evo-bloco-wide { grid-column:1 / -1; }
+.criar-evo-label { font-family:var(--font-heading); font-size:0.65rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:1px; }
+.criar-evo-linha { display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; }
+.criar-evo-linha select { flex:1; min-width:140px; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:3px; color:var(--color-text-primary); font-size:0.78rem; padding:0.35rem 0.5rem; }
+.criar-evo-btn { font-family:var(--font-heading); font-size:0.7rem; padding:0.4rem 0.8rem; background:var(--color-bg-secondary); border:1px solid var(--color-border); border-radius:4px; color:var(--color-text-secondary); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.criar-evo-btn:hover:not(:disabled) { border-color:var(--color-border-red); color:var(--color-blood-red-glow); }
+.criar-evo-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.criar-evo-nota { font-size:0.7rem; color:var(--color-text-muted); font-style:italic; }
+.criar-evo-historico { margin-top:1.5rem; padding-top:0.75rem; border-top:1px solid var(--color-border); }
+.criar-evo-historico ul { list-style:none; display:flex; flex-direction:column; gap:0.3rem; font-size:0.78rem; color:var(--color-text-secondary); max-height:220px; overflow-y:auto; }
+.criar-evo-historico li { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; padding:0.3rem 0.5rem; background:var(--color-bg-secondary); border-radius:4px; }
+.criar-evo-historico-custo { color:var(--color-accent-gold); }
+.criar-evo-desfazer { flex-shrink:0; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:0.7rem; line-height:1; background:transparent; border:1px solid var(--color-border); border-radius:50%; color:var(--color-text-muted); cursor:pointer; transition:all 0.2s; }
+.criar-evo-desfazer:hover { border-color:var(--color-blood-red); color:var(--color-blood-red-glow); background:rgba(139,0,0,0.15); }
+
+.criar-bazar-ganhos { margin-top:0.5rem; padding:0.75rem; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:6px; border-bottom:1px solid var(--color-border); }
+
+/* MODAL DE AVISO (Bazar) */
+.criar-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1000; }
+.criar-modal { width:360px; max-width:90vw; background:#1a1a1a; border:1px solid var(--color-blood-red); border-radius:8px; padding:1.5rem; box-shadow:0 10px 40px rgba(0,0,0,0.7); }
+.criar-modal p { font-size:0.9rem; color:var(--color-text-secondary); line-height:1.5; margin-bottom:1.25rem; }
+.criar-modal-ok { width:100%; padding:0.6rem; font-family:var(--font-heading); font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; color:white; background:var(--color-blood-red); border:1px solid var(--color-blood-red-glow); border-radius:4px; cursor:pointer; transition:all 0.2s; }
+.criar-modal-ok:hover { background:var(--color-blood-red-glow); }
+
+@media (max-width:900px) {
+  .criar-evo-grid { grid-template-columns:1fr; }
+}
 
 /* RESUMO */
 .criar-resumo { display:flex; flex-direction:column; gap:0.5rem; margin-bottom:2rem; }
@@ -169,4 +277,5 @@
   .criar-ant-info { grid-template-columns:1fr; }
   .criar-pericias-grid { grid-template-columns:repeat(2, 1fr); }
   .criar-tal-grid { grid-template-columns:1fr; }
+  .criar-titulo-tab { flex:1 1 40%; }
 }

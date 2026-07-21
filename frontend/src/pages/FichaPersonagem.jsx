@@ -9,6 +9,61 @@ const PERICIAS = {
   'Intelectuais': ['Adestramento', 'Conhecimento', 'Estratégia', 'Iniciativa', 'Investigação', 'Vontade'],
 }
 
+const ATRIBUTOS = ['forca', 'agilidade', 'destreza', 'intelecto', 'presenca']
+
+// Custos de Evolucao por Marcos Narrativos (Database/Título de Sobrevivência.docx,
+// secao "Custos de Evolucao"/"Recursos Narrativos") - valores fixos de regra, nao
+// dado de conteudo do jogo, por isso ficam direto no frontend.
+const CUSTOS_EVOLUCAO = {
+  pv: 10,
+  determinacao: 30,
+  sanidade: 15,
+  sanidadeTeto: 12,
+  atributo: 10,
+  pericia: [3, 5, 10, 15, 20],
+  especializacao: 20,
+  especializacaoEstagioMin: 3,
+  talento: 20,
+  talentosLimite: 7,
+  recursos: {
+    'Abrigo Seguro Temporário': 12,
+    'NPC Auxiliar (Contato)': 15,
+    'Item de Combate Extra': 10,
+    'Item Comum': 5,
+    'Item Raro': 15,
+    'Veículo Pequeno (Moto)': 20,
+    'Veículo Grande (Carro)': 40,
+    'Munição Arma de Fogo — Pequeno (6 un.)': 5,
+    'Munição Arma de Fogo — Médio (6 un.)': 10,
+    'Munição Arma de Fogo — Longo (6 un.)': 20,
+    'Munição Arma de Fogo — Cartucho (6 un.)': 15,
+    'Munição Arma de Fogo — Pesado (6 un.)': 25,
+    'Munição Arma de Disparo — Leve (5 un.)': 5,
+    'Munição Arma de Disparo — Pesado (3 un.)': 5,
+  },
+  armaCategoria: { simples: 10, disparo: 15, fogo: 25 },
+  equipamento: 15,
+}
+
+const PERICIA_BONUS_SEQ = ['', '+1', '+2', '+3', '+4', '+5']
+
+// Espelha aplicarOpcaoPacote do CriarPersonagem.jsx, mas contra os campos ja
+// "achatados" da ficha existente (nao um objeto pac intermediario) - usado quando
+// um Recurso Narrativo de Equipamento e comprado depois da criacao do personagem.
+function aplicarEquipamentoNaFicha(op, prev) {
+  const patch = {}
+  if (op.tipo === 'protecao') {
+    op.regioes.forEach(slot => { patch[`protecao_${slot}`] = op.nome })
+    patch.protecao_notas = [...(prev.protecao_notas || []), op.estruturado]
+    patch.ca_atual = String((parseInt(prev.ca_atual) || 0) + (op.defesa || 0))
+  } else if (op.tipo === 'transporte') {
+    op.regioes.forEach(slot => { if (slot !== 'cabeca') patch[`transporte_${slot}`] = op.nome })
+    patch.transporte_notas = [...(prev.transporte_notas || []), op.estruturado]
+    patch.carga_max = String((parseInt(prev.carga_max) || 0) + (op.carga_bonus || 0))
+  }
+  return patch
+}
+
 // Bloco de leitura para dados gerados na criação (talento, arma, equipamento, item):
 // deixa Nome / Tipo-Categoria / Efeito visualmente distintos — um <textarea> não
 // consegue estilizar só um trecho do texto, por isso isso é renderizado como HTML.
@@ -50,7 +105,17 @@ function FichaPersonagem() {
     transporte_tronco: '', transporte_msup: '', transporte_minf: '', transporte_notas: [],
     carga_atual: '', carga_max: '', itens_gerais_lista: [], inventario: '', kit_estruturado: null,
     talento_exclusivo: '', talentos_lista: [], talentos_obs: '', anotacoes: '',
+    armas_extra_lista: [], aprimoramentos_lista: [], recursos_narrativos_lista: [],
+    marcos_narrativos_atual: '', determinacao_comprada: false, historico_evolucao: [],
   })
+
+  // Catalogo do Titulo de Sobrevivencia (armas/equipamentos filtraveis por tier) e
+  // de Talentos, usados no painel de Evolucao para comprar Recursos Narrativos e
+  // Talentos com Marcos Narrativos - mesmo endpoint que a criacao de personagem usa.
+  const [builderData, setBuilderData] = useState(null)
+  useEffect(() => {
+    fetch('/api/builder/data').then(r => r.json()).then(setBuilderData)
+  }, [])
 
   const [pericias, setPericias] = useState(() => {
     const init = {}
@@ -79,6 +144,155 @@ function FichaPersonagem() {
   const updatePericia = (name, field, value) => setPericias(prev => ({
     ...prev, [name]: { ...prev[name], [field]: value }
   }))
+
+  // ---- Evolução por Marcos Narrativos (Database/Título de Sobrevivência.docx) ----
+  const marcosDisponiveis = parseInt(ficha.marcos_narrativos_atual) || 0
+  const tituloBonusCatalogo = builderData?.titulo_bonus?.catalogo
+  const tierAtualFicha = builderData ? builderData.titulos.indexOf(ficha.titulo_sobrevivencia) : -1
+
+  const [evoAtributo, setEvoAtributo] = useState('forca')
+  const [evoPericia, setEvoPericia] = useState(Object.values(PERICIAS).flat()[0])
+  const [evoEspecPericia, setEvoEspecPericia] = useState(Object.values(PERICIAS).flat()[0])
+  const [evoTalento, setEvoTalento] = useState('')
+  const [evoRecursoFlat, setEvoRecursoFlat] = useState(Object.keys(CUSTOS_EVOLUCAO.recursos)[0])
+  const [evoArmaCategoria, setEvoArmaCategoria] = useState('simples')
+  const [evoArmaEscolhida, setEvoArmaEscolhida] = useState('')
+  const [evoEquipEscolhido, setEvoEquipEscolhido] = useState('')
+
+  // Deduz o custo, registra no historico e aplica o efeito (patch de campos da
+  // ficha, ou uma funcao (prev => patch) quando o efeito depende do estado atual) -
+  // tudo numa unica atualizacao de estado, para nao perder escritas concorrentes.
+  const comprarEvolucao = (custo, label, patch) => {
+    if (marcosDisponiveis < custo) {
+      window.alert(`Marcos Narrativos insuficientes (necessário ${custo}, disponível ${marcosDisponiveis}).`)
+      return
+    }
+    setFicha(prev => ({
+      ...prev,
+      ...(typeof patch === 'function' ? patch(prev) : patch),
+      marcos_narrativos_atual: String((parseInt(prev.marcos_narrativos_atual) || 0) - custo),
+      historico_evolucao: [...(prev.historico_evolucao || []), { label, custo }],
+    }))
+  }
+
+  const comprarPV = (fixo) => {
+    const valor = fixo ? 6 : Math.max(4, Math.floor(Math.random() * 10) + 1)
+    comprarEvolucao(CUSTOS_EVOLUCAO.pv, `+${valor} PV (${fixo ? 'fixo' : '1d10'})`, prev => ({
+      pv_max: String((parseInt(prev.pv_max) || 0) + valor),
+    }))
+  }
+
+  const comprarDeterminacao = () => comprarEvolucao(CUSTOS_EVOLUCAO.determinacao, '+1 Determinação Máxima', prev => ({
+    determinacao_max: String((parseInt(prev.determinacao_max) || 0) + 1),
+    determinacao_comprada: true,
+  }))
+
+  const comprarSanidade = () => comprarEvolucao(CUSTOS_EVOLUCAO.sanidade, '+1 Sanidade Máxima', prev => ({
+    sanidade_max: String(Math.min(CUSTOS_EVOLUCAO.sanidadeTeto, (parseInt(prev.sanidade_max) || 0) + 1)),
+  }))
+
+  const comprarAtributo = () => {
+    const atual = parseInt(ficha[`${evoAtributo}_max`]) || 0
+    const det = parseInt(ficha.determinacao_max) || 0
+    if (atual + 1 > det) {
+      window.alert('Nenhum atributo pode ultrapassar o valor atual de Determinação.')
+      return
+    }
+    comprarEvolucao(CUSTOS_EVOLUCAO.atributo, `+1 ${evoAtributo}`, { [`${evoAtributo}_max`]: String(atual + 1) })
+  }
+
+  const estagioPericiaEvo = PERICIA_BONUS_SEQ.indexOf(pericias[evoPericia]?.bonus || '')
+  const custoProximoPericia = CUSTOS_EVOLUCAO.pericia[estagioPericiaEvo]
+
+  const evoluirPericia = () => {
+    const estagio = PERICIA_BONUS_SEQ.indexOf(pericias[evoPericia]?.bonus || '')
+    if (estagio < 0 || estagio >= 5) {
+      window.alert('O campo "Bônus" dessa perícia tem um valor fora da progressão padrão (vazio, +1, +2, +3, +4, +5) — ajuste-o manualmente antes de evoluir por aqui.')
+      return
+    }
+    const custo = CUSTOS_EVOLUCAO.pericia[estagio]
+    if (marcosDisponiveis < custo) {
+      window.alert(`Marcos Narrativos insuficientes (necessário ${custo}).`)
+      return
+    }
+    const novoBonus = PERICIA_BONUS_SEQ[estagio + 1]
+    setPericias(prev => ({ ...prev, [evoPericia]: { ...prev[evoPericia], bonus: novoBonus } }))
+    setFicha(prev => ({
+      ...prev,
+      marcos_narrativos_atual: String((parseInt(prev.marcos_narrativos_atual) || 0) - custo),
+      historico_evolucao: [...(prev.historico_evolucao || []), { label: `Perícia ${evoPericia} → ${novoBonus}`, custo }],
+    }))
+  }
+
+  const comprarEspecializacao = () => {
+    if (pericias[evoEspecPericia]?.esp) {
+      window.alert('Essa perícia já tem uma Especialização (cada perícia só pode ter uma).')
+      return
+    }
+    const estagio = PERICIA_BONUS_SEQ.indexOf(pericias[evoEspecPericia]?.bonus || '')
+    if (estagio < CUSTOS_EVOLUCAO.especializacaoEstagioMin) {
+      window.alert('A perícia precisa estar pelo menos no 3º estágio (+3) para receber Especialização.')
+      return
+    }
+    const especializacoesAtuais = Object.values(pericias).filter(p => p.esp).length
+    const determinacaoAtual = parseInt(ficha.determinacao_max) || 0
+    if (especializacoesAtuais >= determinacaoAtual) {
+      window.alert(`O número de Especializações é limitado pelo valor atual de Determinação (${determinacaoAtual}).`)
+      return
+    }
+    if (marcosDisponiveis < CUSTOS_EVOLUCAO.especializacao) {
+      window.alert('Marcos Narrativos insuficientes.')
+      return
+    }
+    setPericias(prev => ({
+      ...prev,
+      [evoEspecPericia]: { ...prev[evoEspecPericia], esp: prev[evoEspecPericia].esp || 'Especialização (defina o foco)' },
+    }))
+    setFicha(prev => ({
+      ...prev,
+      marcos_narrativos_atual: String((parseInt(prev.marcos_narrativos_atual) || 0) - CUSTOS_EVOLUCAO.especializacao),
+      historico_evolucao: [...(prev.historico_evolucao || []), { label: `Especialização em ${evoEspecPericia}`, custo: CUSTOS_EVOLUCAO.especializacao }],
+    }))
+  }
+
+  const talentosCatalogo = (builderData?.talentos || []).flatMap(cat => cat.itens.map(t => ({ ...t, categoria: cat.categoria })))
+  const talentosDisponiveisEvo = talentosCatalogo.filter(t => !ficha.talentos_lista.some(x => x.nome === t.nome))
+
+  const comprarTalento = () => {
+    const t = talentosDisponiveisEvo.find(x => x.nome === evoTalento)
+    if (!t) return
+    if (ficha.talentos_lista.length >= CUSTOS_EVOLUCAO.talentosLimite) {
+      window.alert(`Limite de ${CUSTOS_EVOLUCAO.talentosLimite} talentos atingido.`)
+      return
+    }
+    comprarEvolucao(CUSTOS_EVOLUCAO.talento, `Talento: ${t.nome}`, prev => ({
+      talentos_lista: [...prev.talentos_lista, { nome: t.nome, subtitulo: t.tipo, descricao: t.descricao, efeito: t.efeito, exclusivo: false }],
+    }))
+  }
+
+  const comprarRecursoFlat = () => {
+    const custo = CUSTOS_EVOLUCAO.recursos[evoRecursoFlat]
+    comprarEvolucao(custo, evoRecursoFlat, prev => ({
+      recursos_narrativos_lista: [...(prev.recursos_narrativos_lista || []), { nome: evoRecursoFlat, dados: [['Custo', `${custo} MN`]], descricao: '', efeito: '' }],
+    }))
+  }
+
+  const armasDisponiveisEvo = (tituloBonusCatalogo?.armas || []).filter(a => a.tier <= tierAtualFicha && a.categoria_arma === evoArmaCategoria)
+  const equipamentosDisponiveisEvo = (tituloBonusCatalogo?.equipamentos || []).filter(e => e.tier <= tierAtualFicha)
+
+  const comprarArmaRecurso = () => {
+    const arma = armasDisponiveisEvo.find(a => a.nome === evoArmaEscolhida)
+    if (!arma) return
+    comprarEvolucao(CUSTOS_EVOLUCAO.armaCategoria[evoArmaCategoria], `Recurso Narrativo — Arma: ${arma.nome}`, prev => ({
+      armas_extra_lista: [...prev.armas_extra_lista, { ...arma, subtitulo: 'Recurso Narrativo' }],
+    }))
+  }
+
+  const comprarEquipamentoRecurso = () => {
+    const eq = equipamentosDisponiveisEvo.find(e => e.nome === evoEquipEscolhido)
+    if (!eq) return
+    comprarEvolucao(CUSTOS_EVOLUCAO.equipamento, `Recurso Narrativo — Equipamento: ${eq.nome}`, prev => aplicarEquipamentoNaFicha(eq, prev))
+  }
 
   const handleExportPDF = () => window.print()
 
@@ -187,6 +401,11 @@ function FichaPersonagem() {
               <span className="ficha-attr-name">Sanidade</span>
               <input value={ficha.sanidade_atual} onChange={e => update('sanidade_atual', e.target.value)} />
               <input value={ficha.sanidade_max} onChange={e => update('sanidade_max', e.target.value)} />
+            </div>
+            <div className="ficha-attr-row">
+              <span className="ficha-attr-name">Marcos Narrativos</span>
+              <input value={ficha.marcos_narrativos_atual} onChange={e => update('marcos_narrativos_atual', e.target.value)} />
+              <span className="ficha-attr-fixo">disponíveis</span>
             </div>
           </fieldset>
 
@@ -306,6 +525,28 @@ function FichaPersonagem() {
               ? ficha.transporte_notas.map((item, i) => <NotaBloco key={i} item={item} />)
               : <p className="ficha-nota-vazio">—</p>}
           </fieldset>
+
+          <fieldset className="ficha-fieldset ficha-card">
+            <legend>Armas e Equipamentos do Título</legend>
+            <span className="ficha-nota-label">Concedidos pelo Título de Sobrevivência</span>
+            {ficha.armas_extra_lista?.length > 0
+              ? ficha.armas_extra_lista.map((item, i) => <NotaBloco key={i} item={item} />)
+              : <p className="ficha-nota-vazio">—</p>}
+          </fieldset>
+
+          <fieldset className="ficha-fieldset ficha-card">
+            <legend>Aprimoramentos</legend>
+            {ficha.aprimoramentos_lista?.length > 0
+              ? ficha.aprimoramentos_lista.map((item, i) => <NotaBloco key={i} item={item} />)
+              : <p className="ficha-nota-vazio">Nenhum aprimoramento registrado.</p>}
+          </fieldset>
+
+          <fieldset className="ficha-fieldset ficha-card">
+            <legend>Recursos Narrativos</legend>
+            {ficha.recursos_narrativos_lista?.length > 0
+              ? ficha.recursos_narrativos_lista.map((item, i) => <NotaBloco key={i} item={item} />)
+              : <p className="ficha-nota-vazio">Nenhum recurso narrativo registrado.</p>}
+          </fieldset>
         </div>
 
         {/* TALENTOS */}
@@ -320,6 +561,113 @@ function FichaPersonagem() {
             <span>Outros talentos / anotações</span>
             <textarea rows="3" value={ficha.talentos_obs} onChange={e => update('talentos_obs', e.target.value)} placeholder="Talentos adquiridos depois da criação..." />
           </label>
+        </fieldset>
+
+        {/* EVOLUÇÃO POR MARCOS NARRATIVOS */}
+        <fieldset className="ficha-fieldset ficha-evo no-print">
+          <legend>Evolução (Marcos Narrativos)</legend>
+          <p className="ficha-evo-saldo">Disponíveis: <strong>{marcosDisponiveis}</strong> Marcos Narrativos</p>
+
+          <div className="ficha-evo-grid">
+            <div className="ficha-evo-bloco">
+              <span className="ficha-evo-label">Corpo e Mente</span>
+              <div className="ficha-evo-linha">
+                <button className="ficha-evo-btn" onClick={() => comprarPV(true)}>+6 PV (fixo) — {CUSTOS_EVOLUCAO.pv} MN</button>
+                <button className="ficha-evo-btn" onClick={() => comprarPV(false)}>+PV (1d10, mín. 4) — {CUSTOS_EVOLUCAO.pv} MN</button>
+              </div>
+              <div className="ficha-evo-linha">
+                <button className="ficha-evo-btn" disabled={ficha.determinacao_comprada} onClick={comprarDeterminacao}>
+                  +1 Determinação Máxima — {CUSTOS_EVOLUCAO.determinacao} MN {ficha.determinacao_comprada ? '(adquirido)' : ''}
+                </button>
+                <button className="ficha-evo-btn" disabled={(parseInt(ficha.sanidade_max) || 0) >= CUSTOS_EVOLUCAO.sanidadeTeto} onClick={comprarSanidade}>
+                  +1 Sanidade Máxima (até {CUSTOS_EVOLUCAO.sanidadeTeto}) — {CUSTOS_EVOLUCAO.sanidade} MN
+                </button>
+              </div>
+            </div>
+
+            <div className="ficha-evo-bloco">
+              <span className="ficha-evo-label">Atributos</span>
+              <div className="ficha-evo-linha">
+                <select value={evoAtributo} onChange={e => setEvoAtributo(e.target.value)}>
+                  {ATRIBUTOS.map(a => <option key={a} value={a}>{a.charAt(0).toUpperCase() + a.slice(1)}</option>)}
+                </select>
+                <button className="ficha-evo-btn" onClick={comprarAtributo}>+1 Atributo — {CUSTOS_EVOLUCAO.atributo} MN</button>
+              </div>
+              <p className="ficha-evo-nota">Nenhum atributo pode ultrapassar o valor atual de Determinação.</p>
+            </div>
+
+            <div className="ficha-evo-bloco">
+              <span className="ficha-evo-label">Perícias</span>
+              <div className="ficha-evo-linha">
+                <select value={evoPericia} onChange={e => setEvoPericia(e.target.value)}>
+                  {Object.values(PERICIAS).flat().map(p => <option key={p} value={p}>{p} ({pericias[p]?.bonus || 'sem treino'})</option>)}
+                </select>
+                <button className="ficha-evo-btn" disabled={estagioPericiaEvo < 0 || estagioPericiaEvo >= 5} onClick={evoluirPericia}>
+                  {estagioPericiaEvo < 0 ? 'Bônus fora da progressão' : estagioPericiaEvo >= 5 ? 'Nível máximo' : `Evoluir para ${PERICIA_BONUS_SEQ[estagioPericiaEvo + 1]} — ${custoProximoPericia} MN`}
+                </button>
+              </div>
+              <div className="ficha-evo-linha">
+                <select value={evoEspecPericia} onChange={e => setEvoEspecPericia(e.target.value)}>
+                  {Object.values(PERICIAS).flat().map(p => <option key={p} value={p}>{p} ({pericias[p]?.bonus || 'sem treino'})</option>)}
+                </select>
+                <button className="ficha-evo-btn" onClick={comprarEspecializacao}>Especialização (requer +3) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
+              </div>
+            </div>
+
+            <div className="ficha-evo-bloco">
+              <span className="ficha-evo-label">Talentos ({ficha.talentos_lista.length}/{CUSTOS_EVOLUCAO.talentosLimite})</span>
+              <div className="ficha-evo-linha">
+                <select value={evoTalento} onChange={e => setEvoTalento(e.target.value)}>
+                  <option value="">Selecione um talento…</option>
+                  {talentosDisponiveisEvo.map(t => <option key={t.nome} value={t.nome}>{t.nome} ({t.categoria})</option>)}
+                </select>
+                <button className="ficha-evo-btn" disabled={!evoTalento || ficha.talentos_lista.length >= CUSTOS_EVOLUCAO.talentosLimite} onClick={comprarTalento}>
+                  Comprar Talento — {CUSTOS_EVOLUCAO.talento} MN
+                </button>
+              </div>
+            </div>
+
+            <div className="ficha-evo-bloco ficha-evo-bloco-wide">
+              <span className="ficha-evo-label">Recursos Narrativos</span>
+              <div className="ficha-evo-linha">
+                <select value={evoRecursoFlat} onChange={e => setEvoRecursoFlat(e.target.value)}>
+                  {Object.entries(CUSTOS_EVOLUCAO.recursos).map(([nome, custo]) => <option key={nome} value={nome}>{nome} — {custo} MN</option>)}
+                </select>
+                <button className="ficha-evo-btn" onClick={comprarRecursoFlat}>Comprar</button>
+              </div>
+              <div className="ficha-evo-linha">
+                <select value={evoArmaCategoria} onChange={e => { setEvoArmaCategoria(e.target.value); setEvoArmaEscolhida('') }}>
+                  <option value="simples">Arma Simples — {CUSTOS_EVOLUCAO.armaCategoria.simples} MN</option>
+                  <option value="disparo">Arma de Disparo (até o Título atual) — {CUSTOS_EVOLUCAO.armaCategoria.disparo} MN</option>
+                  <option value="fogo">Arma de Fogo (até o Título atual) — {CUSTOS_EVOLUCAO.armaCategoria.fogo} MN</option>
+                </select>
+                <select value={evoArmaEscolhida} onChange={e => setEvoArmaEscolhida(e.target.value)}>
+                  <option value="">Selecione a arma…</option>
+                  {armasDisponiveisEvo.map(a => <option key={a.nome} value={a.nome}>{a.nome}</option>)}
+                </select>
+                <button className="ficha-evo-btn" disabled={!evoArmaEscolhida} onClick={comprarArmaRecurso}>Comprar</button>
+              </div>
+              <div className="ficha-evo-linha">
+                <select value={evoEquipEscolhido} onChange={e => setEvoEquipEscolhido(e.target.value)}>
+                  <option value="">Equipamento (até o Título atual) — {CUSTOS_EVOLUCAO.equipamento} MN…</option>
+                  {equipamentosDisponiveisEvo.map(eq => <option key={eq.nome} value={eq.nome}>{eq.nome}</option>)}
+                </select>
+                <button className="ficha-evo-btn" disabled={!evoEquipEscolhido} onClick={comprarEquipamentoRecurso}>Comprar</button>
+              </div>
+              {tierAtualFicha < 0 && (
+                <p className="ficha-evo-nota">Defina "Nível da Campanha" (em Identificação) com um dos 5 nomes de título para liberar as armas/equipamentos daquele tier.</p>
+              )}
+            </div>
+          </div>
+
+          {ficha.historico_evolucao?.length > 0 && (
+            <div className="ficha-evo-historico">
+              <span className="ficha-nota-label">Histórico de Compras</span>
+              <ul>
+                {ficha.historico_evolucao.map((h, i) => <li key={i}>{h.label} <span>— {h.custo} MN</span></li>)}
+              </ul>
+            </div>
+          )}
         </fieldset>
 
         {/* ANOTAÇÕES */}

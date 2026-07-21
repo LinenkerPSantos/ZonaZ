@@ -27,6 +27,34 @@ TITULOS_SOBREVIVENCIA = [
     'Lenda da Zona',
 ]
 
+# Regras de bonus por Titulo de Sobrevivencia (Database/Titulo de Sobrevivencia.docx).
+# 'armas'/'equipamentos'/'aprimoramentos'/'itens_comuns'/'itens_combate' sao contagens de
+# escolhas que o jogador faz nos respectivos catalogos filtrados por tier na criacao.
+TITULO_BONUS = {
+    'Sobrevivente Básico': {},
+    'Veterano da Zona': {
+        'armas': 1, 'equipamentos': 1, 'aprimoramentos': 0, 'marcos_narrativos': 20,
+        'itens_comuns': 3, 'itens_combate': 1, 'pv_bonus': 6, 'municao_extra': 0,
+        'itens_especiais': None, 'bonus_extra': None,
+    },
+    'Caçador de Ruínas': {
+        'armas': 1, 'equipamentos': 1, 'aprimoramentos': 1, 'marcos_narrativos': 30,
+        'itens_comuns': 3, 'itens_combate': 2, 'pv_bonus': 10, 'municao_extra': 0,
+        'itens_especiais': None, 'bonus_extra': None,
+    },
+    'Predador do Apocalipse': {
+        'armas': 1, 'equipamentos': 1, 'aprimoramentos': 2, 'marcos_narrativos': 40,
+        'itens_comuns': 3, 'itens_combate': 2, 'pv_bonus': 14, 'municao_extra': 0,
+        'itens_especiais': None, 'bonus_extra': {'tipo': 'arma_ou_equipamento', 'qtd': 1},
+    },
+    'Lenda da Zona': {
+        'armas': 1, 'equipamentos': 2, 'aprimoramentos': 0, 'marcos_narrativos': 50,
+        'itens_comuns': 3, 'itens_combate': 2, 'pv_bonus': 18, 'municao_extra': 6,
+        'itens_especiais': {'opcoes': [{'tipo': 'raro', 'qtd': 2}, {'tipo': 'super_raro', 'qtd': 1}]},
+        'bonus_extra': {'tipo': 'aprimoramentos', 'qtd': 2},
+    },
+}
+
 REGRAS_BASE = {
     'pontos_atributos': 7,
     'max_atributo': 3,
@@ -60,6 +88,25 @@ def _normalize_simple(s):
 def _normalize_loose(s):
     words = [w for w in _normalize_simple(s).split() if w not in ('de', 'do', 'da', 'dos', 'das', 'e', 'ou')]
     return ' '.join(words)
+
+
+# Ordem de tier dos Titulos de Sobrevivencia, usada para filtrar armas/equipamentos
+# "do nivel do titulo ou menor". O catalogo (Equipamentos.docx) grava o campo
+# titulo_sobrevivencia com variacoes de texto ("Armas de Veterano da Zona", "Liberado
+# no Cacador de Ruinas", "Predador da Apocalipse" vs "Predador do Apocalipse") - a
+# comparacao por conjunto de palavras (via _normalize_loose, que ja descarta
+# de/do/da/e/ou) absorve essas variacoes sem precisar de mapeamento manual.
+_TITULO_TIER_WORDS = [set(_normalize_loose(t).split()) for t in TITULOS_SOBREVIVENCIA]
+
+
+def _titulo_tier(raw):
+    if not raw:
+        return 0
+    words = set(_normalize_loose(raw).split())
+    for i in range(len(TITULOS_SOBREVIVENCIA) - 1, -1, -1):
+        if _TITULO_TIER_WORDS[i] <= words:
+            return i
+    return 0
 
 
 def _normalize_match(s):
@@ -178,6 +225,9 @@ def _equip_estruturado(item, extra=None):
     dados = [['Carga', item.get('carga', '')]] if item.get('carga') else []
     if extra:
         dados.append(extra)
+    combo = item.get('combo')
+    if combo:
+        dados.append(['Combo', ', '.join(c.rstrip('.').strip() for c in combo)])
     return {
         'nome': item['nome'],
         'carga': item.get('carga', ''),
@@ -230,6 +280,7 @@ def _catalogo_equipamentos():
         'transporte': index(transporte),
         'itens': index(itens_gerais),
         'municoes': _build_municao_catalogo(data),
+        '_raw': data,
     }
     return _catalogo_cache
 
@@ -415,6 +466,119 @@ def _resolve_pacote(pacote):
     return resultado
 
 
+def _find_top_section(raw_data, cap_titulo, titulo_normalizado):
+    """Acha uma (sub)secao pelo titulo, restrito a um capitulo especifico (por nome)
+    de get_pagina4_data() - usado para os catalogos do bonus de Titulo, que precisam
+    de secoes que _catalogo_equipamentos() nao indexa (Itens de Combate, Itens Comuns,
+    Itens Especiais, Aprimoramentos)."""
+    for cap in raw_data.get('capitulos', []):
+        if _normalize_simple(cap.get('titulo', '')) != _normalize_simple(cap_titulo):
+            continue
+        for sec in cap.get('secoes', []):
+            found = _find_section(sec, titulo_normalizado)
+            if found:
+                return found
+    return None
+
+
+_titulo_bonus_catalogo_cache = None
+
+
+def _catalogo_titulo_bonus():
+    """Catalogo filtravel por tier para os bonus dos Titulos de Sobrevivencia
+    avancados: armas/equipamentos com o campo 'tier' calculado, mais os itens
+    ungated (itens comuns, itens de combate, itens especiais, aprimoramentos)
+    que o docx nao amarra a um titulo especifico."""
+    global _titulo_bonus_catalogo_cache
+    if _titulo_bonus_catalogo_cache is not None:
+        return _titulo_bonus_catalogo_cache
+
+    cat = _catalogo_equipamentos()
+    raw = cat['_raw']
+
+    armas = []
+    for item in cat['armas'].values():
+        arma = _arma_estruturada(item)
+        arma['tier'] = _titulo_tier(item.get('titulo_sobrevivencia', ''))
+        # Distingue Armas Simples / de Disparo / de Fogo pelos campos crus do catalogo
+        # (nao preservados em dados/estruturado): sem municao = simples; com municao
+        # e categoria (Pistola/Rifle/etc) = fogo; com municao sem categoria = disparo
+        # (arcos/bestas). Usado para precificar o Recurso Narrativo "Armas" (Titulo de
+        # Sobrevivencia.docx: Simples 10 MN, Disparo 15 MN, Fogo 25 MN).
+        if not item.get('municao'):
+            arma['categoria_arma'] = 'simples'
+        elif item.get('categoria'):
+            arma['categoria_arma'] = 'fogo'
+        else:
+            arma['categoria_arma'] = 'disparo'
+        armas.append(arma)
+
+    equipamentos = []
+    for pool in (cat['protecao'], cat['transporte']):
+        for item in pool.values():
+            resolved = _resolve_item_catalogo(_normalize_match(item['nome']), cat)
+            if resolved:
+                resolved['tier'] = _titulo_tier(item.get('titulo_sobrevivencia', ''))
+                equipamentos.append(resolved)
+
+    combate_sec = _find_top_section(raw, 'Itens', _normalize_simple('Itens de Combate'))
+    combate_itens = []
+    if combate_sec:
+        _collect_itens(combate_sec, combate_itens)
+    itens_combate = [
+        {**_equip_estruturado(it), 'tier': 0}
+        for it in combate_itens
+        if re.match(r'^(Granada|Armadilha)', it.get('nome', ''), re.IGNORECASE)
+        or it.get('nome', '') == 'Coquetel Molotov'
+    ]
+
+    itens_comuns = []
+    for sub_titulo in ('Medicamentos (Materiais Curativos)', 'Utilidades', 'Alimentícios'):
+        sec = _find_top_section(raw, 'Itens', _normalize_simple(sub_titulo))
+        if sec:
+            sub_itens = []
+            _collect_itens(sec, sub_itens)
+            itens_comuns.extend({**_equip_estruturado(it), 'tier': 0} for it in sub_itens)
+
+    itens_especiais_raros, itens_especiais_super_raros = [], []
+    for sub_titulo, out in (
+        ('Itens Especiais Raros', itens_especiais_raros),
+        ('Itens Especiais Super Raros', itens_especiais_super_raros),
+    ):
+        sec = _find_top_section(raw, 'Itens', _normalize_simple(sub_titulo))
+        if sec:
+            sub_itens = []
+            _collect_itens(sec, sub_itens)
+            out.extend({**_equip_estruturado(it), 'tier': 0} for it in sub_itens)
+
+    aprimoramentos = []
+    for grupo in ('Aprimoramento de Armas Simples e Disparos', 'Aprimoramento de Armas de Fogo',
+                  'Aprimoramento de Equipamentos'):
+        sec = _find_top_section(raw, 'Criações e Aprimoramentos', _normalize_simple(grupo))
+        if sec:
+            sub_itens = []
+            _collect_itens(sec, sub_itens)
+            for it in sub_itens:
+                aprimoramentos.append({
+                    'nome': it['nome'], 'grupo': grupo,
+                    'descricao': (it.get('descricao') or '').strip(),
+                    'efeito': (it.get('efeito') or '').strip(),
+                    'tier': 0,
+                })
+
+    _titulo_bonus_catalogo_cache = {
+        'armas': armas,
+        'equipamentos': equipamentos,
+        'itens_combate': itens_combate,
+        'itens_comuns': itens_comuns,
+        'itens_especiais_raros': itens_especiais_raros,
+        'itens_especiais_super_raros': itens_especiais_super_raros,
+        'aprimoramentos': aprimoramentos,
+        'municoes': cat['municoes'],
+    }
+    return _titulo_bonus_catalogo_cache
+
+
 @builder_bp.route('/api/builder/data', methods=['GET'])
 def builder_data():
     p3 = get_pagina3_data()
@@ -450,5 +614,6 @@ def builder_data():
         'pericias': PERICIAS_CATEGORIAS,
         'all_pericias': ALL_PERICIAS,
         'titulos': TITULOS_SOBREVIVENCIA,
-        'regras': REGRAS_BASE
+        'regras': REGRAS_BASE,
+        'titulo_bonus': {'regras': TITULO_BONUS, 'catalogo': _catalogo_titulo_bonus()},
     })
