@@ -1,7 +1,10 @@
+import os
+
 import libsql_client
 from config.settings import TURSO_DATABASE_URL, TURSO_AUTH_TOKEN
 
 _client = None
+_client_pid = None
 
 SCHEMA = [
     """
@@ -71,11 +74,21 @@ SCHEMA = [
 
 
 def get_client():
-    global _client
-    if _client is None:
+    # O cliente libsql roda uma thread de fundo (event loop assincrono) por
+    # baixo dos panos. Servidores WSGI como o gunicorn criam workers via
+    # fork() - e fork() nao duplica threads em execucao, so a que chamou
+    # fork(). Se o cliente fosse criado antes do fork (ex.: no processo
+    # mestre), toda chamada num worker filho ficaria esperando para sempre
+    # por uma thread que so existe no processo pai, ate estourar o timeout
+    # do worker (erro 500 generico, sem log claro). Por isso o cliente e'
+    # recriado sempre que o PID atual mudar em relacao a quem o criou.
+    global _client, _client_pid
+    pid_atual = os.getpid()
+    if _client is None or _client_pid != pid_atual:
         _client = libsql_client.create_client_sync(
             TURSO_DATABASE_URL, auth_token=TURSO_AUTH_TOKEN
         )
+        _client_pid = pid_atual
     return _client
 
 
