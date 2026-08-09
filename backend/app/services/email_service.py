@@ -1,19 +1,18 @@
-import smtplib
-from email.mime.text import MIMEText
+import json
+import urllib.error
+import urllib.request
 
-from config.settings import (
-    SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM, FRONTEND_BASE_URL,
-)
+from config.settings import RESEND_API_KEY, EMAIL_FROM, FRONTEND_BASE_URL
 
 
 def enviar_email_redefinicao(destinatario, token):
     link = f'{FRONTEND_BASE_URL}/resetar-senha?token={token}'
 
-    if not SMTP_HOST or not SMTP_USER or not SMTP_PASSWORD:
-        # Sem SMTP configurado (dev local): loga o link em vez de falhar, pra dar
-        # pra testar o fluxo de "esqueci a senha" sem credencial de e-mail real.
-        print(f'[email_service] SMTP não configurado. Link de redefinição para '
-              f'{destinatario}: {link}', flush=True)
+    if not RESEND_API_KEY:
+        # Sem API key configurada (dev local): loga o link em vez de falhar,
+        # pra dar pra testar o fluxo de "esqueci a senha" sem credencial real.
+        print(f'[email_service] Envio de e-mail não configurado. Link de '
+              f'redefinição para {destinatario}: {link}', flush=True)
         return
 
     corpo = (
@@ -23,12 +22,29 @@ def enviar_email_redefinicao(destinatario, token):
         f'{link}\n\n'
         'Se você não pediu essa redefinição, ignore este e-mail.'
     )
-    msg = MIMEText(corpo, 'plain', 'utf-8')
-    msg['Subject'] = 'Zona-Z — Redefinição de senha'
-    msg['From'] = SMTP_FROM
-    msg['To'] = destinatario
 
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as servidor:
-        servidor.starttls()
-        servidor.login(SMTP_USER, SMTP_PASSWORD)
-        servidor.sendmail(SMTP_FROM, [destinatario], msg.as_string())
+    # Envio via API HTTPS da Resend (porta 443) em vez de SMTP - hosts como o
+    # Render bloqueiam as portas de SMTP (25/465/587) na saida.
+    payload = json.dumps({
+        'from': EMAIL_FROM,
+        'to': [destinatario],
+        'subject': 'Zona-Z — Redefinição de senha',
+        'text': corpo,
+    }).encode('utf-8')
+
+    req = urllib.request.Request(
+        'https://api.resend.com/emails',
+        data=payload,
+        method='POST',
+        headers={
+            'Authorization': f'Bearer {RESEND_API_KEY}',
+            'Content-Type': 'application/json',
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            resp.read()
+    except urllib.error.HTTPError as e:
+        print(f'[email_service] Falha ao enviar e-mail ({e.code}): {e.read()}', flush=True)
+    except urllib.error.URLError as e:
+        print(f'[email_service] Falha ao enviar e-mail: {e}', flush=True)
