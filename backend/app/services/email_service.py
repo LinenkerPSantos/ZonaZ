@@ -2,15 +2,16 @@ import json
 import urllib.error
 import urllib.request
 
-from config.settings import RESEND_API_KEY, EMAIL_FROM, FRONTEND_BASE_URL
+from config.settings import SENDGRID_API_KEY, EMAIL_FROM, FRONTEND_BASE_URL
 
 
 def enviar_email_redefinicao(destinatario, token):
     link = f'{FRONTEND_BASE_URL}/resetar-senha?token={token}'
 
-    if not RESEND_API_KEY:
-        # Sem API key configurada (dev local): loga o link em vez de falhar,
-        # pra dar pra testar o fluxo de "esqueci a senha" sem credencial real.
+    if not SENDGRID_API_KEY or not EMAIL_FROM:
+        # Sem API key/remetente configurados (dev local): loga o link em vez
+        # de falhar, pra dar pra testar o fluxo de "esqueci a senha" sem
+        # credencial de e-mail real.
         print(f'[email_service] Envio de e-mail não configurado. Link de '
               f'redefinição para {destinatario}: {link}', flush=True)
         return
@@ -23,25 +24,23 @@ def enviar_email_redefinicao(destinatario, token):
         'Se você não pediu essa redefinição, ignore este e-mail.'
     )
 
-    # Envio via API HTTPS da Resend (porta 443) em vez de SMTP - hosts como o
-    # Render bloqueiam as portas de SMTP (25/465/587) na saida.
+    # Envio via API HTTPS do SendGrid (porta 443) em vez de SMTP - hosts como
+    # o Render bloqueiam as portas de SMTP (25/465/587) na saida. O remetente
+    # (EMAIL_FROM) precisa estar verificado como "Single Sender" no SendGrid.
     payload = json.dumps({
-        'from': EMAIL_FROM,
-        'to': [destinatario],
+        'personalizations': [{'to': [{'email': destinatario}]}],
+        'from': {'email': EMAIL_FROM},
         'subject': 'Zona-Z — Redefinição de senha',
-        'text': corpo,
+        'content': [{'type': 'text/plain', 'value': corpo}],
     }).encode('utf-8')
 
     req = urllib.request.Request(
-        'https://api.resend.com/emails',
+        'https://api.sendgrid.com/v3/mail/send',
         data=payload,
         method='POST',
         headers={
-            'Authorization': f'Bearer {RESEND_API_KEY}',
+            'Authorization': f'Bearer {SENDGRID_API_KEY}',
             'Content-Type': 'application/json',
-            # Sem um User-Agent "normal", o Cloudflare na frente da API da
-            # Resend bloqueia a requisicao com um erro 1010 (o urllib padrao
-            # do Python manda um UA que e' facilmente reconhecido como bot).
             'User-Agent': 'zona-z-backend/1.0',
         },
     )
