@@ -39,6 +39,10 @@ def enviar_email_redefinicao(destinatario, token):
         headers={
             'Authorization': f'Bearer {RESEND_API_KEY}',
             'Content-Type': 'application/json',
+            # Sem um User-Agent "normal", o Cloudflare na frente da API da
+            # Resend bloqueia a requisicao com um erro 1010 (o urllib padrao
+            # do Python manda um UA que e' facilmente reconhecido como bot).
+            'User-Agent': 'zona-z-backend/1.0',
         },
     )
     try:
