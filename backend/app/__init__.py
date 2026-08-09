@@ -34,11 +34,8 @@ def create_app():
 
     try:
         from app.services.turso_service import init_schema
-        from app.services.auth_service import (
-            garantir_usuario_mestre_teste, garantir_usuario_administrador_teste,
-        )
+        from app.services.auth_service import garantir_usuario_administrador_teste
         init_schema()
-        garantir_usuario_mestre_teste()
         garantir_usuario_administrador_teste()
     except Exception as e:
         # Nao derruba o app inteiro por causa disso: paginas do rulebook

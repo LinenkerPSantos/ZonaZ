@@ -1,3 +1,4 @@
+import os
 import secrets
 from datetime import datetime, timedelta
 
@@ -6,11 +7,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.usuario import Usuario
 from app.services.turso_service import execute, row_to_dict, rows_to_dicts
 
-MESTRE_TESTE_USUARIO = 'mestreadministrador'
-MESTRE_TESTE_SENHA = 'mestreadm321'
-
-ADMIN_TESTE_USUARIO = 'administrador'
-ADMIN_TESTE_SENHA = 'adm@321'
+# Valor padrao serve so pra dev local. Em producao (repo publico), defina
+# SEED_ADMIN_USUARIO/SEED_ADMIN_SENHA no ambiente do Render com credenciais
+# proprias - senao essa conta (com poderes de administrador) fica com senha
+# publica no GitHub. Contas de mestre nao sao mais semeadas automaticamente:
+# o administrador cria mestres pelo painel /admin conforme a necessidade.
+ADMIN_TESTE_USUARIO = os.environ.get('SEED_ADMIN_USUARIO', 'administrador')
+ADMIN_TESTE_SENHA = os.environ.get('SEED_ADMIN_SENHA', 'adm@321')
 
 PAPEIS_VALIDOS = ('jogador', 'mestre', 'administrador')
 
@@ -69,18 +72,6 @@ def autenticar(identificador, senha):
     if not usuario or not check_password_hash(usuario.senha_hash, senha):
         return None
     return usuario
-
-
-def garantir_usuario_mestre_teste():
-    if buscar_usuario_por_login(MESTRE_TESTE_USUARIO):
-        return
-    criar_usuario(
-        email=None,
-        senha=MESTRE_TESTE_SENHA,
-        papel='mestre',
-        nome_usuario=MESTRE_TESTE_USUARIO,
-        nome_exibicao='Mestre Administrador',
-    )
 
 
 def garantir_usuario_administrador_teste():
