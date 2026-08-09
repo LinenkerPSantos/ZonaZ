@@ -193,6 +193,27 @@ def _resolve_componente(texto):
     return {'nome': nome, 'arma': bool(re.search(r'\barma\b', tag, re.IGNORECASE))}
 
 
+# Alguns Kits reservam espacos internos para o jogador guardar itens avulsos
+# durante o jogo (ex.: Kit de Ferramentas "2 Espacos para itens de carga ate 1.").
+# O texto aparece ora como um componente a parte, ora soltona descricao do kit
+# (e as vezes com o erro de digitacao "carta" em vez de "carga" no doc fonte) -
+# por isso o parser tenta as duas fontes com a mesma regex tolerante.
+ESPACOS_KIT_RE = re.compile(
+    r'(\d+)\s+espaços?\s+para\s+itens?\s+de\s+(?:carga|carta)\s+at[ée]\s+(\d+)', re.IGNORECASE
+)
+
+
+def _parse_espacos_kit(componentes_texto, descricao):
+    for texto in componentes_texto:
+        m = ESPACOS_KIT_RE.search(texto)
+        if m:
+            return {'quantidade': int(m.group(1)), 'carga_max': int(m.group(2))}
+    m = ESPACOS_KIT_RE.search(descricao or '')
+    if m:
+        return {'quantidade': int(m.group(1)), 'carga_max': int(m.group(2))}
+    return None
+
+
 def _arma_estruturada(item, subtitulo=''):
     """Monta os dados de uma arma como campos separados (nao um texto unico),
     para o frontend poder estilizar Nome / Dados / Efeito de forma distinta."""
@@ -431,12 +452,18 @@ def _resolve_pacote(pacote):
         resultado['arma'] = _arma_estruturada(a)
     elif chave0 in cat['kits']:
         k = cat['kits'][chave0]
-        componentes = [_resolve_componente(c) for c in k.get('componentes', [])]
+        componentes_raw = k.get('componentes', [])
+        espacos = _parse_espacos_kit(componentes_raw, k.get('descricao', ''))
+        componentes = [_resolve_componente(c) for c in componentes_raw if not ESPACOS_KIT_RE.search(c)]
         arma_comp = next((c for c in componentes if c['arma']), None)
         resultado['kit'] = {
             'nome': k['nome'], 'carga': k.get('carga', ''),
             'arma': arma_comp['nome'] if arma_comp else '',
             'itens': [c['nome'] for c in componentes if not c['arma']],
+            'materiais': list(k.get('materiais', [])),
+            'itens_iniciais': list(k.get('itens_iniciais', [])),
+            'espacos': espacos,
+            'espacos_itens': [],
         }
     else:
         resultado['arma'] = {'nome': pacote[0], 'subtitulo': '', 'carga': '', 'dados': [], 'descricao': '', 'efeito': ''}

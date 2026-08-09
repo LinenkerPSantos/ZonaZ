@@ -79,6 +79,7 @@ The rulebook content originates in `.docx` files in `Database/` (e.g. `Mecânica
 
 ## Content rules (see `Instruções do Site.md` for the full page/section outline)
 
+- The entire site is pt-BR, no exceptions: every user-facing string (labels, buttons, placeholders, alerts/`window.alert`/`window.confirm` messages, toasts, empty-state text, `aria-label`/`title` attributes, new pages/components) must be written in Portuguese. `frontend/index.html` must keep `<html lang="pt-BR">`. This applies to anything Claude Code adds too — never default to English scaffolding text.
 - Never render chapter/section numbering (e.g. `2.1.`, `3.2.1.`) in the UI — it's stripped server-side by `strip_numbering`, so if numbering leaks through, the bug is almost always a new heading style or tag pattern the parser doesn't recognize yet, not a frontend issue.
 - Never render raw image-reference placeholders (e.g. `Img – pg01`) from the source docs.
 - Items sharing the same `(Titulo de Sobrevivência)` value must be grouped under one shield-icon (🛡️) group header, not repeated per item.

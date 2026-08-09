@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import './Navbar.css'
 
 const navItems = [
@@ -14,7 +15,17 @@ const navItems = [
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [actionsMenuOpen, setActionsMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  const { usuario, logout } = useAuth()
+
+  const handleLogout = async () => {
+    setActionsMenuOpen(false)
+    setMenuOpen(false)
+    await logout()
+    navigate('/')
+  }
 
   return (
     <nav className="navbar">
@@ -48,18 +59,70 @@ function Navbar() {
               </Link>
             </li>
           ))}
-          <li>
-            <a
-              href="/criar-personagem"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navbar-link criar-ficha"
-              onClick={() => setMenuOpen(false)}
-            >
-              Criar Ficha
-            </a>
-          </li>
         </ul>
+
+        <div className="navbar-actions">
+          <button
+            className={`navbar-toggle navbar-actions-toggle ${actionsMenuOpen ? 'active' : ''}`}
+            onClick={() => setActionsMenuOpen(!actionsMenuOpen)}
+            aria-label="Menu de conta"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          {actionsMenuOpen && (
+            <div className="navbar-actions-dropdown">
+              <a
+                href="/criar-personagem"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="navbar-actions-item criar-ficha"
+                onClick={() => setActionsMenuOpen(false)}
+              >
+                Criar Ficha
+              </a>
+
+              {!usuario && (
+                <>
+                  <Link to="/login" className="navbar-actions-item" onClick={() => setActionsMenuOpen(false)}>
+                    Entrar
+                  </Link>
+                  <Link
+                    to="/cadastro"
+                    className="navbar-actions-item entrar-cadastro"
+                    onClick={() => setActionsMenuOpen(false)}
+                  >
+                    Cadastrar
+                  </Link>
+                </>
+              )}
+
+              {usuario && (
+                <>
+                  <div className="navbar-actions-usuario">
+                    {usuario.papel === 'mestre' && <span className="navbar-user-badge">Mestre</span>}
+                    {usuario.papel === 'administrador' && <span className="navbar-user-badge">Admin</span>}
+                    {usuario.nome_exibicao}
+                  </div>
+                  {usuario.papel === 'administrador' && (
+                    <Link
+                      to="/admin"
+                      className="navbar-actions-item"
+                      onClick={() => setActionsMenuOpen(false)}
+                    >
+                      Administração
+                    </Link>
+                  )}
+                  <button className="navbar-actions-item navbar-actions-sair" onClick={handleLogout}>
+                    Sair
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   )

@@ -1,0 +1,190 @@
+.admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 2rem 3rem;
+}
+
+.admin-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--color-blood-red-light);
+  margin-bottom: 2rem;
+}
+
+.admin-negado {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.admin-erro {
+  background: rgba(139, 0, 0, 0.15);
+  border: 1px solid var(--color-blood-red);
+  color: var(--color-text-primary);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-status-texto {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-secao-titulo {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.admin-form input,
+.admin-form select {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.admin-btn {
+  padding: 0.7rem 1.1rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-blood-red);
+  background: var(--color-blood-red);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-btn:hover:not(:disabled) {
+  background: var(--color-blood-red-light);
+}
+
+.admin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-tabela-wrap {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.admin-tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-tabela th {
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-tabela td {
+  padding: 0.8rem 1.1rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+}
+
+.admin-tabela tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.admin-badge-jogador {
+  background: rgba(163, 163, 163, 0.15);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.admin-badge-mestre {
+  background: rgba(139, 0, 0, 0.15);
+  color: var(--color-blood-red-light);
+  border: 1px solid var(--color-blood-red);
+}
+
+.admin-badge-administrador {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--color-accent-gold);
+  border: 1px solid var(--color-accent-gold);
+}
+
+.admin-btn-excluir {
+  background: transparent;
+  border: 1px solid var(--color-blood-red);
+  color: var(--color-blood-red-light);
+  border-radius: 4px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-excluir:hover:not(:disabled) {
+  background: var(--color-blood-red);
+  color: var(--color-text-primary);
+}
+
+.admin-btn-excluir:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

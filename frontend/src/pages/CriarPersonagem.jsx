@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { apiFetch } from '../services/api'
 import './CriarPersonagem.css'
 
 const STEPS = ['Conceito', 'Nível da Campanha', 'Antecedente', 'Bônus do Título', 'Atributos', 'Talentos', 'Perícias', 'Finalizar']
@@ -299,6 +301,7 @@ function parsePericiasSecundarias(text) {
 }
 
 function CriarPersonagem() {
+  const { usuario } = useAuth()
   const [builderData, setBuilderData] = useState(null)
   const [step, setStep] = useState(0)
   const [tituloTab, setTituloTab] = useState('')
@@ -819,7 +822,7 @@ function CriarPersonagem() {
     gearGuardado: prev.gearGuardado.filter(k => k !== key),
   }))
 
-  const buildFicha = () => {
+  const buildFicha = async () => {
     const bonusDefesa = bonusDefesaAntecedente
     const { pac, armasExtraLista: armasExtraListaBase, aprimoramentosLista } = resolverEquipamentoBase()
 
@@ -952,6 +955,17 @@ function CriarPersonagem() {
 
     const data = { ficha, pericias, periciasObs: '' }
 
+    if (usuario) {
+      try {
+        const salva = await apiFetch('/api/fichas', { method: 'POST', body: JSON.stringify(data) })
+        navigate(`/ficha/${salva.id}`)
+        return
+      } catch {
+        // Se salvar no backend falhar, cai no fluxo anonimo abaixo pra nao
+        // perder a ficha que o jogador acabou de montar.
+      }
+    }
+
     localStorage.setItem('zona-z-ficha', JSON.stringify(data))
     navigate('/ficha')
   }
@@ -978,7 +992,15 @@ function CriarPersonagem() {
         ))}
       </div>
 
+      {/* NAVEGAÇÃO (topo) — mesmo bloco do rodapé, para não precisar rolar a
+          página inteira só para avançar/voltar um passo. */}
       <div className="criar-content">
+        <div className="criar-nav criar-nav-top">
+          <button className="criar-nav-btn" disabled={step === 0} onClick={() => { setStep(step - 1); window.scrollTo(0, 0) }}>← Anterior</button>
+          <span className="criar-nav-step">{step + 1} / {STEPS.length}</span>
+          <button className="criar-nav-btn" disabled={step === STEPS.length - 1} onClick={() => { setStep(step + 1); window.scrollTo(0, 0) }}>Próximo →</button>
+        </div>
+
         {/* STEP 0: Conceito */}
         {step === 0 && (
           <div className="criar-panel">

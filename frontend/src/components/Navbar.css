@@ -92,15 +92,84 @@
   font-weight: 600;
 }
 
-.navbar-link.criar-ficha {
-  color: var(--color-biohazard-green);
-  border: 1px solid var(--color-biohazard-green);
-  margin-left: 0.5rem;
+.navbar-user-badge {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  background: var(--color-blood-red);
+  color: var(--color-text-primary);
+  letter-spacing: 1px;
 }
 
-.navbar-link.criar-ficha:hover {
-  color: #0a0a0a;
-  background: var(--color-biohazard-green);
+/* Menu de conta (Criar Ficha / Entrar / Cadastrar / usuário logado), agrupado
+   atrás de um ícone só - antes eram 3 itens soltos na barra, virando muita
+   informação de uma vez. */
+.navbar-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-actions-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-actions-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-actions-item:last-child {
+  border-bottom: none;
+}
+
+.navbar-actions-item:hover {
+  background: rgba(139, 0, 0, 0.15);
+  color: var(--color-blood-red-glow);
+}
+
+.navbar-actions-item.criar-ficha {
+  color: var(--color-biohazard-green);
+}
+
+.navbar-actions-item.entrar-cadastro {
+  color: var(--color-accent-gold);
+}
+
+.navbar-actions-usuario {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Hamburger */
@@ -163,4 +232,11 @@
     font-size: 1rem;
     padding: 0.75rem 1rem;
   }
+}
+
+/* O ícone do menu de conta fica sempre visível, em qualquer largura - ao
+   contrário do .navbar-toggle principal (que só aparece no mobile), por isso
+   essa regra vem depois para vencer o "display: none" da base acima. */
+.navbar-actions-toggle {
+  display: flex !important;
 }

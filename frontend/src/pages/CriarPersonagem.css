@@ -265,6 +265,7 @@
 .criar-nav-btn:hover:not(:disabled) { color:var(--color-blood-red-glow); border-color:var(--color-blood-red); }
 .criar-nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
 .criar-nav-step { font-family:var(--font-heading); font-size:0.75rem; color:var(--color-text-muted); }
+.criar-nav-top { padding-top:0; border-top:none; margin-top:0; padding-bottom:1.5rem; border-bottom:1px solid var(--color-border); margin-bottom:2rem; }
 
 @media (max-width:1024px) and (min-width:769px) {
   .criar-tal-grid { grid-template-columns:repeat(2, 1fr); }

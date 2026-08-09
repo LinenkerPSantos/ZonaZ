@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { apiFetch } from '../services/api'
 import './FichaPersonagem.css'
 
 const PERICIAS = {
@@ -90,6 +92,12 @@ function NotaBloco({ item, badge }) {
 }
 
 function FichaPersonagem() {
+  const { id } = useParams()
+  const { usuario } = useAuth()
+  const navigate = useNavigate()
+  const [carregandoFicha, setCarregandoFicha] = useState(!!id)
+  const [erroFicha, setErroFicha] = useState('')
+  const [salvandoPerfil, setSalvandoPerfil] = useState(false)
   const [ficha, setFicha] = useState({
     nome: '', profissao: '', titulo_sobrevivencia: '', idade: '', altura: '', deslocamento: '', observacoes: '', historico: '',
     forca_atual: '', forca_max: '', agilidade_atual: '', agilidade_max: '',
@@ -128,6 +136,22 @@ function FichaPersonagem() {
   const [periciasObs, setPericiasObs] = useState('')
 
   useEffect(() => {
+    if (id) {
+      fetch(`/api/fichas/${id}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Ficha não encontrada')
+          return res.json()
+        })
+        .then(data => {
+          if (data.ficha) setFicha(prev => ({ ...prev, ...data.ficha }))
+          if (data.pericias) setPericias(prev => ({ ...prev, ...data.pericias }))
+          if (data.periciasObs) setPericiasObs(data.periciasObs)
+        })
+        .catch(() => setErroFicha('Não foi possível carregar esta ficha. O link pode estar incorreto.'))
+        .finally(() => setCarregandoFicha(false))
+      return
+    }
+
     const saved = localStorage.getItem('zona-z-ficha')
     if (saved) {
       try {
@@ -138,7 +162,7 @@ function FichaPersonagem() {
         localStorage.removeItem('zona-z-ficha')
       } catch { /* ignore */ }
     }
-  }, [])
+  }, [id])
 
   const update = (field, value) => setFicha(prev => ({ ...prev, [field]: value }))
   const updatePericia = (name, field, value) => setPericias(prev => ({
@@ -307,6 +331,21 @@ function FichaPersonagem() {
     URL.revokeObjectURL(url)
   }
 
+  const salvarNoPerfil = async () => {
+    setSalvandoPerfil(true)
+    try {
+      const salva = await apiFetch('/api/fichas', {
+        method: 'POST',
+        body: JSON.stringify({ ficha, pericias, periciasObs }),
+      })
+      navigate(`/ficha/${salva.id}`, { replace: true })
+    } catch {
+      window.alert('Não foi possível salvar a ficha no seu perfil. Tente novamente.')
+    } finally {
+      setSalvandoPerfil(false)
+    }
+  }
+
   const handleImport = (e) => {
     const file = e.target.files[0]
     if (!file) return
@@ -322,18 +361,40 @@ function FichaPersonagem() {
     reader.readAsText(file)
   }
 
+  if (carregandoFicha) {
+    return <div className="loading-screen"><div className="loading-icon"></div><p className="loading-text">Carregando ficha...</p></div>
+  }
+
+  if (erroFicha) {
+    return (
+      <div className="ficha-page">
+        <div className="ficha-toolbar no-print">
+          <Link to="/" className="ficha-btn criar">Voltar ao início</Link>
+          <h1 className="ficha-toolbar-title">Ficha de Personagem</h1>
+        </div>
+        <p style={{ padding: '2rem', textAlign: 'center' }}>{erroFicha}</p>
+      </div>
+    )
+  }
+
   return (
     <div className="ficha-page">
       <div className="ficha-toolbar no-print">
         <Link to="/criar-personagem" className="ficha-btn criar">Criar Personagem</Link>
         <h1 className="ficha-toolbar-title">Ficha de Personagem</h1>
         <div className="ficha-toolbar-actions">
+          <Link to="/ficha-em-jogo" className="ficha-btn json">Ficha em Jogo</Link>
           <label className="ficha-btn import">
             Importar JSON
             <input type="file" accept=".json" onChange={handleImport} hidden />
           </label>
           <button className="ficha-btn pdf" onClick={handleExportPDF}>Exportar PDF</button>
           <button className="ficha-btn json" onClick={handleExportJSON}>Exportar JSON</button>
+          {usuario && !id && (
+            <button className="ficha-btn import" onClick={salvarNoPerfil} disabled={salvandoPerfil}>
+              {salvandoPerfil ? 'Salvando...' : 'Salvar no Perfil'}
+            </button>
+          )}
         </div>
       </div>
 

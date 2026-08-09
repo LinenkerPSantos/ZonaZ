@@ -9,7 +9,13 @@ import Pagina5GuiaMestre from './pages/Pagina5GuiaMestre'
 import Pagina6Ameacas from './pages/Pagina6Ameacas'
 import Pagina7Complementos from './pages/Pagina7Complementos'
 import FichaPersonagem from './pages/FichaPersonagem'
+import FichaEmJogo from './pages/FichaEmJogo'
 import CriarPersonagem from './pages/CriarPersonagem'
+import Login from './pages/Login'
+import Cadastro from './pages/Cadastro'
+import EsqueciSenha from './pages/EsqueciSenha'
+import ResetarSenha from './pages/ResetarSenha'
+import Admin from './pages/Admin'
 
 function App() {
   return (
@@ -25,7 +31,14 @@ function App() {
           <Route path="/ameacas" element={<Pagina6Ameacas />} />
           <Route path="/complementos" element={<Pagina7Complementos />} />
           <Route path="/ficha" element={<FichaPersonagem />} />
+          <Route path="/ficha/:id" element={<FichaPersonagem />} />
+          <Route path="/ficha-em-jogo" element={<FichaEmJogo />} />
           <Route path="/criar-personagem" element={<CriarPersonagem />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+          <Route path="/resetar-senha" element={<ResetarSenha />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
       <Footer />

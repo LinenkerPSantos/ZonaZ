@@ -1,0 +1,145 @@
+.mc-container {
+  padding: 1rem 0;
+}
+
+.mc-status {
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.mc-erro {
+  background: rgba(139, 0, 0, 0.15);
+  border: 1px solid var(--color-blood-red);
+  color: var(--color-text-primary);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.mc-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.mc-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mc-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.mc-card-nome {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.mc-cadeado {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.mc-senha-input {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+.mc-badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.mc-badge-em_criacao {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-biohazard-green);
+  border: 1px solid var(--color-biohazard-green);
+}
+
+.mc-badge-em_andamento {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--color-accent-gold);
+  border: 1px solid var(--color-accent-gold);
+}
+
+.mc-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.mc-card-acao {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.mc-prompt {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.mc-prompt a {
+  color: var(--color-accent-gold);
+}
+
+.mc-inscricao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mc-inscricao select {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+.mc-btn {
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-biohazard-green);
+  background: transparent;
+  color: var(--color-biohazard-green);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mc-btn:hover:not(:disabled) {
+  background: var(--color-biohazard-green);
+  color: #0a0a0a;
+}
+
+.mc-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

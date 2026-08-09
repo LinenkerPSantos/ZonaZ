@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
+import MesasCriadas from '../components/complementos/MesasCriadas'
+import AreaDoJogador from '../components/complementos/AreaDoJogador'
+import ZonaDoMestre from '../components/complementos/ZonaDoMestre'
 import './Pagina7Complementos.css'
 
 function Pagina7Complementos() {
+  const { usuario } = useAuth()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeChapter, setActiveChapter] = useState(0)
@@ -21,7 +26,16 @@ function Pagina7Complementos() {
   if (!data) return null
 
   const caps = data.capitulos || []
-  const curCap = caps[activeChapter]
+
+  // "Mesas Criadas" e "Zona do Mestre" nao vem do docx (sao paineis com estado/auth) -
+  // por isso sao adicionadas aqui como abas sinteticas, apos as abas do rulebook.
+  // "Zona do Mestre" so aparece pra quem tem papel 'mestre' - nem o botao da aba
+  // e mostrado pra outros perfis.
+  const abasExtras = [{ tipo: 'mesas_criadas', titulo: 'Mesas Criadas' }]
+  if (usuario) abasExtras.push({ tipo: 'area_jogador', titulo: 'Área do Jogador' })
+  if (usuario?.papel === 'mestre') abasExtras.push({ tipo: 'zona_mestre', titulo: 'Zona do Mestre' })
+  const todasAbas = [...caps.map(cap => ({ tipo: 'docx', titulo: cap.titulo, cap })), ...abasExtras]
+  const abaAtual = todasAbas[activeChapter]
 
   return (
     <div className="pagina7">
@@ -33,14 +47,14 @@ function Pagina7Complementos() {
         </div>
       </section>
 
-      {caps.length > 1 && (
+      {todasAbas.length > 1 && (
         <nav className="p7-tabs">
           <div className="p7-tabs-wrap">
-            {caps.map((cap, i) => (
+            {todasAbas.map((aba, i) => (
               <button key={i}
                 className={`p7-tab ${activeChapter === i ? 'active' : ''}`}
                 onClick={() => setActiveChapter(i)}>
-                {cap.titulo}
+                {aba.titulo}
               </button>
             ))}
           </div>
@@ -48,13 +62,13 @@ function Pagina7Complementos() {
       )}
 
       <div className="p7-container">
-        {curCap && (
+        {abaAtual?.tipo === 'docx' && (
           <div className="p7-chapter">
-            <h2 className="p7-chapter-title">{curCap.titulo}</h2>
+            <h2 className="p7-chapter-title">{abaAtual.cap.titulo}</h2>
 
-            <ContentBlock content={curCap.conteudo} />
+            <ContentBlock content={abaAtual.cap.conteudo} />
 
-            {curCap.subsecoes?.map((sec, i) => (
+            {abaAtual.cap.subsecoes?.map((sec, i) => (
               <div key={i} className="p7-section">
                 <h3 className="p7-section-title">{sec.titulo}</h3>
                 <ContentBlock content={sec.conteudo} />
@@ -69,6 +83,10 @@ function Pagina7Complementos() {
             ))}
           </div>
         )}
+
+        {abaAtual?.tipo === 'mesas_criadas' && <MesasCriadas />}
+        {abaAtual?.tipo === 'area_jogador' && <AreaDoJogador />}
+        {abaAtual?.tipo === 'zona_mestre' && <ZonaDoMestre />}
       </div>
     </div>
   )
