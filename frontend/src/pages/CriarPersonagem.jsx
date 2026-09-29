@@ -558,10 +558,20 @@ function CriarPersonagem() {
     bonusDefesaAntecedente = bonusParsed.extra.valor
   }
 
+  // Determinação Extra (Utilidade, Passivo): +1 Determinação inicial (o "teto
+  // sobe pra 7" do texto do talento é só a permissão de passar do teto usual —
+  // não há um clamp de máximo em código pra levantar).
+  const temDeterminacaoExtra = [
+    selectedAnt?.talento?.nome,
+    ...char.talentosSelecionados.map(t => t.nome),
+    ...char.bazar.talentosComprados.map(t => t.nome),
+  ].includes('Determinação Extra')
+  const bonusDetTalento = temDeterminacaoExtra ? 1 : 0
+
   // Valores "atuais" do personagem em construção, já incluindo o que foi comprado
   // no Bazar - usados tanto para validar limites de compra (atributo não pode
   // passar da Determinação, Sanidade tem teto 12) quanto no buildFicha final.
-  const determinacaoAtual = regras.determinacao_base + bonusDetAntecedente + (char.bazar.detComprada ? 1 : 0)
+  const determinacaoAtual = regras.determinacao_base + bonusDetAntecedente + bonusDetTalento + (char.bazar.detComprada ? 1 : 0)
   const sanidadeAtual = Math.min(CUSTOS_EVOLUCAO.sanidadeTeto, regras.sanidade_base + bonusSanidadeAntecedente + char.bazar.sanExtra)
   const pvAtual = regras.pv_base + bonusParsed.vida + (tituloHabilitado ? (regrasTitulo.pv_bonus || 0) : 0) + char.bazar.pvExtra
   const atributosAtuais = {}
@@ -900,6 +910,23 @@ function CriarPersonagem() {
       talentosLista.push({ nome: t.nome, subtitulo: t.tipo, descricao: t.descricao, efeito: t.efeito, exclusivo: false })
     })
 
+    // Carcaça Grossa (Defesa, Passivo): Redução de Dano = 1 + bônus da perícia
+    // Constituição. Outras fontes de RD (armaduras/reforços craftados) são
+    // específicas por tipo de dano e não fazem parte do pacote inicial, então
+    // ficam de fora do cálculo — o campo continua editável pra somar isso depois.
+    const temCarcacaGrossa = talentosLista.some(t => t.nome === 'Carcaça Grossa')
+    const constituicaoEstagio = Math.max(
+      PERICIA_BONUS_SEQ.indexOf(periciasBaseAtuais['Constituição'] || ''),
+      char.bazar.periciaEstagiosExtra['Constituição'] || 0
+    )
+    const reducaoDano = temCarcacaGrossa ? String(1 + constituicaoEstagio) : ''
+
+    // Logística Otimizada (Exclusivo: Servidor Público, Passivo): substitui a
+    // Carga base de 6 por 12 — o +2 por Força e os demais bônus (itens,
+    // equipamentos, outros talentos) continuam se somando por cima normalmente.
+    const temLogisticaOtimizada = talentosLista.some(t => t.nome === 'Logística Otimizada')
+    const cargaBase = temLogisticaOtimizada ? 12 : 6
+
     const ficha = {
       nome: char.nome, profissao: selectedAnt?.titulo || '', idade: char.idade,
       titulo_sobrevivencia: char.tituloSobrevivencia,
@@ -920,6 +947,8 @@ function CriarPersonagem() {
       determinacao_comprada: char.bazar.detComprada,
       sanidade_atual: '', sanidade_max: String(sanidade),
       ca_atual: String(ca), ca_bonus: '', ca_obs: '', descricoes: '',
+      reducao_dano: reducaoDano,
+      reducao_dano_obs: temCarcacaGrossa ? 'Carcaça Grossa: reduz o 1º dano recebido numa cena de combate; volta após um descanso.' : '',
       arma1_nome: armaNome, arma1_carga: String(armaCarga), arma1_estruturada: arma1Estruturada,
       arma2_nome: '', arma2_carga: '', arma2_notas: '',
       armas_extra_lista: armasExtraLista,
@@ -932,7 +961,9 @@ function CriarPersonagem() {
       transporte_tronco: pac.transporte.tronco, transporte_msup: pac.transporte.msup,
       transporte_minf: pac.transporte.minf,
       transporte_notas: pac.transporte_notas,
-      carga_atual: String(cargaAtualTotal), carga_max: String(10 + forcaFinal * 5 + pac.carga_bonus_total),
+      // Carga base (6, ou 12 com Logística Otimizada) + 2 por ponto de Força
+      // (capítulo "Cargas" do Mecânica.docx) + bônus de itens/equipamentos.
+      carga_atual: String(cargaAtualTotal), carga_max: String(cargaBase + forcaFinal * 2 + pac.carga_bonus_total),
       itens_gerais_lista: pac.itens_gerais,
       inventario: '',
       kit_estruturado: pac.kit,

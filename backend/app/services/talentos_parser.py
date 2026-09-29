@@ -44,6 +44,30 @@ def _parse_talentos_from_section(section):
         if 'INSTRUÇÃO' in upper:
             continue
 
+        nome_match = re.match(r'^Nome:\s*(.+)$', txt)
+        if nome_match:
+            current = {
+                'nome': nome_match.group(1).strip(),
+                'tipo': '',
+                'descricao': '',
+                'efeito': '',
+                'subcategoria': subcategoria
+            }
+            talentos.append(current)
+            continue
+
+        # "Categoria:" própria linha (modelo novo) é redundante com a aba/
+        # categoria que já agrupa os talentos — só consome a linha.
+        if re.match(r'^Categoria:\s*.+$', txt):
+            continue
+
+        subcategoria_match = re.match(r'^Subcategoria:\s*(.+)$', txt)
+        if subcategoria_match:
+            subcategoria = subcategoria_match.group(1).strip()
+            if current:
+                current['subcategoria'] = subcategoria
+            continue
+
         tipo_match = re.match(r'^Tipo:\s*(.+)$', txt)
         if tipo_match:
             if current:
@@ -60,6 +84,19 @@ def _parse_talentos_from_section(section):
                     _append_descricao(current, bound.group(2))
                 else:
                     current['tipo'] = raw
+            continue
+
+        descricao_match = re.match(r'^Descri[çc][ãa]o:\s*(.+)$', txt)
+        if descricao_match:
+            if current:
+                raw = descricao_match.group(1).strip()
+
+                embedded_efeito = re.search(r'Efeito:\s*(.+)$', raw)
+                if embedded_efeito:
+                    raw = raw[:embedded_efeito.start()].strip()
+                    current['efeito'] = embedded_efeito.group(1).strip()
+
+                _append_descricao(current, raw)
             continue
 
         efeito_search = re.search(r'Efeito:\s*(.+)$', txt)

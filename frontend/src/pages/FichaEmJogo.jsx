@@ -57,6 +57,7 @@ const FICHA_VAZIA = {
   pv_atual: '', pv_max: '', determinacao_atual: '', determinacao_max: '',
   sanidade_atual: '', sanidade_max: '',
   ca_atual: '', ca_bonus: '', ca_obs: '', descricoes: '',
+  reducao_dano: '', reducao_dano_obs: '',
   arma1_nome: '', arma1_carga: '', arma1_estruturada: null,
   arma2_nome: '', arma2_carga: '', arma2_notas: '',
   armas_extra_jogo: [],
@@ -608,7 +609,9 @@ function FichaEmJogo() {
             <div className="ficha-row">
               <label className="ficha-field sm"><span>CA</span><input value={ficha.ca_atual} onChange={e => update('ca_atual', e.target.value)} /></label>
               <label className="ficha-field sm"><span>Bônus</span><input value={ficha.ca_bonus} onChange={e => update('ca_bonus', e.target.value)} /></label>
+              <label className="ficha-field md"><span>Redução de Dano</span><input value={ficha.reducao_dano} onChange={e => update('reducao_dano', e.target.value)} /></label>
             </div>
+            <label className="ficha-field full"><span>Observação da Redução de Dano</span><input value={ficha.reducao_dano_obs} onChange={e => update('reducao_dano_obs', e.target.value)} /></label>
             <label className="ficha-field full"><span>Descrições</span><textarea rows="3" value={ficha.descricoes} onChange={e => update('descricoes', e.target.value)} /></label>
           </fieldset>
         </div>
