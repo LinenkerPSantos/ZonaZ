@@ -3,6 +3,69 @@ import './Pagina4Equipamentos.css'
 
 const CHAPTER_ICONS = { 0: '⚔️', 1: '🎒', 2: '🔧' }
 
+function RichText({ text }) {
+  if (!text || !text.includes('<hl>')) return text
+  const parts = text.split(/(<hl>.*?<\/hl>)/g)
+  return parts.map((part, i) => {
+    const match = part.match(/^<hl>(.*?)<\/hl>$/)
+    if (match) return <strong key={i} className="p4-highlight">{match[1]}</strong>
+    return part
+  })
+}
+
+function renderIntroItems(intro) {
+  return intro.map((p, i) => {
+    if (typeof p === 'object' && p.tipo) {
+      if (p.tipo === 'subtitulo') {
+        return <h3 key={i} className="p4-intro-subtitle"><RichText text={p.texto} /></h3>
+      }
+      if (p.tipo === 'marcador') {
+        const parts = p.texto.match(/^(.{1,60}):\s*(.+)$/)
+        return (
+          <div key={i} className="p4-intro-marker">
+            {parts ? (
+              <><span className="p4-marker-label">{parts[1]}</span><span><RichText text={parts[2]} /></span></>
+            ) : (
+              <span><RichText text={p.texto} /></span>
+            )}
+          </div>
+        )
+      }
+      if (p.tipo === 'introducao') {
+        return <p key={i} className="p4-intro-highlight"><RichText text={p.texto} /></p>
+      }
+      if (p.tipo === 'anotacao') {
+        return (
+          <div key={i} className="p4-anotacao">
+            <p><RichText text={p.texto} /></p>
+          </div>
+        )
+      }
+      if (p.tipo === 'efeito-negativo' || p.tipo === 'efeito-neutro' || p.tipo === 'efeito-positivo') {
+        const parts = p.texto.match(/^(.{1,60}):\s*(.+)$/)
+        return (
+          <div key={i} className={`p4-intro-${p.tipo}`}>
+            {parts ? (
+              <><span className={`p4-${p.tipo}-label`}>{parts[1]}</span><span><RichText text={parts[2]} /></span></>
+            ) : (
+              <span><RichText text={p.texto} /></span>
+            )}
+          </div>
+        )
+      }
+      if (p.tipo === 'subcard-grupo') {
+        return (
+          <div key={i} className="p4-intro-subcard">
+            {renderIntroItems(p.itens)}
+          </div>
+        )
+      }
+      return <p key={i}><RichText text={p.texto} /></p>
+    }
+    return <p key={i}><RichText text={p} /></p>
+  })
+}
+
 function Pagina4Equipamentos() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -138,34 +201,20 @@ function Pagina4Equipamentos() {
 
         {/* CONTENT */}
         <main className="p4-content">
+          {activeSection === 0 && activeSubsection === null && curCap?.intro?.length > 0 && (
+            <div className="p4-chapter-intro">
+              <h2 className="p4-section-title">{curCap.titulo}</h2>
+              <div className="p4-intro">
+                {renderIntroItems(curCap.intro)}
+              </div>
+            </div>
+          )}
+
           <h2 className="p4-section-title">{displayTitle}</h2>
 
           {displayIntro.length > 0 && (
             <div className="p4-intro">
-              {displayIntro.map((p, i) => {
-                if (typeof p === 'object' && p.tipo) {
-                  if (p.tipo === 'subtitulo') {
-                    return <h3 key={i} className="p4-intro-subtitle">{p.texto}</h3>
-                  }
-                  if (p.tipo === 'marcador') {
-                    const parts = p.texto.match(/^(.{1,60}):\s*(.+)$/)
-                    return (
-                      <div key={i} className="p4-intro-marker">
-                        {parts ? (
-                          <><span className="p4-marker-label">{parts[1]}</span><span>{parts[2]}</span></>
-                        ) : (
-                          <span>{p.texto}</span>
-                        )}
-                      </div>
-                    )
-                  }
-                  if (p.tipo === 'introducao') {
-                    return <p key={i} className="p4-intro-highlight">{p.texto}</p>
-                  }
-                  return <p key={i}>{p.texto}</p>
-                }
-                return <p key={i}>{p}</p>
-              })}
+              {renderIntroItems(displayIntro)}
             </div>
           )}
 
@@ -250,23 +299,23 @@ function ItemCard({ item, expanded, onClick }) {
             ) : null)}
           </div>
 
-          {item.descricao && <p className="p4-item-desc">{item.descricao}</p>}
+          {item.descricao && <p className="p4-item-desc"><RichText text={item.descricao} /></p>}
 
           {item.efeito && (
             <div className="p4-item-effect">
-              <span>Efeito:</span> {item.efeito}
+              <span>Efeito:</span> <RichText text={item.efeito} />
             </div>
           )}
 
           {item.efeito_adicional && (
             <div className="p4-item-effect">
-              <span>Efeito Adicional:</span> {item.efeito_adicional}
+              <span>Efeito Adicional:</span> <RichText text={item.efeito_adicional} />
             </div>
           )}
 
           {item.penalidade && (
             <div className="p4-item-penalty">
-              <span>Penalidade:</span> {item.penalidade}
+              <span>Penalidade:</span> <RichText text={item.penalidade} />
             </div>
           )}
 

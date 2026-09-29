@@ -192,12 +192,91 @@ function RichText({ text }) {
   })
 }
 
+function renderCardItem(t, j) {
+  if (!t.texto && t.tipo !== 'subcard-bloco') return null
+
+  if (t.tipo === 'efeito-negativo') {
+    const parts = t.texto.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className="cr-efeito-negativo">
+        {parts ? (
+          <>
+            <span className="cr-efeito-negativo-label">{parts[1]}</span>
+            <span className="cr-efeito-negativo-text">{parts[2]}</span>
+          </>
+        ) : (
+          <span className="cr-efeito-negativo-text">{t.texto}</span>
+        )}
+      </div>
+    )
+  }
+
+  if (t.tipo === 'efeito-neutro') {
+    const parts = t.texto.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className="cr-efeito-neutro">
+        {parts ? (
+          <>
+            <span className="cr-efeito-neutro-label">{parts[1]}</span>
+            <span className="cr-efeito-neutro-text">{parts[2]}</span>
+          </>
+        ) : (
+          <span className="cr-efeito-neutro-text">{t.texto}</span>
+        )}
+      </div>
+    )
+  }
+
+  if (t.tipo === 'efeito-positivo') {
+    const parts = t.texto.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className="cr-efeito-positivo">
+        {parts ? (
+          <>
+            <span className="cr-efeito-positivo-label">{parts[1]}</span>
+            <span className="cr-efeito-positivo-text">{parts[2]}</span>
+          </>
+        ) : (
+          <span className="cr-efeito-positivo-text">{t.texto}</span>
+        )}
+      </div>
+    )
+  }
+
+  if (t.tipo === 'marcador') {
+    const parts = t.texto.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className="cr-marker">
+        {parts ? (
+          <>
+            <span className="cr-marker-label">{parts[1]}</span>
+            <span className="cr-marker-text">{parts[2]}</span>
+          </>
+        ) : (
+          <span className="cr-marker-text">{t.texto}</span>
+        )}
+      </div>
+    )
+  }
+
+  if (t.tipo === 'subcard-bloco') {
+    return (
+      <div key={j} className="cr-subcard">
+        {t.textos.map((st, k) => renderCardItem(st, k))}
+      </div>
+    )
+  }
+
+  return <p key={j}><RichText text={t.texto} /></p>
+}
+
 function ContentRenderer({ paragraphs }) {
   if (!paragraphs || paragraphs.length === 0) return null
 
   const grouped = []
   let currentList = null
   let currentCard = null
+  let currentSubcard = null
 
   for (const p of paragraphs) {
     if (p.tipo === 'lista') {
@@ -211,19 +290,43 @@ function ContentRenderer({ paragraphs }) {
     currentList = null
 
     if (p.tipo === 'card') {
-      currentCard = { tipo: 'card-bloco', textos: [p.texto] }
+      currentCard = { tipo: 'card-bloco', textos: [p] }
+      currentSubcard = null
       grouped.push(currentCard)
       continue
     }
     if (p.tipo === 'card-fim') {
       if (currentCard) {
-        if (p.texto) currentCard.textos.push(p.texto)
+        if (p.texto) currentCard.textos.push(p)
       }
       currentCard = null
+      currentSubcard = null
+      continue
+    }
+
+    if (p.tipo === 'subcard') {
+      currentSubcard = { tipo: 'subcard-bloco', textos: [p] }
+      if (currentCard) {
+        currentCard.textos.push(currentSubcard)
+      } else {
+        grouped.push(currentSubcard)
+      }
+      continue
+    }
+    if (p.tipo === 'subcard-fim') {
+      if (currentSubcard) {
+        if (p.texto) currentSubcard.textos.push(p)
+      }
+      currentSubcard = null
+      continue
+    }
+
+    if (currentSubcard) {
+      currentSubcard.textos.push(p)
       continue
     }
     if (currentCard) {
-      currentCard.textos.push(p.texto)
+      currentCard.textos.push(p)
       continue
     }
 
@@ -265,12 +368,66 @@ function ContentRenderer({ paragraphs }) {
           return <p key={i} className="cr-intro">{item.texto}</p>
         }
 
+        if (item.tipo === 'efeito-negativo') {
+          const parts = item.texto.match(/^(.{1,60}):\s*(.+)$/)
+          return (
+            <div key={i} className="cr-efeito-negativo">
+              {parts ? (
+                <>
+                  <span className="cr-efeito-negativo-label">{parts[1]}</span>
+                  <span className="cr-efeito-negativo-text">{parts[2]}</span>
+                </>
+              ) : (
+                <span className="cr-efeito-negativo-text">{item.texto}</span>
+              )}
+            </div>
+          )
+        }
+
+        if (item.tipo === 'efeito-neutro') {
+          const parts = item.texto.match(/^(.{1,60}):\s*(.+)$/)
+          return (
+            <div key={i} className="cr-efeito-neutro">
+              {parts ? (
+                <>
+                  <span className="cr-efeito-neutro-label">{parts[1]}</span>
+                  <span className="cr-efeito-neutro-text">{parts[2]}</span>
+                </>
+              ) : (
+                <span className="cr-efeito-neutro-text">{item.texto}</span>
+              )}
+            </div>
+          )
+        }
+
+        if (item.tipo === 'efeito-positivo') {
+          const parts = item.texto.match(/^(.{1,60}):\s*(.+)$/)
+          return (
+            <div key={i} className="cr-efeito-positivo">
+              {parts ? (
+                <>
+                  <span className="cr-efeito-positivo-label">{parts[1]}</span>
+                  <span className="cr-efeito-positivo-text">{parts[2]}</span>
+                </>
+              ) : (
+                <span className="cr-efeito-positivo-text">{item.texto}</span>
+              )}
+            </div>
+          )
+        }
+
         if (item.tipo === 'card-bloco') {
           return (
             <div key={i} className="cr-card">
-              {item.textos.map((t, j) => (
-                <p key={j}><RichText text={t} /></p>
-              ))}
+              {item.textos.map((t, j) => renderCardItem(t, j))}
+            </div>
+          )
+        }
+
+        if (item.tipo === 'subcard-bloco') {
+          return (
+            <div key={i} className="cr-subcard">
+              {item.textos.map((t, j) => renderCardItem(t, j))}
             </div>
           )
         }

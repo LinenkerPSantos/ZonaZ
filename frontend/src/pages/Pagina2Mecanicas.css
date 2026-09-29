@@ -431,6 +431,93 @@
   line-height: 1.5;
 }
 
+/* ===== EFEITO NEGATIVO (efeitoN) ===== */
+.cr-efeito-negativo {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: rgba(185, 28, 28, 0.08);
+  border-left: 2px solid var(--color-blood-red-light);
+  border-radius: 0 4px 4px 0;
+  padding: 0.5rem 0.75rem 0.5rem 1.1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cr-efeito-negativo-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-blood-red-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.cr-efeito-negativo-text {
+  color: var(--color-text-secondary);
+}
+
+/* ===== EFEITO NEUTRO (efeitoS) ===== */
+.cr-efeito-neutro {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: rgba(212, 160, 23, 0.08);
+  border-left: 2px solid var(--color-accent-gold);
+  border-radius: 0 4px 4px 0;
+  padding: 0.5rem 0.75rem 0.5rem 1.1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cr-efeito-neutro-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.cr-efeito-neutro-text {
+  color: var(--color-text-secondary);
+}
+
+/* ===== EFEITO POSITIVO (efeitoO) ===== */
+.cr-efeito-positivo {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: rgba(34, 197, 94, 0.08);
+  border-left: 2px solid var(--color-biohazard-green);
+  border-radius: 0 4px 4px 0;
+  padding: 0.5rem 0.75rem 0.5rem 1.1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cr-efeito-positivo-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-biohazard-green);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.cr-efeito-positivo-text {
+  color: var(--color-text-secondary);
+}
+
 /* ===== INTRODUÇÃO ===== */
 .cr-intro {
   color: var(--color-text-secondary);
@@ -474,6 +561,35 @@
 .cr-card p:first-child {
   color: var(--color-text-primary);
   font-size: 0.92rem;
+}
+
+/* ===== SUBCARD (card dentro de card) ===== */
+.cr-subcard {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  margin: 0.75rem 0;
+}
+
+.cr-subcard:last-child {
+  margin-bottom: 0;
+}
+
+.cr-subcard p {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.cr-subcard p:last-child {
+  margin-bottom: 0;
+}
+
+.cr-subcard p:first-child {
+  color: var(--color-text-primary);
+  font-size: 0.88rem;
 }
 
 /* ===== RESPONSIVE ===== */

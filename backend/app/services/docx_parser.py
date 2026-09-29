@@ -26,8 +26,13 @@ def _run_text(r, ns):
 
 
 def _strip_end_tags(text):
+    """Strip a trailing (card-fim)/(subcard-fim) marker. Must run AFTER
+    _process_highlight_tags — (I - fim) is the highlight's own closing tag and is
+    converted to </hl> there; stripping it here first (before it's converted) would
+    leave an unclosed <hl> whenever the highlighted span happens to end at the
+    paragraph's end."""
+    text = re.sub(r'\(subcard-fim\)\s*$', '', text, flags=re.IGNORECASE)
     text = re.sub(r'\(card-fim\)\s*$', '', text, flags=re.IGNORECASE)
-    text = re.sub(r'\(I\s*-\s*fim\)\s*$', '', text, flags=re.IGNORECASE)
     return text.strip()
 
 
@@ -84,16 +89,37 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
 
     if text.startswith('(Marcador)') or text.startswith('(marcador)'):
         clean = re.sub(r'^\((?:M|m)arcador\)\s*', '', text)
-        clean = _strip_end_tags(clean)
         clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
         entries.append({'texto': clean, 'estilo': style, 'tipo': 'marcador'})
+        return entries
+
+    if re.match(r'^\(efeitoN\)', text, re.IGNORECASE):
+        clean = re.sub(r'^\(efeitoN\)\s*', '', text, flags=re.IGNORECASE)
+        clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
+        entries.append({'texto': clean, 'estilo': style, 'tipo': 'efeito-negativo'})
+        return entries
+
+    if re.match(r'^\(efeitoS\)', text, re.IGNORECASE):
+        clean = re.sub(r'^\(efeitoS\)\s*', '', text, flags=re.IGNORECASE)
+        clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
+        entries.append({'texto': clean, 'estilo': style, 'tipo': 'efeito-neutro'})
+        return entries
+
+    if re.match(r'^\(efeitoO\)', text, re.IGNORECASE):
+        clean = re.sub(r'^\(efeitoO\)\s*', '', text, flags=re.IGNORECASE)
+        clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
+        entries.append({'texto': clean, 'estilo': style, 'tipo': 'efeito-positivo'})
         return entries
 
     if re.match(r'^\((?:I|i)ntrodução\)', text) or re.match(r'^\((?:I|i)ntroducao\)', text):
         clean = re.sub(r'^\((?:I|i)ntrodução\)\s*', '', text)
         clean = re.sub(r'^\((?:I|i)ntroducao\)\s*', '', clean)
-        clean = _strip_end_tags(clean)
         clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
         entries.append({'texto': clean, 'estilo': style, 'tipo': 'introducao'})
         return entries
 
@@ -104,6 +130,8 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
 
     if re.match(r'^\((?:A|a)nota[çc][ãa]o\)', text):
         clean = re.sub(r'^\((?:A|a)nota[çc][ãa]o\)\s*', '', text).strip()
+        clean = _process_highlight_tags(clean)
+        clean = _strip_end_tags(clean)
         entries.append({'texto': clean, 'estilo': style, 'tipo': 'anotacao'})
         return entries
 
@@ -118,9 +146,14 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
 
     if re.match(r'^\[\((?:C|c)ard\)', text):
         clean = re.sub(r'^\[\((?:C|c)ard\)\s*', '', text)
-        clean = _strip_end_tags(clean)
-        clean = _process_highlight_tags(clean)
-        entries.append({'texto': clean, 'estilo': style, 'tipo': 'card'})
+        nested = _classify_paragraph(clean, style, fully_bold, marked_text)
+        if nested and nested[0]['tipo'] not in ('paragrafo', 'card', 'destaque'):
+            entries.append({'texto': '', 'estilo': style, 'tipo': 'card'})
+            entries.extend(nested)
+        else:
+            clean = _process_highlight_tags(clean)
+            clean = _strip_end_tags(clean)
+            entries.append({'texto': clean, 'estilo': style, 'tipo': 'card'})
         return entries
 
     if re.match(r'^\((?:S|s)ubt[ií]tulo\)', text):
@@ -131,9 +164,14 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
     if re.match(r'^\((?:C|c)ard\)', text):
         clean = re.sub(r'^\((?:C|c)ard\)\s*', '', text)
         has_end = bool(re.search(r'\(card-fim\)', clean, re.IGNORECASE))
-        clean = _strip_end_tags(clean)
-        clean = _process_highlight_tags(clean)
-        entries.append({'texto': clean, 'estilo': style, 'tipo': 'card'})
+        nested = _classify_paragraph(clean, style, fully_bold, marked_text)
+        if nested and nested[0]['tipo'] not in ('paragrafo', 'card', 'destaque'):
+            entries.append({'texto': '', 'estilo': style, 'tipo': 'card'})
+            entries.extend(nested)
+        else:
+            clean = _process_highlight_tags(clean)
+            clean = _strip_end_tags(clean)
+            entries.append({'texto': clean, 'estilo': style, 'tipo': 'card'})
         if has_end:
             entries.append({'texto': '', 'estilo': style, 'tipo': 'card-fim'})
         return entries
@@ -141,6 +179,26 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
     if re.match(r'^\((?:C|c)ard-fim\)', text):
         clean = re.sub(r'^\((?:C|c)ard-fim\)\s*', '', text).strip()
         entries.append({'texto': clean, 'estilo': style, 'tipo': 'card-fim'})
+        return entries
+
+    if re.match(r'^\((?:S|s)ubcard\)', text):
+        clean = re.sub(r'^\((?:S|s)ubcard\)\s*', '', text)
+        has_end = bool(re.search(r'\(subcard-fim\)', clean, re.IGNORECASE))
+        nested = _classify_paragraph(clean, style, fully_bold, marked_text)
+        if nested and nested[0]['tipo'] not in ('paragrafo', 'card', 'subcard', 'destaque'):
+            entries.append({'texto': '', 'estilo': style, 'tipo': 'subcard'})
+            entries.extend(nested)
+        else:
+            clean = _process_highlight_tags(clean)
+            clean = _strip_end_tags(clean)
+            entries.append({'texto': clean, 'estilo': style, 'tipo': 'subcard'})
+        if has_end:
+            entries.append({'texto': '', 'estilo': style, 'tipo': 'subcard-fim'})
+        return entries
+
+    if re.match(r'^\((?:S|s)ubcard-fim\)', text):
+        clean = re.sub(r'^\((?:S|s)ubcard-fim\)\s*', '', text).strip()
+        entries.append({'texto': clean, 'estilo': style, 'tipo': 'subcard-fim'})
         return entries
 
     if re.match(r'^\(importante destacar\s*[-–]\s*I\)', text, re.IGNORECASE):
@@ -162,9 +220,8 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
     elif text.startswith('Img'):
         entries.append({'texto': text, 'estilo': style, 'tipo': 'imagem'})
     else:
-        original = text
-        clean = _strip_end_tags(text)
-        clean = _process_highlight_tags(clean)
+        highlighted = _process_highlight_tags(text)
+        clean = _strip_end_tags(highlighted)
         tipo = 'paragrafo'
         entry = {'texto': clean, 'estilo': style, 'tipo': tipo}
         if fully_bold:
@@ -172,7 +229,7 @@ def _classify_paragraph(text, style, fully_bold=False, marked_text=None):
         elif marked_text and '<hl>' in marked_text and marked_text != text:
             entry['texto_marcado'] = _strip_end_tags(marked_text)
         entries.append(entry)
-        if clean != _process_highlight_tags(original.strip()):
+        if clean != highlighted:
             entries.append({'texto': '', 'estilo': style, 'tipo': 'card-fim'})
 
     return entries

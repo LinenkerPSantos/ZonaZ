@@ -150,12 +150,58 @@ function Pagina5GuiaMestre() {
   )
 }
 
+function renderBodyItem(t, j) {
+  const text = typeof t === 'string' ? t : t.text
+  const tipo = typeof t === 'string' ? 'paragrafo' : t.tipo
+
+  if (tipo === 'marcador') {
+    const parts = text.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className="cr-marker">
+        {parts ? (
+          <><span className="cr-marker-label">{parts[1]}</span><span className="cr-marker-text"><RichText text={parts[2]} /></span></>
+        ) : (
+          <span className="cr-marker-text"><RichText text={text} /></span>
+        )}
+      </div>
+    )
+  }
+
+  if (tipo === 'efeito-negativo' || tipo === 'efeito-neutro' || tipo === 'efeito-positivo') {
+    const parts = text.match(/^(.{1,60}):\s*(.+)$/)
+    return (
+      <div key={j} className={`cr-${tipo}`}>
+        {parts ? (
+          <><span className={`cr-${tipo}-label`}>{parts[1]}</span><span className={`cr-${tipo}-text`}><RichText text={parts[2]} /></span></>
+        ) : (
+          <span className={`cr-${tipo}-text`}><RichText text={text} /></span>
+        )}
+      </div>
+    )
+  }
+
+  if (tipo === 'destaque') {
+    return <p key={j} className="cr-destaque"><RichText text={text} /></p>
+  }
+
+  if (tipo === 'subcard-bloco') {
+    return (
+      <div key={j} className="cr-subcard">
+        {t.itens.map((st, k) => renderBodyItem(st, k))}
+      </div>
+    )
+  }
+
+  return <p key={j}><RichText text={text} /></p>
+}
+
 function ContentBlock({ content }) {
   if (!content || content.length === 0) return null
 
   const grouped = []
   let currentList = null
   let currentCard = null
+  let currentSubcard = null
 
   for (const p of content) {
     if (p.tipo === 'lista') {
@@ -170,6 +216,7 @@ function ContentBlock({ content }) {
 
     if (p.tipo === 'card') {
       currentCard = { tipo: 'card-bloco', textos: [p.texto] }
+      currentSubcard = null
       grouped.push(currentCard)
       continue
     }
@@ -178,6 +225,28 @@ function ContentBlock({ content }) {
         if (p.texto) currentCard.textos.push(p.texto)
         currentCard = null
       }
+      currentSubcard = null
+      continue
+    }
+
+    if (p.tipo === 'subcard') {
+      currentSubcard = { tipo: 'subcard-bloco', itens: [] }
+      if (p.texto) currentSubcard.itens.push({ text: p.texto, tipo: 'paragrafo' })
+      if (currentCard) {
+        currentCard.textos.push(currentSubcard)
+      } else {
+        grouped.push(currentSubcard)
+      }
+      continue
+    }
+    if (p.tipo === 'subcard-fim') {
+      if (currentSubcard && p.texto) currentSubcard.itens.push({ text: p.texto, tipo: 'paragrafo' })
+      currentSubcard = null
+      continue
+    }
+
+    if (currentSubcard) {
+      currentSubcard.itens.push({ text: p.texto, tipo: p.tipo })
       continue
     }
     if (currentCard) {
@@ -207,26 +276,28 @@ function ContentBlock({ content }) {
           return (
             <div key={i} className="cr-card">
               <p className="cr-card-title"><RichText text={typeof title === 'string' ? title : title.text} /></p>
-              {body.map((t, j) => {
-                const text = typeof t === 'string' ? t : t.text
-                const tipo = typeof t === 'string' ? 'paragrafo' : t.tipo
-                if (tipo === 'marcador') {
-                  const parts = text.match(/^(.{1,60}):\s*(.+)$/)
-                  return (
-                    <div key={j} className="cr-marker">
-                      {parts ? (
-                        <><span className="cr-marker-label">{parts[1]}</span><span className="cr-marker-text"><RichText text={parts[2]} /></span></>
-                      ) : (
-                        <span className="cr-marker-text"><RichText text={text} /></span>
-                      )}
-                    </div>
-                  )
-                }
-                if (tipo === 'destaque') {
-                  return <p key={j} className="cr-destaque"><RichText text={text} /></p>
-                }
-                return <p key={j}><RichText text={text} /></p>
-              })}
+              {body.map((t, j) => renderBodyItem(t, j))}
+            </div>
+          )
+        }
+
+        if (item.tipo === 'subcard-bloco') {
+          return (
+            <div key={i} className="cr-subcard">
+              {item.itens.map((t, j) => renderBodyItem(t, j))}
+            </div>
+          )
+        }
+
+        if (item.tipo === 'efeito-negativo' || item.tipo === 'efeito-neutro' || item.tipo === 'efeito-positivo') {
+          const parts = item.texto.match(/^(.{1,60}):\s*(.+)$/)
+          return (
+            <div key={i} className={`cr-${item.tipo}`}>
+              {parts ? (
+                <><span className={`cr-${item.tipo}-label`}>{parts[1]}</span><span className={`cr-${item.tipo}-text`}><RichText text={parts[2]} /></span></>
+              ) : (
+                <span className={`cr-${item.tipo}-text`}><RichText text={item.texto} /></span>
+              )}
             </div>
           )
         }

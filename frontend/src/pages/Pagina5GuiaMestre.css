@@ -124,6 +124,23 @@
 .p5-content-block .cr-card .cr-marker { margin-top:0.25rem; }
 .p5-content-block .cr-card .cr-destaque { margin-top:0.75rem; }
 
+/* EFEITO NEGATIVO/NEUTRO/POSITIVO (efeitoN/S/O) */
+.p5-content-block .cr-efeito-negativo, .p5-content-block .cr-efeito-neutro, .p5-content-block .cr-efeito-positivo { display:flex; align-items:baseline; flex-wrap:wrap; gap:0.5rem; border-radius:0 4px 4px 0; padding:0.5rem 0.75rem 0.5rem 1.1rem; margin-bottom:0.5rem; font-size:0.85rem; line-height:1.5; }
+.p5-content-block .cr-efeito-negativo { background:rgba(185,28,28,0.08); border-left:2px solid var(--color-blood-red-light); }
+.p5-content-block .cr-efeito-neutro { background:rgba(212,160,23,0.08); border-left:2px solid var(--color-accent-gold); }
+.p5-content-block .cr-efeito-positivo { background:rgba(34,197,94,0.08); border-left:2px solid var(--color-biohazard-green); }
+.p5-content-block .cr-efeito-negativo-label { font-family:var(--font-heading); font-weight:600; color:var(--color-blood-red-light); text-transform:uppercase; letter-spacing:1px; font-size:0.7rem; white-space:nowrap; }
+.p5-content-block .cr-efeito-neutro-label { font-family:var(--font-heading); font-weight:600; color:var(--color-accent-gold); text-transform:uppercase; letter-spacing:1px; font-size:0.7rem; white-space:nowrap; }
+.p5-content-block .cr-efeito-positivo-label { font-family:var(--font-heading); font-weight:600; color:var(--color-biohazard-green); text-transform:uppercase; letter-spacing:1px; font-size:0.7rem; white-space:nowrap; }
+.p5-content-block .cr-efeito-negativo-text, .p5-content-block .cr-efeito-neutro-text, .p5-content-block .cr-efeito-positivo-text { color:var(--color-text-secondary); }
+
+/* SUBCARD (card dentro de card) */
+.p5-content-block .cr-subcard { background:rgba(0,0,0,0.25); border:1px solid var(--color-border); border-radius:6px; padding:0.85rem 1rem; margin:0.75rem 0; }
+.p5-content-block .cr-subcard:last-child { margin-bottom:0; }
+.p5-content-block .cr-subcard p { color:var(--color-text-secondary); font-size:0.85rem; line-height:1.6; margin-bottom:0.5rem; }
+.p5-content-block .cr-subcard p:last-child { margin-bottom:0; }
+.p5-content-block .cr-card .cr-subcard { margin-top:0.5rem; }
+
 /* SUBSECTION */
 .p5-subsection { margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid var(--color-border); }
 .p5-subsection-title { font-family:var(--font-heading); font-size:1.2rem; color:var(--color-text-primary); text-transform:uppercase; letter-spacing:2px; margin-bottom:1.25rem; padding-left:0.75rem; border-left:3px solid var(--color-blood-red); }

@@ -87,7 +87,10 @@ def _flatten_lines(content):
     lines = []
     for p in content:
         tipo = p.get('tipo', 'paragrafo')
-        txt = p['texto'].strip()
+        if tipo == 'paragrafo' and p.get('texto_marcado'):
+            txt = p['texto_marcado'].strip()
+        else:
+            txt = p['texto'].strip()
 
         if tipo == 'titulo-sobrevivencia':
             lines.append({'text': txt, 'meta': 'titulo-open'})
@@ -110,8 +113,15 @@ def _flatten_lines(content):
             else:
                 lines.append({'text': txt, 'meta': 'card-name'})
             continue
-        if tipo in ('subtitulo', 'marcador', 'introducao'):
+        if tipo in ('subtitulo', 'marcador', 'introducao', 'anotacao',
+                    'efeito-negativo', 'efeito-neutro', 'efeito-positivo'):
             lines.append({'text': txt, 'meta': tipo})
+            continue
+        if tipo == 'subcard':
+            lines.append({'text': txt, 'meta': 'subcard-open'})
+            continue
+        if tipo == 'subcard-fim':
+            lines.append({'text': '', 'meta': 'subcard-close'})
             continue
 
         if not txt:
@@ -134,6 +144,7 @@ def _parse_items(content, img_idx):
     list_mode = None
     current_titulo = ''
     current_subcategoria = ''
+    current_subcard = None
 
     def flush():
         nonlocal current, list_mode
@@ -173,9 +184,21 @@ def _parse_items(content, img_idx):
             list_mode = None
             i += 1
             continue
-        if entry.get('meta') in ('subtitulo', 'marcador', 'introducao'):
+        if entry.get('meta') == 'subcard-open':
             flush()
-            intro.append({'texto': entry['text'], 'tipo': entry['meta']})
+            current_subcard = []
+            intro.append({'texto': '', 'tipo': 'subcard-grupo', 'itens': current_subcard})
+            i += 1
+            continue
+        if entry.get('meta') == 'subcard-close':
+            current_subcard = None
+            i += 1
+            continue
+        if entry.get('meta') in ('subtitulo', 'marcador', 'introducao', 'anotacao',
+                                  'efeito-negativo', 'efeito-neutro', 'efeito-positivo'):
+            flush()
+            target = current_subcard if current_subcard is not None else intro
+            target.append({'texto': entry['text'], 'tipo': entry['meta']})
             i += 1
             continue
         if entry.get('meta') == 'titulo-close':
@@ -319,6 +342,8 @@ def _parse_items(content, img_idx):
                 current['descricao'] += ' ' + line
             else:
                 current['descricao'] = line
+        elif current_subcard is not None:
+            current_subcard.append(line)
         else:
             intro.append(line)
 
@@ -363,8 +388,11 @@ def get_pagina4_data():
         h2_intro = []
         for p in section.get('conteudo', []):
             tipo = p.get('tipo', 'paragrafo')
-            if tipo in ('subtitulo', 'marcador', 'introducao', 'anotacao', 'destaque'):
+            if tipo in ('subtitulo', 'marcador', 'introducao', 'anotacao', 'destaque',
+                        'efeito-negativo', 'efeito-neutro', 'efeito-positivo'):
                 h2_intro.append({'texto': p['texto'], 'tipo': tipo})
+            elif tipo in ('subcard', 'subcard-fim'):
+                continue
             else:
                 h2_intro.append(p['texto'])
 
