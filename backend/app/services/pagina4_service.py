@@ -83,12 +83,28 @@ def _field_key(raw):
     return FIELD_KEY_MAP.get(raw.lower().strip(), raw.lower().strip().replace(' ', '_'))
 
 
+_HL_LABEL = re.compile(r'^<hl>\s*([^<]*?)\s*:?\s*</hl>\s*:?\s*')
+
+
+def _strip_label_hl(txt):
+    """Remove o negrito que envolve só o rótulo do campo ("<hl>Tipo</hl>: X" -> "Tipo: X"),
+    mantendo o destaque no valor, para o FIELD_PATTERN reconhecer a linha."""
+    m = _HL_LABEL.match(txt)
+    if not m:
+        return txt
+    rest = txt[m.end():]
+    candidate = f'{m.group(1)}: {re.sub(r"</?hl>", "", rest)}'
+    if FIELD_PATTERN.match(candidate):
+        return f'{m.group(1)}: {rest}'
+    return txt
+
+
 def _flatten_lines(content):
     lines = []
     for p in content:
         tipo = p.get('tipo', 'paragrafo')
         if tipo == 'paragrafo' and p.get('texto_marcado'):
-            txt = p['texto_marcado'].strip()
+            txt = '\n'.join(_strip_label_hl(l) for l in p['texto_marcado'].strip().split('\n'))
         else:
             txt = p['texto'].strip()
 
