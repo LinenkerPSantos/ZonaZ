@@ -30,7 +30,7 @@ const CUSTOS_EVOLUCAO = {
   atributo: 10,
   pericia: [3, 5, 10, 15, 20],
   especializacao: 20,
-  especializacaoEstagioMin: 3,
+  periciaEstagioMaestria: 4,
   talento: 20,
   talentosLimite: 7,
   // Item Comum / Item de Combate Extra / Item Raro NAO ficam nesta lista: em vez de
@@ -248,7 +248,7 @@ function reverterCompraBazar(entrada, bazar) {
     case 'sanidade': return { sanExtra: Math.max(0, bazar.sanExtra - 1) }
     case 'atributo': return { atributosExtra: { ...bazar.atributosExtra, [meta.attr]: Math.max(0, (bazar.atributosExtra[meta.attr] || 0) - 1) } }
     case 'pericia': return { periciaEstagiosExtra: { ...bazar.periciaEstagiosExtra, [meta.pericia]: meta.estagioAnterior } }
-    case 'especializacao': return { especializacoes: bazar.especializacoes.filter(p => p !== meta.pericia) }
+    case 'especializacao': return { especializacoes: bazar.especializacoes.filter(e => e.pericia !== meta.pericia) }
     case 'talento': return { talentosComprados: removerUm(bazar.talentosComprados, t => t.nome === meta.nome) }
     case 'arma': return { armasCompradas: removerUm(bazar.armasCompradas, a => a.nome === meta.nome) }
     case 'equipamento': return { equipamentosComprados: removerUm(bazar.equipamentosComprados, e => e.nome === meta.nome) }
@@ -630,17 +630,13 @@ function CriarPersonagem() {
   const comprarBazarSanidade = () => comprarBazar(marcosDisponiveisCriacao, CUSTOS_EVOLUCAO.sanidade, '+1 Sanidade Máxima', 'sanidade', {}, prev => ({ sanExtra: prev.sanExtra + 1 }))
 
   const comprarBazarAtributo = () => {
-    if (atributosAtuais[bazarAtributo] + 1 > determinacaoAtual) {
-      setErroBazar('Nenhum atributo pode ultrapassar o valor atual de Determinação.')
-      return
-    }
     comprarBazar(marcosDisponiveisCriacao, CUSTOS_EVOLUCAO.atributo, `+1 ${bazarAtributo}`, 'atributo', { attr: bazarAtributo }, prev => ({
       atributosExtra: { ...prev.atributosExtra, [bazarAtributo]: (prev.atributosExtra[bazarAtributo] || 0) + 1 },
     }))
   }
 
   const evoluirPericiaBazar = () => {
-    if (estagioPericiaBazar >= 5 || !bazarPericia) return
+    if (estagioPericiaBazar >= CUSTOS_EVOLUCAO.periciaEstagioMaestria || !bazarPericia) return
     const estagioExtraAnterior = char.bazar.periciaEstagiosExtra[bazarPericia] || 0
     const novoEstagio = estagioPericiaBazar + 1
     comprarBazar(marcosDisponiveisCriacao, custoProximoPericiaBazar, `Perícia ${bazarPericia} → ${PERICIA_BONUS_SEQ[novoEstagio]}`,
@@ -649,23 +645,25 @@ function CriarPersonagem() {
       }))
   }
 
-  const comprarEspecializacaoBazar = () => {
+  // Maestria (Especialização): perícia em +4, 20 MN, escolhe +6 fixo ou manter +4 com
+  // +1d6 nas rolagens. Definitiva; total limitado pela Determinação atual.
+  const comprarEspecializacaoBazar = (modo) => {
     if (!bazarEspecPericia) return
-    if (char.bazar.especializacoes.includes(bazarEspecPericia)) {
-      setErroBazar('Essa perícia já tem uma Especialização (cada perícia só pode ter uma).')
+    if (char.bazar.especializacoes.some(e => e.pericia === bazarEspecPericia)) {
+      setErroBazar('Essa perícia já tem Maestria (cada perícia só pode ter uma, e a escolha é definitiva).')
       return
     }
-    if (estagioEspecPericiaBazar < CUSTOS_EVOLUCAO.especializacaoEstagioMin) {
-      setErroBazar('A perícia precisa estar pelo menos no 3º estágio (+3) para receber Especialização.')
+    if (estagioEspecPericiaBazar !== CUSTOS_EVOLUCAO.periciaEstagioMaestria) {
+      setErroBazar('A perícia precisa estar em +4 para receber a Maestria (Especialização).')
       return
     }
     if (char.bazar.especializacoes.length >= determinacaoAtual) {
-      setErroBazar(`O número de Especializações é limitado pelo valor atual de Determinação (${determinacaoAtual}).`)
+      setErroBazar(`O número de perícias especializadas é limitado pelo valor atual de Determinação (${determinacaoAtual}).`)
       return
     }
-    comprarBazar(marcosDisponiveisCriacao, CUSTOS_EVOLUCAO.especializacao, `Especialização em ${bazarEspecPericia}`,
+    comprarBazar(marcosDisponiveisCriacao, CUSTOS_EVOLUCAO.especializacao, `Maestria em ${bazarEspecPericia}: ${modo === 'fixo' ? '+6 fixo' : '+4 com +1d6'}`,
       'especializacao', { pericia: bazarEspecPericia }, prev => ({
-        especializacoes: [...prev.especializacoes, bazarEspecPericia],
+        especializacoes: [...prev.especializacoes, { pericia: bazarEspecPericia, modo }],
       }))
   }
 
@@ -980,8 +978,11 @@ function CriarPersonagem() {
       const estagioFinal = Math.max(estagioBase, char.bazar.periciaEstagiosExtra[p] || 0)
       if (estagioFinal > 0 && pericias[p]) pericias[p].bonus = PERICIA_BONUS_SEQ[estagioFinal]
     })
-    char.bazar.especializacoes.forEach(p => {
-      if (pericias[p]) pericias[p].esp = 'Especialização (defina o foco)'
+    char.bazar.especializacoes.forEach(({ pericia: p, modo }) => {
+      if (!pericias[p]) return
+      pericias[p].maestria = modo
+      if (modo === 'fixo') { pericias[p].bonus = '+6'; pericias[p].esp = 'Maestria: +6 fixo' }
+      else pericias[p].esp = 'Maestria: +1d6 nas rolagens'
     })
 
     const data = { ficha, pericias, periciasObs: '' }
@@ -1317,7 +1318,6 @@ function CriarPersonagem() {
                             </select>
                             <button className="criar-evo-btn" onClick={comprarBazarAtributo}>+1 Atributo — {CUSTOS_EVOLUCAO.atributo} MN</button>
                           </div>
-                          <p className="criar-evo-nota">Nenhum atributo pode ultrapassar o valor atual de Determinação ({determinacaoAtual}).</p>
                         </div>
 
                         <div className="criar-evo-bloco">
@@ -1329,8 +1329,8 @@ function CriarPersonagem() {
                                 <option key={p} value={p}>{p} ({PERICIA_BONUS_SEQ[Math.max(PERICIA_BONUS_SEQ.indexOf(periciasBaseAtuais[p] || ''), char.bazar.periciaEstagiosExtra[p] || 0)] || 'sem treino'})</option>
                               ))}
                             </select>
-                            <button className="criar-evo-btn" disabled={!bazarPericia || estagioPericiaBazar >= 5} onClick={evoluirPericiaBazar}>
-                              {!bazarPericia ? 'Escolha uma perícia' : estagioPericiaBazar >= 5 ? 'Nível máximo' : `Evoluir para ${PERICIA_BONUS_SEQ[estagioPericiaBazar + 1]} — ${custoProximoPericiaBazar} MN`}
+                            <button className="criar-evo-btn" disabled={!bazarPericia || estagioPericiaBazar >= CUSTOS_EVOLUCAO.periciaEstagioMaestria} onClick={evoluirPericiaBazar}>
+                              {!bazarPericia ? 'Escolha uma perícia' : estagioPericiaBazar >= CUSTOS_EVOLUCAO.periciaEstagioMaestria ? 'Em +4 — use a Maestria abaixo' : `Evoluir para ${PERICIA_BONUS_SEQ[estagioPericiaBazar + 1]} — ${custoProximoPericiaBazar} MN`}
                             </button>
                           </div>
                           <div className="criar-evo-linha">
@@ -1338,7 +1338,8 @@ function CriarPersonagem() {
                               <option value="">Selecione…</option>
                               {builderData.all_pericias.map(p => <option key={p} value={p}>{p}</option>)}
                             </select>
-                            <button className="criar-evo-btn" disabled={!bazarEspecPericia} onClick={comprarEspecializacaoBazar}>Especialização (requer +3) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
+                            <button className="criar-evo-btn" disabled={!bazarEspecPericia} onClick={() => comprarEspecializacaoBazar('fixo')}>Maestria Fixa (+6, requer +4) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
+                            <button className="criar-evo-btn" disabled={!bazarEspecPericia} onClick={() => comprarEspecializacaoBazar('variavel')}>Maestria Variável (+4 e +1d6) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
                           </div>
                         </div>
 
@@ -1409,7 +1410,7 @@ function CriarPersonagem() {
                           {Object.entries(char.bazar.periciaEstagiosExtra).filter(([, v]) => v > 0).map(([p, v]) => (
                             <span key={p}>{p}: <strong>{PERICIA_BONUS_SEQ[v]}</strong></span>
                           ))}
-                          {char.bazar.especializacoes.map(p => <span key={p}>Especialização: <strong>{p}</strong></span>)}
+                          {char.bazar.especializacoes.map(e => <span key={e.pericia}>Maestria: <strong>{e.pericia} ({e.modo === 'fixo' ? '+6' : '+4 e +1d6'})</strong></span>)}
                           {char.bazar.talentosComprados.map(t => <span key={t.nome}>Talento: <strong>{t.nome}</strong></span>)}
                           {char.bazar.armasCompradas.map((a, i) => <span key={i}>Arma: <strong>{a.nome}</strong></span>)}
                           {char.bazar.equipamentosComprados.map((e, i) => <span key={i}>Equipamento: <strong>{e.nome}</strong></span>)}

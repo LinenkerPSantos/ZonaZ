@@ -1,0 +1,369 @@
+{
+  "ficha": {
+    "nome": "Zoey",
+    "profissao": "Sem Experiência",
+    "titulo_sobrevivencia": "Veterano da Zona",
+    "idade": "20",
+    "altura": "1,65",
+    "deslocamento": "9m",
+    "observacoes": "",
+    "historico": "Cursava a faculdade quando o surto varreu a cidade em questão de horas. Sem qualquer preparo militar ou policial, sobreviveu correndo, improvisando e aplicando (a princípio de brincadeira, depois a sério) tudo que aprendeu vendo filmes de terror. Meses depois, virou uma sobrevivente experiente por puro acúmulo de situações quase fatais — e ainda faz piada sobre isso.\n\nEra estudante universitária quando tudo desmoronou. Não tinha treinamento nenhum — só instinto, sorte e uma quantidade estranhamente útil de conhecimento sobre filmes de zumbi.",
+    "forca_atual": "",
+    "forca_max": "0",
+    "agilidade_atual": "",
+    "agilidade_max": "3",
+    "destreza_atual": "",
+    "destreza_max": "3",
+    "intelecto_atual": "",
+    "intelecto_max": "2",
+    "presenca_atual": "",
+    "presenca_max": "1",
+    "infeccao_atual": "",
+    "infeccao_max": "5",
+    "pv_atual": "",
+    "pv_max": "26",
+    "determinacao_atual": "",
+    "determinacao_max": "3",
+    "sanidade_atual": "",
+    "sanidade_max": "5",
+    "ca_atual": "10",
+    "ca_bonus": "",
+    "ca_obs": "",
+    "descricoes": "Base 8 + Jaqueta de Couro +1 + Capacete de Moto +1 (Sem Experiência não concede bônus de Defesa)",
+    "arma1_nome": "Funda de Mão",
+    "arma1_carga": "2",
+    "arma1_estruturada": {
+      "nome": "Funda de Mão",
+      "subtitulo": "Antecedente: Sem Experiência",
+      "carga": "2",
+      "dados": [
+        [
+          "Tipo",
+          "Impacto"
+        ],
+        [
+          "Dano",
+          "1d6 +2 em dano Impacto"
+        ],
+        [
+          "Mod.",
+          "Agilidade"
+        ],
+        [
+          "Alcance",
+          "Curto"
+        ],
+        [
+          "Mão",
+          "1M"
+        ],
+        [
+          "Munição",
+          "Pequeno"
+        ]
+      ],
+      "descricao": "Arma simples, usada desde a antiguidade. Baixo dano, mas fácil de improvisar e silenciosa.",
+      "efeito": ""
+    },
+    "arma2_nome": "Bastão de Madeira",
+    "arma2_carga": "1",
+    "arma2_notas": "Bônus de Veterano da Zona. Impacto, 1d8 +2, Mod. Força, Alcance Médio, 2M. Simples e barato, usado para bloquear golpes e manter inimigos à distância. Crítico deixa o alvo atordoado por 1 turno.",
+    "protecao_cabeca": "Capacete de Moto",
+    "protecao_tronco": "Jaqueta de Couro",
+    "protecao_msup": "Jaqueta de Couro",
+    "protecao_minf": "Calças Moletom",
+    "protecao_notas": [
+      {
+        "nome": "Capacete de Moto",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ],
+          [
+            "Defesa",
+            "+1"
+          ]
+        ],
+        "descricao": "Um capacete usado, ainda útil contra impactos leves.",
+        "efeito": "Absorve 2 de dano Impacto. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Jaqueta de Couro",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ],
+          [
+            "Defesa",
+            "+1"
+          ]
+        ],
+        "descricao": "Reforçada contra cortes leves. Um clássico da sobrevivência.",
+        "efeito": "Nenhum."
+      },
+      {
+        "nome": "Calças Moletom",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Nenhuma proteção real, mas ajuda a se camuflar em ruínas ou à noite.",
+        "efeito": "+1 em testes de Furtividade."
+      }
+    ],
+    "transporte_tronco": "",
+    "transporte_msup": "Mochila (Item único)",
+    "transporte_minf": "",
+    "transporte_notas": [
+      {
+        "nome": "Mochila (Item único)",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ]
+        ],
+        "descricao": "Equipamento de transporte reforçado, usado para organizar e carregar suprimentos.",
+        "efeito": "Aumenta a capacidade de carga em +6."
+      }
+    ],
+    "carga_atual": "14",
+    "carga_max": "16",
+    "itens_gerais_lista": [
+      {
+        "nome": "Binóculo",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Equipamento óptico utilizado para observar áreas distantes sem se expor a riscos diretos.",
+        "efeito": "Concede +1d6 em testes de Percepção relacionados à observação."
+      },
+      {
+        "nome": "Gazua (Item Único)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Ferramenta para abrir portas, cadeados e fechaduras.",
+        "efeito": "Concede +2 em testes de Destreza ou Agilidade para abrir portas, cadeados e fechaduras."
+      },
+      {
+        "nome": "Lanterna",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Dispositivo de luz portátil, movido a pilhas ou energia recarregável.",
+        "efeito": "Ilumina áreas escuras, removendo penalidades de visão. Alcance de até 18 metros. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Bebida Energética",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Garrafa contendo líquido energético.",
+        "efeito": "Concede vantagem em testes de Iniciativa e Percepção. Efeito colateral: provoca insônia, reduzindo a qualidade do próximo descanso longo. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Barras de Proteínas/Grãos/Chocolate",
+        "carga": "1/12",
+        "dados": [
+          [
+            "Carga",
+            "1/12"
+          ]
+        ],
+        "descricao": "Alimentos compactos e fáceis de transportar.",
+        "efeito": "A cada 3 unidades, geram 1 unidade de ração. Podem ser consumidas diretamente. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Granada de Fumaça",
+        "carga": "1/2",
+        "dados": [
+          [
+            "Carga",
+            "1/2"
+          ]
+        ],
+        "descricao": "Lata metálica contendo compostos químicos que liberam uma densa nuvem de fumaça.",
+        "efeito": "Cria área de 6m obscurecida por 3 rodadas; ataques à distância sofrem desvantagem dentro dela. (Bônus de Veterano da Zona.)"
+      }
+    ],
+    "inventario": "",
+    "kit_estruturado": null,
+    "talento_exclusivo": "",
+    "talentos_lista": [
+      {
+        "nome": "Adaptado ao Caos",
+        "subtitulo": "Passivo — Categoria: Ataque",
+        "descricao": "Sem memória de um mundo estável, aprendeu a viver no imprevisível. Sua falta de experiência é compensada por instinto, improviso e capacidade de aprender rápido.",
+        "efeito": "Recebe vantagem em todas as Perícias Físicas/Combate e não pode sofrer desvantagens nelas.",
+        "exclusivo": true
+      },
+      {
+        "nome": "Sortudo",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "Você tem uma sorte extraordinária, sempre aparecendo nos momentos mais decisivos.",
+        "efeito": "Sempre que qualquer rolagem sua resultar em 1 em um dos dados, pode relançar 1 desses dados (máximo 1 por teste, mantendo o novo resultado).",
+        "exclusivo": false
+      },
+      {
+        "nome": "Pulo Tático",
+        "subtitulo": "Reação — Categoria: Movimento",
+        "descricao": "Sua reação rápida permite saltos repentinos.",
+        "efeito": "Quando for alvo de um ataque à distância, pode se mover até 3 metros adicionais; se isso tirar você da linha de tiro, pode rolar Furtividade com Vantagem para ficar indetectável até o início do próximo turno do inimigo.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Fortuna Teimosa",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "A sorte parece insistir que você sobreviva.",
+        "efeito": "Quando falhar por 1 ou 2 pontos em qualquer teste, pode rolar 1d6 e adicionar ao resultado.",
+        "exclusivo": false
+      }
+    ],
+    "talentos_obs": "",
+    "anotacoes": "Marcos Narrativos disponíveis (Veterano da Zona): 20.",
+    "marcos_narrativos_atual": "20",
+    "determinacao_comprada": false,
+    "armas_extra_lista": [],
+    "aprimoramentos_lista": [],
+    "recursos_narrativos_lista": [],
+    "historico_evolucao": []
+  },
+  "pericias": {
+    "Atletismo": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Constituição": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Furtividade": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Luta": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pontaria": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Pilotagem": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Mecânica": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Medicina": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Percepção": {
+      "bonus": "+2",
+      "nv": "",
+      "esp": ""
+    },
+    "Sobrevivência": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Tecnologia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Intimidação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Empatia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Enganação": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Liderança": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Persuasão": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Adestramento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Conhecimento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Estratégia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Iniciativa": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Investigação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Vontade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    }
+  },
+  "periciasObs": "Primária: Percepção. Secundárias: Furtividade e Enganação. Livres: Pontaria, Atletismo."
+}

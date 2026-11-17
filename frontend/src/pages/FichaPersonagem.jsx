@@ -24,7 +24,7 @@ const CUSTOS_EVOLUCAO = {
   atributo: 10,
   pericia: [3, 5, 10, 15, 20],
   especializacao: 20,
-  especializacaoEstagioMin: 3,
+  periciaEstagioMaestria: 4,
   talento: 20,
   talentosLimite: 7,
   recursos: {
@@ -177,7 +177,6 @@ function FichaPersonagem() {
 
   const [evoAtributo, setEvoAtributo] = useState('forca')
   const [evoPericia, setEvoPericia] = useState(Object.values(PERICIAS).flat()[0])
-  const [evoEspecPericia, setEvoEspecPericia] = useState(Object.values(PERICIAS).flat()[0])
   const [evoTalento, setEvoTalento] = useState('')
   const [evoRecursoFlat, setEvoRecursoFlat] = useState(Object.keys(CUSTOS_EVOLUCAO.recursos)[0])
   const [evoArmaCategoria, setEvoArmaCategoria] = useState('simples')
@@ -218,21 +217,18 @@ function FichaPersonagem() {
 
   const comprarAtributo = () => {
     const atual = parseInt(ficha[`${evoAtributo}_max`]) || 0
-    const det = parseInt(ficha.determinacao_max) || 0
-    if (atual + 1 > det) {
-      window.alert('Nenhum atributo pode ultrapassar o valor atual de Determinação.')
-      return
-    }
     comprarEvolucao(CUSTOS_EVOLUCAO.atributo, `+1 ${evoAtributo}`, { [`${evoAtributo}_max`]: String(atual + 1) })
   }
 
   const estagioPericiaEvo = PERICIA_BONUS_SEQ.indexOf(pericias[evoPericia]?.bonus || '')
   const custoProximoPericia = CUSTOS_EVOLUCAO.pericia[estagioPericiaEvo]
+  const periciaJaMaestria = !!pericias[evoPericia]?.maestria
+  const maestriasAtuais = Object.values(pericias).filter(p => p.maestria).length
 
   const evoluirPericia = () => {
     const estagio = PERICIA_BONUS_SEQ.indexOf(pericias[evoPericia]?.bonus || '')
-    if (estagio < 0 || estagio >= 5) {
-      window.alert('O campo "Bônus" dessa perícia tem um valor fora da progressão padrão (vazio, +1, +2, +3, +4, +5) — ajuste-o manualmente antes de evoluir por aqui.')
+    if (estagio < 0 || estagio >= CUSTOS_EVOLUCAO.periciaEstagioMaestria) {
+      window.alert('Essa perícia já está em +4 (ou fora da progressão padrão). O próximo passo é a Maestria (Especialização): escolha +6 fixo ou +1d6.')
       return
     }
     const custo = CUSTOS_EVOLUCAO.pericia[estagio]
@@ -249,34 +245,38 @@ function FichaPersonagem() {
     }))
   }
 
-  const comprarEspecializacao = () => {
-    if (pericias[evoEspecPericia]?.esp) {
-      window.alert('Essa perícia já tem uma Especialização (cada perícia só pode ter uma).')
+  // Maestria (Especialização): com a perícia em +4, paga 20 MN e escolhe +6 fixo ou
+  // manter +4 e somar 1d6 nas rolagens. Escolha definitiva; total de perícias com
+  // maestria limitado pela Determinação atual.
+  const comprarMaestria = (modo) => {
+    const p = pericias[evoPericia]
+    if (p?.maestria) {
+      window.alert('Essa perícia já tem Maestria (cada perícia só pode ter uma, e a escolha é definitiva).')
       return
     }
-    const estagio = PERICIA_BONUS_SEQ.indexOf(pericias[evoEspecPericia]?.bonus || '')
-    if (estagio < CUSTOS_EVOLUCAO.especializacaoEstagioMin) {
-      window.alert('A perícia precisa estar pelo menos no 3º estágio (+3) para receber Especialização.')
+    const estagio = PERICIA_BONUS_SEQ.indexOf(p?.bonus || '')
+    if (estagio !== CUSTOS_EVOLUCAO.periciaEstagioMaestria) {
+      window.alert('A perícia precisa estar em +4 para receber a Maestria (Especialização).')
       return
     }
-    const especializacoesAtuais = Object.values(pericias).filter(p => p.esp).length
     const determinacaoAtual = parseInt(ficha.determinacao_max) || 0
-    if (especializacoesAtuais >= determinacaoAtual) {
-      window.alert(`O número de Especializações é limitado pelo valor atual de Determinação (${determinacaoAtual}).`)
+    if (maestriasAtuais >= determinacaoAtual) {
+      window.alert(`O número de perícias especializadas é limitado pelo valor atual de Determinação (${determinacaoAtual}).`)
       return
     }
     if (marcosDisponiveis < CUSTOS_EVOLUCAO.especializacao) {
       window.alert('Marcos Narrativos insuficientes.')
       return
     }
+    const fixo = modo === 'fixo'
     setPericias(prev => ({
       ...prev,
-      [evoEspecPericia]: { ...prev[evoEspecPericia], esp: prev[evoEspecPericia].esp || 'Especialização (defina o foco)' },
+      [evoPericia]: { ...prev[evoPericia], bonus: fixo ? '+6' : prev[evoPericia].bonus, maestria: modo, esp: fixo ? 'Maestria: +6 fixo' : 'Maestria: +1d6 nas rolagens' },
     }))
     setFicha(prev => ({
       ...prev,
       marcos_narrativos_atual: String((parseInt(prev.marcos_narrativos_atual) || 0) - CUSTOS_EVOLUCAO.especializacao),
-      historico_evolucao: [...(prev.historico_evolucao || []), { label: `Especialização em ${evoEspecPericia}`, custo: CUSTOS_EVOLUCAO.especializacao }],
+      historico_evolucao: [...(prev.historico_evolucao || []), { label: `Maestria em ${evoPericia}: ${fixo ? '+6 fixo' : '+4 com +1d6'}`, custo: CUSTOS_EVOLUCAO.especializacao }],
     }))
   }
 
@@ -657,7 +657,6 @@ function FichaPersonagem() {
                 </select>
                 <button className="ficha-evo-btn" onClick={comprarAtributo}>+1 Atributo — {CUSTOS_EVOLUCAO.atributo} MN</button>
               </div>
-              <p className="ficha-evo-nota">Nenhum atributo pode ultrapassar o valor atual de Determinação.</p>
             </div>
 
             <div className="ficha-evo-bloco">
@@ -666,15 +665,14 @@ function FichaPersonagem() {
                 <select value={evoPericia} onChange={e => setEvoPericia(e.target.value)}>
                   {Object.values(PERICIAS).flat().map(p => <option key={p} value={p}>{p} ({pericias[p]?.bonus || 'sem treino'})</option>)}
                 </select>
-                <button className="ficha-evo-btn" disabled={estagioPericiaEvo < 0 || estagioPericiaEvo >= 5} onClick={evoluirPericia}>
-                  {estagioPericiaEvo < 0 ? 'Bônus fora da progressão' : estagioPericiaEvo >= 5 ? 'Nível máximo' : `Evoluir para ${PERICIA_BONUS_SEQ[estagioPericiaEvo + 1]} — ${custoProximoPericia} MN`}
+                <button className="ficha-evo-btn" disabled={estagioPericiaEvo < 0 || estagioPericiaEvo >= CUSTOS_EVOLUCAO.periciaEstagioMaestria} onClick={evoluirPericia}>
+                  {periciaJaMaestria ? 'Maestria alcançada' : estagioPericiaEvo < 0 ? 'Bônus fora da progressão' : estagioPericiaEvo >= CUSTOS_EVOLUCAO.periciaEstagioMaestria ? 'Em +4 — use a Maestria abaixo' : `Evoluir para ${PERICIA_BONUS_SEQ[estagioPericiaEvo + 1]} — ${custoProximoPericia} MN`}
                 </button>
               </div>
               <div className="ficha-evo-linha">
-                <select value={evoEspecPericia} onChange={e => setEvoEspecPericia(e.target.value)}>
-                  {Object.values(PERICIAS).flat().map(p => <option key={p} value={p}>{p} ({pericias[p]?.bonus || 'sem treino'})</option>)}
-                </select>
-                <button className="ficha-evo-btn" onClick={comprarEspecializacao}>Especialização (requer +3) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
+                <span className="ficha-evo-nota">Maestria ({maestriasAtuais}/{parseInt(ficha.determinacao_max) || 0} perícias) — perícia em +4:</span>
+                <button className="ficha-evo-btn" disabled={periciaJaMaestria} onClick={() => comprarMaestria('fixo')}>Maestria Fixa (+6) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
+                <button className="ficha-evo-btn" disabled={periciaJaMaestria} onClick={() => comprarMaestria('variavel')}>Maestria Variável (+4 e +1d6) — {CUSTOS_EVOLUCAO.especializacao} MN</button>
               </div>
             </div>
 

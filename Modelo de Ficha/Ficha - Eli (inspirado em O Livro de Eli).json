@@ -1,0 +1,356 @@
+{
+  "ficha": {
+    "nome": "Eli",
+    "profissao": "Religioso",
+    "titulo_sobrevivencia": "Veterano da Zona",
+    "idade": "50",
+    "altura": "1,88",
+    "deslocamento": "8m",
+    "observacoes": "",
+    "historico": "Há décadas cruza sozinho as estradas mortas da Zona, carregando um único livro que promete entregar a quem souber seu real valor. Sobrevive de pouco, mata sem hesitar quando é preciso e cura os que encontra pelo caminho quando pode. Fé e disciplina o mantêm em movimento muito depois de a maioria ter desistido — e ninguém que já cruzou seu caminho o subestima duas vezes.\n\nCaminha havia anos rumo a um destino que só ele conhece, protegendo um livro que jurou nunca abandonar. Fala pouco, mas nunca hesita quando precisa agir. Seus outros sentidos são afiados muito além do normal — em jogo, isso pode ser interpretado como uma vantagem narrativa em testes de Percepção que não dependam da visão (a critério do Mestre).",
+    "forca_atual": "",
+    "forca_max": "1",
+    "agilidade_atual": "",
+    "agilidade_max": "2",
+    "destreza_atual": "",
+    "destreza_max": "2",
+    "intelecto_atual": "",
+    "intelecto_max": "0",
+    "presenca_atual": "",
+    "presenca_max": "3",
+    "infeccao_atual": "",
+    "infeccao_max": "5",
+    "pv_atual": "",
+    "pv_max": "20",
+    "determinacao_atual": "",
+    "determinacao_max": "3",
+    "sanidade_atual": "",
+    "sanidade_max": "6",
+    "ca_atual": "8",
+    "ca_bonus": "",
+    "ca_obs": "",
+    "descricoes": "Base 8. Nenhum bônus de Defesa disponível (Moletom Encapuzado e Calças Moletom não oferecem Defesa).",
+    "arma1_nome": "Facão",
+    "arma1_carga": "1",
+    "arma1_estruturada": {
+      "nome": "Facão",
+      "subtitulo": "Bônus de Veterano da Zona",
+      "carga": "1",
+      "dados": [
+        [
+          "Tipo",
+          "Corte"
+        ],
+        [
+          "Dano",
+          "1d8 +2 em dano cortante"
+        ],
+        [
+          "Mod.",
+          "Força"
+        ],
+        [
+          "Alcance",
+          "Curto"
+        ],
+        [
+          "Mão",
+          "1M"
+        ]
+      ],
+      "descricao": "Pesado e eficaz, ótimo para abrir caminho ou combates diretos.",
+      "efeito": ""
+    },
+    "arma2_nome": "Bisturi",
+    "arma2_carga": "",
+    "arma2_notas": "Componente do Kit Médico (Arma Simples) — lâmina de reserva, usada mais para cirurgia de emergência do que para combate.",
+    "protecao_cabeca": "Moletom Encapuzado",
+    "protecao_tronco": "Moletom Encapuzado",
+    "protecao_msup": "Moletom Encapuzado",
+    "protecao_minf": "Calças Moletom",
+    "protecao_notas": [
+      {
+        "nome": "Moletom Encapuzado",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Nenhuma proteção real, mas ajuda a se camuflar em ruínas ou à noite.",
+        "efeito": "+1 em testes de Furtividade."
+      },
+      {
+        "nome": "Calças Moletom",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Nenhuma proteção real, mas ajuda a se camuflar em ruínas ou à noite.",
+        "efeito": "+1 em testes de Furtividade."
+      }
+    ],
+    "transporte_tronco": "",
+    "transporte_msup": "Bolsa de Alça",
+    "transporte_minf": "",
+    "transporte_notas": [
+      {
+        "nome": "Bolsa de Alça",
+        "carga": "3",
+        "dados": [
+          [
+            "Carga",
+            "3"
+          ]
+        ],
+        "descricao": "Uma pequena bolsa com alça, usada na lateral do corpo, ideal para transportar suprimentos essenciais.",
+        "efeito": "Aumenta a capacidade de carga em +8. Os Kits Essenciais têm a carga reduzida em -1 e o movimento reduzido em -1 metro. (Bônus de Veterano da Zona.)"
+      }
+    ],
+    "carga_atual": "18",
+    "carga_max": "18",
+    "itens_gerais_lista": [
+      {
+        "nome": "Cantil",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Recipiente portátil usado para armazenar e transportar água potável.",
+        "efeito": "Armazena até 1L de líquido."
+      },
+      {
+        "nome": "Saco de Dormir",
+        "carga": "3",
+        "dados": [
+          [
+            "Carga",
+            "3"
+          ]
+        ],
+        "descricao": "Equipamento compacto que fornece maior conforto em descansos fora de abrigos.",
+        "efeito": "Melhora o descanso em +1 nível."
+      },
+      {
+        "nome": "Livro Sagrado (Item Único)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Texto religioso preservado de tempos antigos, utilizado como guia espiritual — o livro que jurou proteger.",
+        "efeito": "Concede Vantagem em testes de Sanidade ao ser utilizado como apoio em momentos de desespero ou medo. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Corda (15 metros)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Rolo de corda resistente, comumente usado para escalada ou improvisos.",
+        "efeito": "Concede +1d6 em testes de Agilidade ou Força quando usada em escalada. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Alimentos Obtidos na Natureza",
+        "carga": "1/4",
+        "dados": [
+          [
+            "Carga",
+            "1/4"
+          ]
+        ],
+        "descricao": "Frutas silvestres, raízes, tubérculos, ovos e até insetos comestíveis.",
+        "efeito": "Geram 1 unidade de ração; necessário preparo para consumo. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Armadilha Simples (Prisão)",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ]
+        ],
+        "descricao": "Dispositivo rudimentar, como um laço ou buraco coberto, para imobilizar quem pisa ou atravessa.",
+        "efeito": "Alvo fica preso e testa Força (CD 12) para escapar; enquanto preso, sofre desvantagem em movimento e ataques corpo a corpo. (Bônus de Veterano da Zona.)"
+      }
+    ],
+    "inventario": "",
+    "kit_estruturado": {
+      "nome": "Kit Médico",
+      "carga": "2",
+      "arma": "Bisturi",
+      "itens": [
+        "Equipamentos médicos eletrônicos (caráter narrativo)",
+        "Instrumentos médicos básicos (caráter narrativo)",
+        "1x Antibiótico",
+        "1x Bandagens / Suturas",
+        "1x Soro Fisiológico"
+      ]
+    },
+    "talento_exclusivo": "",
+    "talentos_lista": [
+      {
+        "nome": "Carismático",
+        "subtitulo": "Passivo — Categoria: Interação",
+        "descricao": "Sua presença transmite confiança e magnetismo natural. Fé, oratória e convicção criam uma aura que torna suas palavras mais fortes que a dúvida.",
+        "efeito": "Nunca sofre falha crítica, penalidades ou desvantagens em testes de Perícias Sociais.",
+        "exclusivo": true
+      },
+      {
+        "nome": "Autocontrole Mental",
+        "subtitulo": "Passiva — Categoria: Defesa",
+        "descricao": "Sua mente é disciplinada, resistente e dificilmente cede ao impacto do horror.",
+        "efeito": "Ao realizar testes de Sanidade contra criaturas ou eventos traumáticos, recebe vantagem nesses testes.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Determinação Extra",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "Sua determinação é excepcional, permitindo resistir e persistir muito além da maioria.",
+        "efeito": "Seu limite máximo de Determinação aumenta para 7 pontos.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Treinado em Artes Marciais",
+        "subtitulo": "Passivo — Categoria: Ataque",
+        "descricao": "Você domina técnicas de combate corpo a corpo.",
+        "efeito": "Recebe +2 em testes de ataque corpo a corpo.",
+        "exclusivo": false
+      }
+    ],
+    "talentos_obs": "",
+    "anotacoes": "Marcos Narrativos disponíveis (Veterano da Zona): 20. Determinação Extra eleva o limite máximo de Determinação para 7 (determinacao_max mantido em 3 no início — ajuste em jogo ao gastar o talento).",
+    "marcos_narrativos_atual": "20",
+    "determinacao_comprada": false,
+    "armas_extra_lista": [],
+    "aprimoramentos_lista": [],
+    "recursos_narrativos_lista": [],
+    "historico_evolucao": []
+  },
+  "pericias": {
+    "Atletismo": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Constituição": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Furtividade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Luta": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Pontaria": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pilotagem": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Mecânica": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Medicina": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Percepção": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Sobrevivência": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Tecnologia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Intimidação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Empatia": {
+      "bonus": "+2",
+      "nv": "",
+      "esp": ""
+    },
+    "Enganação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Liderança": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Persuasão": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Adestramento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Conhecimento": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Estratégia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Iniciativa": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Investigação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Vontade": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    }
+  },
+  "periciasObs": "Primária: Empatia. Secundárias: Medicina e Conhecimento. Livres: Luta, Vontade."
+}

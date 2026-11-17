@@ -30,7 +30,7 @@ Sistema de progressão pós-criação, gastando os Marcos Narrativos acumulados 
 - **+PV** (10 MN): fixo +6 ou 1d10 (mín. 4)
 - **+1 Determinação Máxima** (30 MN, uma única vez)
 - **+1 Sanidade Máxima** (15 MN, até 12)
-- **+1 Atributo** (10 MN) — não pode ultrapassar o valor atual de Determinação
+- **+1 Atributo** (10 MN) — sem trava pela Determinação (limite só vale na distribuição inicial de pontos)
 - **Perícias**: progressão em 5 estágios (3 / 5 / 10 / 15 / 20 MN) até +5
 - **Especialização** (20 MN) — exige perícia no 3º estágio (+3) ou mais
 - **Talento** (20 MN) — limite de 7 talentos (3 iniciais + até 4 comprados)
@@ -82,7 +82,7 @@ Antes, os Marcos Narrativos concedidos pelo título só podiam ser gastos depois
 | +6 PV (fixo) ou 1d10 (mín. 4) | 10 MN | — |
 | +1 Determinação Máxima | 30 MN | Uma única vez por personagem |
 | +1 Sanidade Máxima | 15 MN | Até o teto de 12 |
-| +1 Atributo | 10 MN | Não pode ultrapassar a Determinação atual |
+| +1 Atributo | 10 MN | Sem trava pela Determinação (só na distribuição inicial) |
 | Perícia: aprender/evoluir | 3 / 5 / 10 / 15 / 20 MN por estágio | Até +5, estágio calculado sobre o bônus já existente (antecedente + perícias livres) |
 | Especialização | 20 MN | Exige perícia no 3º estágio (+3)+; uma por perícia; total limitado pela Determinação atual |
 | Talento | 20 MN | Limite de 7 talentos no total |

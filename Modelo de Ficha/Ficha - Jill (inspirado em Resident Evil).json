@@ -1,0 +1,369 @@
+{
+  "ficha": {
+    "nome": "Jill",
+    "profissao": "Militar",
+    "titulo_sobrevivencia": "Veterano da Zona",
+    "idade": "39",
+    "altura": "1,70",
+    "deslocamento": "9m",
+    "observacoes": "",
+    "historico": "Formada por uma unidade especial de operações táticas, sobreviveu a uma missão de resgate que terminou em um pesadelo dentro de uma mansão isolada tomada por experimentos fora de controle. Perdeu quase toda a equipe, mas voltou com provas de que a ameaça era maior do que qualquer um estava disposto a admitir. Hoje segue sozinha ou em pequenos grupos, sempre pronta para o pior cenário possível.\n\nEx-integrante de uma unidade tática de elite extinta após uma missão que deu terrivelmente errado. Especialista em entrar em lugares selados — mansões, laboratórios, bunkers — e sair viva.",
+    "forca_atual": "",
+    "forca_max": "2",
+    "agilidade_atual": "",
+    "agilidade_max": "1",
+    "destreza_atual": "",
+    "destreza_max": "3",
+    "intelecto_atual": "",
+    "intelecto_max": "2",
+    "presenca_atual": "",
+    "presenca_max": "0",
+    "infeccao_atual": "",
+    "infeccao_max": "5",
+    "pv_atual": "",
+    "pv_max": "26",
+    "determinacao_atual": "",
+    "determinacao_max": "3",
+    "sanidade_atual": "",
+    "sanidade_max": "5",
+    "ca_atual": "12",
+    "ca_bonus": "",
+    "ca_obs": "",
+    "descricoes": "Base 8 + Militar +1 + Capacete Militar de Aço +2 + Sobretudo +1",
+    "arma1_nome": "Rifle Leve",
+    "arma1_carga": "3",
+    "arma1_estruturada": {
+      "nome": "Rifle Leve",
+      "subtitulo": "Antecedente: Militar",
+      "carga": "3",
+      "dados": [
+        [
+          "Tipo",
+          "Perfuração"
+        ],
+        [
+          "Dano",
+          "1d8 +4 em dano Perfurante"
+        ],
+        [
+          "Mod.",
+          "Destreza"
+        ],
+        [
+          "Alcance",
+          "Médio"
+        ],
+        [
+          "Mão",
+          "2M"
+        ],
+        [
+          "Munição",
+          "Pequeno"
+        ]
+      ],
+      "descricao": "Rifle fácil de usar e econômica é perfeita para iniciantes e atiradores experientes.",
+      "efeito": "Usa a Ação de Movimento ou Padrão para recarregar entre disparos."
+    },
+    "arma2_nome": "Espingarda de Ação",
+    "arma2_carga": "4",
+    "arma2_notas": "Bônus de Veterano da Zona. Perfuração/Impacto, 2d8 +4 perfurante e +4 impacto, Mod. Agilidade, Alcance Curto, 2M, Munição Cartucho. Pump-action clássica, muito letal a curta distância. Acima de 6m sofre -4 em dano Impacto.",
+    "protecao_cabeca": "Capacete Militar de Aço",
+    "protecao_tronco": "Sobretudo",
+    "protecao_msup": "Sobretudo",
+    "protecao_minf": "Coturno Velho",
+    "protecao_notas": [
+      {
+        "nome": "Capacete Militar de Aço",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ],
+          [
+            "Defesa",
+            "+2"
+          ]
+        ],
+        "descricao": "Capacete de combate militar feito de aço reforçado. Oferece boa proteção contra impactos e cortes.",
+        "efeito": "Nenhum. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Sobretudo",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ],
+          [
+            "Defesa",
+            "+1"
+          ]
+        ],
+        "descricao": "Um casaco longo e resistente, feito para enfrentar frio, chuva e poeira.",
+        "efeito": "Concede +1 em testes para ocultar armas, acessórios ou pequenos itens no corpo ou nas roupas."
+      },
+      {
+        "nome": "Coturno Velho",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Um coturno militar velho, mas ainda tem suas propriedades básicas.",
+        "efeito": "+1 em testes de movimento e resistência a terreno irregular."
+      }
+    ],
+    "transporte_tronco": "",
+    "transporte_msup": "Mochila (Item único)",
+    "transporte_minf": "",
+    "transporte_notas": [
+      {
+        "nome": "Mochila (Item único)",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ]
+        ],
+        "descricao": "Equipamento de transporte reforçado, usado para organizar e carregar suprimentos.",
+        "efeito": "Aumenta a capacidade de carga em +6."
+      }
+    ],
+    "carga_atual": "20",
+    "carga_max": "16",
+    "itens_gerais_lista": [
+      {
+        "nome": "Cantil",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Recipiente portátil usado para armazenar e transportar água potável.",
+        "efeito": "Armazena até 1L de líquido."
+      },
+      {
+        "nome": "Munição Pequena (6 unidades)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Munição solta, sem carregador ou cartucheira.",
+        "efeito": "Guardada em carregador ou cartucheira adequados, até 20 unidades passam a ocupar apenas 1 ponto de carga."
+      },
+      {
+        "nome": "Rádio de Comunicação",
+        "carga": "1/2",
+        "dados": [
+          [
+            "Carga",
+            "1/2"
+          ]
+        ],
+        "descricao": "Dispositivo portátil de transmissão usado por duplas ou grupos.",
+        "efeito": "Permite comunicação entre até duas pessoas na mesma cena, mesmo a longas distâncias. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Binóculo",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Equipamento óptico utilizado para observar áreas distantes sem se expor a riscos diretos.",
+        "efeito": "Concede +1d6 em testes de Percepção relacionados à observação. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Mapas da Zona",
+        "carga": "1/3",
+        "dados": [
+          [
+            "Carga",
+            "1/3"
+          ]
+        ],
+        "descricao": "Mapas detalhados de áreas da Zona Morta, com anotações de rotas e pontos de interesse.",
+        "efeito": "Evita que o personagem se perca em regiões desconhecidas. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Granada Fragmentada (Pregos)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Dispositivo improvisado com pólvora e fragmentos de metal, pregos ou estilhaços.",
+        "efeito": "Ao explodir, causa 2d6 de dano de impacto + 2d6 perfurante a alvos em 3m; falha em Agilidade/Constituição aplica Sangramento. (Bônus de Veterano da Zona.)"
+      }
+    ],
+    "inventario": "",
+    "kit_estruturado": null,
+    "talento_exclusivo": "",
+    "talentos_lista": [
+      {
+        "nome": "Tática de Campo",
+        "subtitulo": "Reação — Categoria: Ataque",
+        "descricao": "Treinada para agir em conjunto e coordenar ataques, sabe transformar disciplina e estratégia em vantagem imediata.",
+        "efeito": "Ao ativar, todos os aliados (incluindo ela) reduzem em 1 a margem de crítico até o fim do turno; o primeiro crítico da equipe na cena causa dano base completo da arma como bônus. Uma vez por descanso.",
+        "exclusivo": true
+      },
+      {
+        "nome": "Trocas Rápidas",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "Sua agilidade facilita a troca de armas.",
+        "efeito": "Uma vez por turno, pode recarregar ou trocar de arma como Ação Livre. Se trocar de arma e atacar no mesmo turno, sofre -1 na próxima rolagem de ataque (não cumulativo).",
+        "exclusivo": false
+      },
+      {
+        "nome": "Vantagem Posicional",
+        "subtitulo": "Reação — Categoria: Ataque",
+        "descricao": "Você aproveita o movimento para atacar com precisão.",
+        "efeito": "Recua 1 metro e recebe +2 na próxima jogada de ataque até o fim do turno.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Defesa Instintiva",
+        "subtitulo": "Reação — Categoria: Defesa",
+        "descricao": "Você reage por instinto, desviando de ataques surpresa.",
+        "efeito": "Ao receber um ataque furtivo ou desprevenido, pode rolar para uma área adjacente vazia e recebe meia cobertura (+1 CA) até o fim do turno. Uma vez por rodada.",
+        "exclusivo": false
+      }
+    ],
+    "talentos_obs": "",
+    "anotacoes": "Marcos Narrativos disponíveis (Veterano da Zona): 20. Carga levemente acima do limite — equipamento típico de operação tática pesada.",
+    "marcos_narrativos_atual": "20",
+    "determinacao_comprada": false,
+    "armas_extra_lista": [],
+    "aprimoramentos_lista": [],
+    "recursos_narrativos_lista": [],
+    "historico_evolucao": []
+  },
+  "pericias": {
+    "Atletismo": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Constituição": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Furtividade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Luta": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pontaria": {
+      "bonus": "+2",
+      "nv": "",
+      "esp": ""
+    },
+    "Pilotagem": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Mecânica": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Medicina": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Percepção": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Sobrevivência": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Tecnologia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Intimidação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Empatia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Enganação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Liderança": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Persuasão": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Adestramento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Conhecimento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Estratégia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Iniciativa": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Investigação": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Vontade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    }
+  },
+  "periciasObs": "Primária: Pontaria. Secundárias: Atletismo e Liderança. Livres: Investigação, Percepção."
+}

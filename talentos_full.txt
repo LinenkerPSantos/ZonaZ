@@ -1,0 +1,313 @@
+## Ataque
+--- Cortes Precisos | Passivo — Categoria: Ataque
+DESC: Seus golpes cortantes deixam feridas profundas.
+EFEITO: Ataques com armas cortantes causam sangramento.
+
+--- Glutão | Ativação — Categoria: Ataque
+DESC: Sua força explode após um banquete de sobrevivência. Você transforma o ambiente em arma.
+EFEITO: Usando objetos do ambiente como arma, causa +1d6 de dano adicional.
+
+--- Investida Colossal | Movimento — Categoria: Ataque
+DESC: Seu impulso se transforma em força devastadora no impacto.
+EFEITO: Uma vez por cena, ao mover 2m em linha reta antes de atacar, seu ataque corpo a corpo recebe +10 de dano tipo da arma, em acerto crítico, o alvo testa Constituição (CD 10 + o seu modificador de Constituição) ou fica “Atordoado” por 1 turno.
+
+--- Lutador do Caos | Passivo — Categoria: Ataque
+DESC: Você se fortalece em meio ao tumulto do combate. Você ajusta seus golpes para atingir pontos vitais com maior precisão.
+EFEITO: Sua margem de acerto crítico é reduzida em 1 (por exemplo: se seu crítico é 18+, passa a ser 17+).
+
+--- Domínio com Projéteis | Passivo — Categoria: Ataque
+DESC: Sua precisão com armas de disparo é letal.
+EFEITO: Se não se mover no turno, o seu ataque com armas de disparo, recebem +2 na rolagem de ataque.
+
+--- Emboscada Implacável | Passivo — Categoria: Ataque
+DESC: Você sabe como surpreender o inimigo.
+EFEITO: Ao atacar um inimigo que ainda não agiu no combate, causa +1d8 de dano adicional.
+
+--- Olhar de Caçador | Passivo — Categoria: Ataque
+DESC: Sua mira no inimigo é certeira desde o início.
+EFEITO: Uma vez por turno, no seu primeiro ataque com uma arma de longa distância contra uma criatura, reduza a CA dela em 1 até o seu próximo turno.
+
+--- Sangue Frio | Ativação (1x por descanso) — Categoria: Ataque
+DESC: Quando a situação é crítica, você mantém o foco absoluto e age com precisão letal.
+EFEITO: Enquanto estiver com menos de 1/3 de vida, você recebe vantagem em todos os ataques e sua margem de crítico é reduzida em 1 (por exemplo, um crítico que seria 18 agora ocorre em 17–18).
+
+--- Mira Rápida | Passivo — Categoria: Ataque
+DESC: Você dispara com velocidade impressionante.
+EFEITO: Ignora penalidades de ataques com Pontaria quando for de curto alcance.
+
+--- Vantagem Posicional | Reação — Categoria: Ataque
+DESC: Você aproveita o movimento para atacar com precisão.
+EFEITO: Recua 1 metro, recebe +2 na próxima jogada de ataque realizada até o fim do turno.
+
+--- Ataque Preciso em Movimento | Reação — Categoria: Ataque
+DESC: Sua agilidade permite atacar com precisão mesmo ao se deslocar pelo campo de batalha.
+EFEITO: Quando se mover pelo campo de batalha, você pode realizar um ataque à distância utilizando sua Reação, no meio do seu deslocamento com +2 na rolagem de ataque. Este talento não pode ser usado em ataques múltiplos.
+
+--- Empunhadura Dupla | Passivo — Categoria: Ataque
+DESC: Você luta bem com duas armas ao mesmo tempo.
+EFEITO: Ao empunhar duas armas de 1M, você pode realizar um segundo ataque por turno, sofrendo –2 nas jogadas de ataque e causando apenas metade do dano.
+
+--- Foco Determinado | Reação — Categoria: Ataque
+DESC: Sua determinação permite superar obstáculos mesmo quando está em desvantagem.
+EFEITO: Quando realizar o primeiro ataque ou teste em um turno enquanto estiver com penalidade ou desvantagem, você pode rolar novamente o dado sem a penalidade ou a desvantagem e não pode receber vantagens.
+
+--- Mestre Arqueiro | Passivo — Categoria: Ataque
+DESC: Seu domínio com projéteis é incomparável.
+EFEITO: Recargas de armas de disparo passam a ser Ações Livres.
+
+--- Treinado em Artes Marciais | Passivo — Categoria: Ataque
+DESC: Você domina técnicas de combate corpo a corpo.
+EFEITO: Recebe +2 em testes de ataque corpo a corpo
+
+--- Despertar Adrenalínico | Ativação (1x por Descanso) — Categoria: Ataque
+DESC: Sua adrenalina irrompe, transformando cada movimento em ataque letal e imprevisível.
+EFEITO: No início do seu turno, ative para receber +2 em ataques corpo a corpo e realizar 1 ataque adicional somente neste turno. Seu movimento até o fim deste turno não provoca Ataques de Oportunidade. Contrapartida a partir do final deste turno, você sofre –2 em Defesa e –2 em rolagens de ataque até o fim da cena.
+
+--- Golpe Sísmico | Ativação (1x por Descanso) — Categoria: Ataque
+DESC: Você concentra força em um ponto, abalando o terreno e inimigos.
+EFEITO: Ao realizar um ataque corpo a corpo com uma arma de 2M, escolha até 2 inimigos adjacentes ao alvo principal. Eles devem fazer um teste de Constituição (CD 10 + seu modificador de Força). Falha: sofrem “Contusão Leve” (metade do valor original) por 1 rodada e ficam imunes a novos efeitos deste talento até o fim da cena.
+
+--- Surto de Fúria | Ativação (1x por Descanso) — Categoria: Ataque
+DESC: A raiva alimenta sua força, transformando dor em poder ofensivo.
+EFEITO: Ao ver um aliado morrer, você não perde Sanidade, seus próximos 2 turnos, os ataques são críticos automáticos. Após a cena, perde 2 pontos de Sanidade.
+
+## Defesa
+--- Autocontrole Mental | Passiva — Categoria: Defesa
+DESC: Sua mente é disciplinada, resistente e dificilmente cede ao impacto do horror.
+EFEITO: Ao realizar testes de Sanidade contra criaturas ou eventos traumáticos, você recebe vantagem nesses testes.
+
+--- Carcaça Grossa | Reação — Categoria: Defesa
+DESC: Sua pele e estrutura corporal formam uma carcaça grossa e resistente.
+EFEITO: Ao receber o primeiro dano em uma cena de combate, você pode reduzi-lo em 1 + (modificador da perícia Constituição) após as resistências aplicadas. Após um descanso, você recupera o uso dessa habilidade.
+
+--- Musculatura Avantajada | Passivo — Categoria: Defesa
+DESC: Seus músculos são poderosos e sua força é descomunal.
+EFEITO: Você não sofre efeitos de atordoamento causados por ataques do tipo Impacto.
+
+--- Defesa Instintiva | Reação — Categoria: Defesa
+DESC: Você reage por instinto, desviando de ataques surpresas.
+EFEITO: Ao receber um ataque furtivo ou desprevenido, você pode gastar uma Ação de Reação para rolar para uma área adjacente vazia e recebe meia cobertura (+1 CA) até o fim do turno. Este talento é válido uma vez por rodada.
+
+--- Guarda Costa | Reação — Categoria: Defesa
+DESC: Você pode impedir que adversários atravessem seu espaço
+EFEITO: Quando uma criatura atacar um aliado adjacente a você, você pode realizar um ataque desarmado contra ela. Se acertar, o inimigo deve realizar um Teste de Força (CD 10 + seu modificador Força) para evitar ser empurrado 1 espaço para trás. Caso seja empurrado e colida com um obstáculo, ele fica atordoado por 1 turno.
+
+--- Contra-Ataque | Reação — Categoria: Defesa
+DESC: Você responde a uma investida inimiga com ferocidade.
+EFEITO: Uma vez por rodada, após uma Esquiva bem-sucedida contra ataques corpo a corpo, realize um ataque corpo a corpo imediatamente.
+
+--- Manobra Marcial | Reação — Categoria: Defesa
+DESC: Você é perito em artes marciais e arrasta o seu oponente junto quando é derrubado.
+EFEITO: Quando um oponente o derrubar com sucesso, você pode gastar 1 Ponto de Determinação e usar uma Reação para afetar um inimigo adjacente. Escolha um dos efeitos: derrubá-lo ou empurrá-lo 1 espaço para trás. Se não houver inimigos adjacentes, você pode usar esta habilidade contra o próprio atacante.
+
+--- Aliado da Morte | Passivo — Categoria: Defesa
+DESC: Vive constantemente à sombra da morte, como amantes inseparáveis.
+EFEITO: Ao realizar testes relacionados a 'Morrendo', você tem vantagem.
+
+--- Coragem Desumana | Passiva — Categoria: Defesa
+DESC: Mesmo no limite da vida, você encontra forças para lutar. No passado você foi infectado e se curou, adquirindo agora uma resistência parcial ao vírus.
+EFEITO: Sempre que estiver infectado, você pode anular os efeitos de um sintoma à sua escolha; ainda assim, ele continua sendo considerado uma infecção normalmente.
+
+--- Sobrevivente Nato | Reação — Categoria: Defesa
+DESC: Sua vontade de viver é mais forte que a morte. Com o tempo, sua experiência tornou os ataques de zumbis mais fáceis de prever e evitar.
+EFEITO: Ao receber um ataque crítico, você pode gastar 1 ponto de Determinação e usar sua Reação para não sofrer o efeito 'Infectado'.
+
+--- Muralha de Carne | Reação — Categoria: Defesa
+DESC: Você se coloca na frente para proteger aliados.
+EFEITO: Uma vez por rodada, ao custo de uma Reação, quando um aliado adjacente for alvo de um ataque, você pode trocar de lugar com ele e receber o ataque em seu lugar, sem receber ataque de oportunidade.
+
+--- Postura Defensiva | Ativação (1x por Descanso) — Categoria: Defesa
+DESC: Você adota uma posição firme e impenetrável. Sua percepção aguçada permite antecipar ataques e responder com precisão além do normal.
+EFEITO: Você recebe 1 Reação adicional por turno, mas ela só pode ser utilizada para talentos de Defesa. A Reação adicional dura 3 rodadas e não se acumula com outras fontes de Reações extras.
+
+## Interação
+--- Carisma Instintivo | Passivo — Categoria: Interação
+DESC: Sua presença natural abre portas sem esforço.
+EFEITO: Ao realizar um teste de Persuasão, role duas vezes com Vantagem e escolha o melhor resultado entre as duas rolagens.
+
+--- Interrogador Frio | Passivo — Categoria: Interação
+DESC: Você sabe pressionar alguém sem precisar levantar a mão.
+EFEITO: Você recebe vantagem em Intimidação quando estiver tentando obter respostas. Em sucesso crítico, você aprende algo adicional além do que o alvo diria normalmente.
+
+--- Intimidação Implacável | Passivo — Categoria: Interação
+DESC: Seu olhar e postura transmitem ameaça.
+EFEITO: Ao realizar um teste de Intimidação, você recebe vantagem nesse teste. As criaturas afetadas devem realizar um teste de Vontade (CD = 10 + seu modificador de Intimidação); se falharem, sofrem –1 em todas as rolagens sociais até o fim da cena.
+
+--- Manipulador Nato | Passivo — Categoria: Interação
+DESC: Você torce a verdade com maestria. Você manipula postura, tom de voz e atitudes.
+EFEITO: Você recebe vantagem em Enganação quando estiver fingindo ser alguém (cargo, função, grupo, facção). NPCs só percebem inconsistências com um teste de Percepção com desvantagem. (CD = 10 + seu modificador de Enganação).
+
+--- Negociador Astuto | Passivo (1x por cena) — Categoria: Interação
+DESC: Sempre encontra vantagem em trocas e barganhas.
+EFEITO: Ao realizar um teste de Liderança, você recebe vantagem nesse teste. Se falhar criticamente, pode repetir.
+
+--- Leitor de Mentiras | Passivo — Categoria: Interação
+DESC: Você percebe microexpressões, hesitações e padrões de discurso. Uma vez por cena, se um NPC tentar enganar você, você pode rolar o teste com vantagem.
+EFEITO: Você recebe +2 em testes de Percepção ou Empatia para detectar mentiras.
+
+--- Leitor de Intenções Hostis | Passivo — Categoria: Interação
+DESC: Você sente quando alguém está prestes a trair, atacar ou manipular. “Ele esconde algo”, “Está nervoso demais”, “Parece planejar algo”. Não revela o plano — apenas alerta. Não interfere em combate.
+EFEITO: Sempre que conversar com alguém que planeja prejudicá-lo, faça um teste de Percepção. Em caso de sucesso, o Mestre deve revelar:
+
+--- Leitor de Pessoas | Passivo — Categoria: Interação
+DESC: Você enxerga intenções ocultas em cada gesto.
+EFEITO: Ao iniciar uma interação social com um alvo, você pode fazer um teste de Percepção. Em caso de sucesso, você recebe +2 em testes sociais contra esse alvo durante a cena.
+
+--- Presença Imponente | Passivo — Categoria: Interação
+DESC: Sua postura afeta a confiança dos outros.
+EFEITO: Qualquer criatura que tentar Intimidar, Persuadir ou Enganar — usando qualquer perícia social para afetá-lo — realiza o teste com Desvantagem, independentemente da situação.
+
+--- Diplomata da Crise | Ativação (1x por Cena) — Categoria: Interação
+DESC: Você sabe apaziguar situações tensas com poucas palavras.
+EFEITO: Escolha um grupo ou indivíduo hostil. Faça um teste de Persuasão. Sucesso: A hostilidade do alvo reduz um nível (Hostil → Cauteloso, Cauteloso → Neutro, etc.). Crítico: Todos no grupo reduzem a hostilidade em 2 níveis. Falha crítica: O grupo avança um nível para mais hostil.
+
+--- Elo de Confiança | Passivo — Categoria: Interação
+DESC: Sua presença deixa os aliados mais cooperativos. Você aprendeu a ler sinais sutis: símbolos, postura, padrões de grupo e histórias que sempre se repetem.
+EFEITO: Ao observar pela primeira vez um NPC ou grupo desconhecido, você pode pedir ao Mestre uma leitura contextual sobre facção, arquétipo social e tendência geral de comportamento. Não revela hostilidade exata nem intenções imediatas. Não funciona com NPCs já conhecidos, aliados ou claramente hostis. Para detalhes adicionais (motivações, exceções, estado emocional), o Mestre ou Usuário pode solicitar um teste de Percepção, Investigação ou Empatia, no qual você recebe vantagem.
+
+--- Inspiração Contagiante | Ativação (1x por Descanso Longo) — Categoria: Interação
+DESC: Seu entusiasmo fortalece os outros.
+EFEITO: Gaste 1 Ação Completa para conceder +1 em todos os testes Perícias Sociais dos aliados até o fim da Cena.
+
+--- Oratória | Passivo — Categoria: Interação
+DESC: Sua fala convence, inspira e engana.
+EFEITO: Ao realizar um discurso, todas as criaturas que puderem ouvi-lo devem realizar um teste de Vontade (CD = 10 + seu modificador de Empatia). As criaturas que falharem passam a tratá-lo como uma figura favorecida. Reduzido a hostilidade em 1 nível (Hostil → Neutro, Neutro → Complacente, etc.) sua e de seus aliados.
+
+--- Voz de Comando | Ativação (1x por cena) — Categoria: Interação
+DESC: Sua autoridade organiza o caos.
+EFEITO: Gaste 1 Determinação para ordenar um aliado, que imediatamente recebe 1 Ação de Movimento extra no turno dele.
+
+## Movimento
+--- Corrida Adrenalina | Ativação — Categoria: Movimento
+DESC: Seu corpo reage à adrenalina, impulsionando sua velocidade.
+EFEITO: Você e mis um aliado visível iniciam com 1 Ponto de Fuga em cenas de perseguição a pé.
+
+--- Escalada Instintiva | Passiva — Categoria: Movimento
+DESC: Você escala como se fosse parte da sua natureza.
+EFEITO: Move-se durante escaladas com metade do custo normal e tem vantagem em testes de Atletismo relacionados a subir.
+
+--- Mergulhador Experiente | Passiva — Categoria: Movimento
+DESC: Você possui ampla experiência em mergulho, seja por hobby ou de forma profissional.
+EFEITO: Recebe +3 metros de deslocamento na água e dobra seu modificador de perícia de Constituição em testes de respiração subaquática
+
+--- Pulmões de Ferro | Movimento — Categoria: Movimento
+DESC: Sua respiração é controlada e resistente.
+EFEITO: Em ambientes tóxicos ou explosões, pode segurar o fôlego por 2 turnos sem sofrer infecção.
+
+--- Reação Explosiva | Reação — Categoria: Movimento
+DESC: Você aproveita o momento para ganhar vantagem.
+EFEITO: Em perseguições a pé, quando um inimigo alcançar você, pode atacar. Se acertar, você ganha +1 Ponto de Fuga imediatamente. Se errar, não sofre dano e mantém posição.
+
+--- Deslocamento Circular | Ativação — Categoria: Movimento
+DESC: Você gira ao redor do inimigo, reposicionando-se sem ser atingido.
+EFEITO: Troque de lugar com uma criatura hostil adjacente sem provocar ataques de oportunidade. Até o início do seu próximo turno, você recebe +1 de CA contra essa criatura.
+
+--- Destreza no Movimento | Movimento — Categoria: Movimento
+DESC: Seu corpo se move com leveza mesmo em meio ao combate.
+EFEITO: Uma vez por cena de combate, pode se movimentar durante o combate sem sofrer ataques de oportunidade.
+
+--- Mover e Atacar | Ativação — Categoria: Movimento
+DESC: Suas mãos são rápidas e discretas.
+EFEITO: Uma vez por cena, como Ação Completa, você pode mover até seu deslocamento máximo, realizar um ataque e então mover-se novamente até metade do deslocamento (arredondado para baixo), sem provocar ataques de oportunidade.
+
+--- Recuo Calculado | Movimento — Categoria: Movimento
+DESC: Você recua sem se expor.
+EFEITO: Quando você inicia seu movimento, pode escolher recuar 1 área adjacente sem gastar deslocamento e sem provocar ataques de oportunidade. Esse recuo ocorre antes do seu movimento normal, como se você já estivesse posicionado naquela área.
+
+--- Mão Leve | Passivo (1x por cena) — Categoria: Movimento
+DESC: Permite mover-se rapidamente até um inimigo, atacar e recuar antes que ele possa reagir.
+EFEITO: Você recebe vantagem em testes de Furto, Desarmamentos, Arrombamento e em quaisquer testes relacionados a ações furtivas dentro da cena.
+
+--- Nas Sombras | Passivo — Categoria: Movimento
+DESC: Você é letal quando escondido.
+EFEITO: Ao realizar um teste de Furtividade você recebe vantagem nesse teste. Se executar um ataque furtivo, reduza em 1 ponto o valor necessário para um crítico (por exemplo: se o crítico ocorre com 18, passa a ocorrer com 17).
+
+--- Pulo Tático | Reação — Categoria: Movimento
+DESC: Sua reação rápida permite saltos repentinos.
+EFEITO: Quando for alvo de um ataque à distância, você pode mover-se até 3 metros adicionais ao seu movimento, para qualquer direção. Se esse movimento colocar você fora da linha direta do tiro (atrás de aliado, obstáculo ou sombra), você pode rolar Furtividade com Vantagem; em caso de sucesso, você fica indetectável para esse inimigo até o início do seu próximo turno.
+
+--- Sombra Familiar | Passivo — Categoria: Movimento
+DESC: Você se esconde nas sombras dos outros.
+EFEITO: Você pode utilizar Furtividade para se esconder atrás de um aliado maior que você, desde que esteja adjacente a ele. Enquanto estiver oculto dessa forma, pode realizar testes de Furtividade normalmente, usando o aliado como cobertura móvel.
+
+## Utilidade
+--- Braço Forte | Passivo — Categoria: Utilidade
+DESC: Sua força física impressionante se reflete em tudo que faz.
+EFEITO: Recebe vantagem em testes de Força.
+
+--- Estilo Brutalista | Passivo — Categoria: Utilidade
+DESC: Você aprendeu a usar sua força bruta de forma impressionante.
+EFEITO: Sempre que causar dano com uma arma de 2M, você recebe vantagem em testes de Intimidação contra o alvo até o fim do turno. O alvo realiza um teste de Constituição (CD = 10 + seu modificador de Força). Se falhar, tem desvantagem no próximo teste de Atletismo.
+
+--- Estômago de Ferro | Passivo — Categoria: Utilidade
+DESC: Você já comeu coisas que fariam qualquer um vomitar.
+EFEITO: Recebe vantagem em testes de Constituição para resistir a venenos, alimentos contaminados e condições de náusea.
+
+--- Mochila Otimizada | Passivo — Categoria: Utilidade
+DESC: Você sabe organizar melhor seus recursos.
+EFEITO: Ao usar um item de Transporte, aumenta a carga máxima em +3.
+
+--- Sob Pressão | Passivo — Categoria: Utilidade
+DESC: Você mantém controle corporal mesmo ferido.
+EFEITO: Enquanto estiver com metade dos PV ou menos, recebe vantagem em testes de Atletismo e Furtividade.
+
+--- Cálculo Rápido | Passivo — Categoria: Utilidade
+DESC: Você processa informações em segundos.
+EFEITO: Uma vez por turno, pode pedir ao Mestre uma estimativa aproximada de risco, tempo ou distância (ex.: “quanto tempo até a horda chegar?”).
+
+--- Genialidade | Passivo — Categoria: Utilidade
+DESC: Sua mente é afiada como uma lâmina.
+EFEITO: Recebe +2 em todas as rolagens de testes de Perícias de Intelecto.
+
+--- Memória Fotográfica | Passivo — Categoria: Utilidade
+DESC: Você retém detalhes que outros esqueceriam.
+EFEITO: Você recebe Vantagem em testes de Investigação envolvendo locais, rostos, símbolos, documentos, pistas ou padrões que tenha visto antes. Além disso, uma vez por cena, você pode perguntar ao Mestre: “Meu personagem já viu isso antes?”. Se a resposta for sim, você recebe +2 no teste de Investigação diretamente relacionado.
+
+--- Olhar Clínico | Ativação — Categoria: Utilidade
+DESC: Sua análise rápida revela detalhes cruciais.
+EFEITO: Analisa rapidamente uma criatura e detecta sintomas e sinais médicos (hemorragia, fratura, febre, infecção, desorientação). Você recebe vantagem em Medicina e Percepção para avaliar ou tratar essa criatura pelos próximos 10 minutos.
+
+--- Olhos Treinados | Passivo — Categoria: Utilidade
+DESC: Sua percepção vai além do comum.
+EFEITO: Recebe +3 em testes de Percepção e não pode ter falha crítica nestes testes.
+
+--- Adaptado ao Terreno | Passivo — Categoria: Utilidade
+DESC: Você aprendeu a interpretar ambientes hostis como poucos, adaptando-se rapidamente às condições da região.
+EFEITO: Escolha um tipo de terreno (Urbano, Floresta, Escombros, Lama, Montanha, Neve, Pântano, Zona Industrial). Enquanto estiver nesse tipo de terreno, você recebe: Vantagem em testes de Sobrevivência e Vantagem em testes de Percepção (para detectar rastros, perigos, armadilhas, criaturas, recursos ou anomalias ambientais). Você pode trocar o tipo de terreno sempre que realizar um novo Descanso Longo.
+
+--- Conhecimento da Natureza | Passivo — Categoria: Utilidade
+DESC: Você tem experiência com botânica e biologia entre outros que ajudam na sua sobrevivência
+EFEITO: Você consegue identificar alimentos saudáveis dos venenosos, sem realizar testes.
+
+--- Criar Fogueira | Passivo — Categoria: Utilidade
+DESC: Você tem experiência em acampamentos, e sobrevivência, sua habilidade permite criar fogueira em qualquer ambiente
+EFEITO: Você pode criar uma fogueira em qualquer lugar, sem a necessidade de testes ou itens.
+
+--- Determinação Extra | Passivo — Categoria: Utilidade
+DESC: Sua determinação é excepcional, permitindo resistir e persistir muito além da maioria.
+EFEITO: Seu limite máximo de Determinação aumenta para 7 pontos.
+
+--- Engenho Rústico | Passivo — Categoria: Utilidade
+DESC: Você domina improvisos a partir do nada.
+EFEITO: Pode improvisar armas, armadilhas ou itens utilizando apenas Sucata.
+
+--- Mãos Hábeis | Passivo — Categoria: Utilidade
+DESC: Suas habilidades manuais são refinadas.
+EFEITO: Recebe +2 em todas as rolagens de testes em Perícias de Sobrevivência.
+
+--- Trocas Rápidas | Passivo — Categoria: Utilidade
+DESC: Sua agilidade facilita a troca de armas.
+EFEITO: Uma vez por turno, você pode recarregar ou trocar de arma como Ação Livre. Se você trocar de arma e atacar no mesmo turno, recebe –1 na próxima rolagem de ataque. A penalidade não se acumula.
+
+--- Golpe de Sorte Alimentar | Passivo — Categoria: Utilidade
+DESC: Você tem uma sorte absurda quando o assunto é se alimentar.
+EFEITO: Sempre que você ou um aliado receber Cartão de Ração, pode fazer um teste de Empatia para avaliar a intenção da pessoa que entrega (1x por descanso): em Sucesso recebe +1 Cartão adicional; em Sucesso Crítico recebe 1d4 +1 Cartões adicionais; em Falha ou Falha Crítica nada acontece.
+
+--- Fortuna Teimosa | Passivo — Categoria: Utilidade
+DESC: A sorte parece insistir que você sobreviva.
+EFEITO: Quando falhar por 1 ou 2 pontos em qualquer teste, pode rolar 1d6 e adicionar ao resultado.
+
+--- Sortudo | Passivo — Categoria: Utilidade
+DESC: Você tem uma sorte extraordinária, sempre aparecendo nos momentos mais decisivos.
+EFEITO: Sempre que qualquer rolagem sua resultar em 1 em um dos dados, você pode relançar 1 desses dados. Você só pode relançar 1 dado por teste, e deve manter o novo resultado.
+

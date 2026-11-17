@@ -1,0 +1,350 @@
+{
+  "ficha": {
+    "nome": "Gerry",
+    "profissao": "Servidor Público",
+    "titulo_sobrevivencia": "Veterano da Zona",
+    "idade": "42",
+    "altura": "1,85",
+    "deslocamento": "9m",
+    "observacoes": "",
+    "historico": "Investigador de um antigo órgão internacional, acostumado a rastrear crises e conflitos ao redor do mundo antes do colapso. Quando o surto se espalhou, sua experiência em análise de padrões e logística de crise o tornou peça-chave para entender a origem e o comportamento da infecção. Viaja constantemente entre zonas devastadas, tentando equilibrar a missão de encontrar respostas com a promessa de voltar para a família que deixou em segurança.\n\nCalculista sob pressão; prefere negociar, escapar ou improvisar a lutar diretamente. Carrega o peso de decisões que afetam muito mais do que sua própria sobrevivência.",
+    "forca_atual": "",
+    "forca_max": "1",
+    "agilidade_atual": "",
+    "agilidade_max": "1",
+    "destreza_atual": "",
+    "destreza_max": "3",
+    "intelecto_atual": "",
+    "intelecto_max": "2",
+    "presenca_atual": "",
+    "presenca_max": "1",
+    "infeccao_atual": "",
+    "infeccao_max": "5",
+    "pv_atual": "",
+    "pv_max": "20",
+    "determinacao_atual": "",
+    "determinacao_max": "4",
+    "sanidade_atual": "",
+    "sanidade_max": "5",
+    "ca_atual": "10",
+    "ca_bonus": "",
+    "ca_obs": "",
+    "descricoes": "Base 8 + Sobretudo +1 + Capacete de Moto +1 (Servidor Público não concede bônus de Defesa)",
+    "arma1_nome": "Pé de Cabra",
+    "arma1_carga": "2",
+    "arma1_estruturada": {
+      "nome": "Pé de Cabra",
+      "subtitulo": "Antecedente: Servidor Público",
+      "carga": "2",
+      "dados": [
+        [
+          "Tipo",
+          "Impacto / Perfuração"
+        ],
+        [
+          "Dano",
+          "1d6 +2 de dano adaptativo"
+        ],
+        [
+          "Mod.",
+          "Força"
+        ],
+        [
+          "Alcance",
+          "Curto"
+        ],
+        [
+          "Mão",
+          "1M"
+        ]
+      ],
+      "descricao": "Usado também para arrombamento e fraturas, combina utilidade com letalidade.",
+      "efeito": "Concede +1d6 em testes baseados em arrombamentos."
+    },
+    "arma2_nome": "Pistola Compacta",
+    "arma2_carga": "2",
+    "arma2_notas": "Bônus de Veterano da Zona. Perfuração, 1d6 +3, Mod. Destreza, Alcance Curto, 1M, Munição Pequena. Pistola moderna e ergonômica, com boa cadência e excelente controle de recuo — porte de segurança concedido durante missões de campo.",
+    "armas_extra_jogo": [],
+    "protecao_cabeca": "Capacete de Moto",
+    "protecao_tronco": "Sobretudo",
+    "protecao_msup": "Sobretudo",
+    "protecao_minf": "Calças Moletom",
+    "protecao_notas": [
+      {
+        "nome": "Sobretudo",
+        "carga": "2",
+        "dados": [
+          [
+            "Carga",
+            "2"
+          ],
+          [
+            "Defesa",
+            "+1"
+          ]
+        ],
+        "descricao": "Um casaco longo e resistente, feito para enfrentar frio, chuva e poeira.",
+        "efeito": "Concede +1 em testes para ocultar armas, acessórios ou pequenos itens no corpo ou nas roupas."
+      },
+      {
+        "nome": "Calças Moletom",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Nenhuma proteção real, mas ajuda a se camuflar em ruínas ou à noite.",
+        "efeito": "+1 em testes de Furtividade."
+      }
+    ],
+    "transporte_tronco": "Colete Suspensório (Item único)",
+    "transporte_msup": "",
+    "transporte_minf": "",
+    "transporte_notas": [
+      {
+        "nome": "Colete Suspensório (Item único)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Um colete leve em formato de suspensório, usado junto ao equipamento de tronco.",
+        "efeito": "Aumenta a capacidade de carga em +4. Pode escolher dois objetos de Carga 1 para sacar como Ação Livre."
+      }
+    ],
+    "carga_atual": "16",
+    "carga_max": "16",
+    "itens_gerais_lista": [
+      {
+        "nome": "Relógio Analógico de Pulso",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Relógio simples, ainda funcional apesar do mundo em ruínas.",
+        "efeito": "Controle preciso do tempo em missões, emboscadas ou vigílias."
+      },
+      {
+        "nome": "Munição Pequena (6 unidades)",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Munição solta, sem carregador ou cartucheira.",
+        "efeito": "Guardada em carregador ou cartucheira adequados, até 20 unidades passam a ocupar apenas 1 ponto de carga."
+      },
+      {
+        "nome": "Rádio de Comunicação",
+        "carga": "1/2",
+        "dados": [
+          [
+            "Carga",
+            "1/2"
+          ]
+        ],
+        "descricao": "Dispositivo portátil de transmissão usado por duplas ou grupos.",
+        "efeito": "Permite comunicação entre até duas pessoas na mesma cena, mesmo a longas distâncias. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Mapas da Zona",
+        "carga": "1/3",
+        "dados": [
+          [
+            "Carga",
+            "1/3"
+          ]
+        ],
+        "descricao": "Mapas detalhados de áreas da Zona Morta, com anotações de rotas e pontos de interesse.",
+        "efeito": "Evita que o personagem se perca em regiões desconhecidas. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Binóculo",
+        "carga": "1",
+        "dados": [
+          [
+            "Carga",
+            "1"
+          ]
+        ],
+        "descricao": "Equipamento óptico utilizado para observar áreas distantes sem se expor a riscos diretos.",
+        "efeito": "Concede +1d6 em testes de Percepção relacionados à observação. (Bônus de Veterano da Zona.)"
+      },
+      {
+        "nome": "Granada de Fumaça",
+        "carga": "1/2",
+        "dados": [
+          [
+            "Carga",
+            "1/2"
+          ]
+        ],
+        "descricao": "Lata metálica contendo compostos químicos que liberam uma densa nuvem de fumaça.",
+        "efeito": "Cria área de 6m obscurecida por 3 rodadas; ataques à distância sofrem desvantagem dentro dela. (Bônus de Veterano da Zona.)"
+      }
+    ],
+    "inventario": "",
+    "kit_estruturado": null,
+    "talento_exclusivo": "",
+    "talentos_lista": [
+      {
+        "nome": "Logística Otimizada",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "Treinado para organizar recursos e administrar estoques, consegue aproveitar cada centímetro de espaço. Para ele, até uma mochila simples vira um inventário estruturado, onde nada se perde.",
+        "efeito": "Possui 12 pontos de Carga inicial em vez de 6 e ignora o primeiro nível de Sobrecarga (Leve Sobrecarga).",
+        "exclusivo": true
+      },
+      {
+        "nome": "Cálculo Rápido",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "Você processa informações em segundos.",
+        "efeito": "Uma vez por turno, pode pedir ao Mestre uma estimativa aproximada de risco, tempo ou distância (ex.: \"quanto tempo até a horda chegar?\").",
+        "exclusivo": false
+      },
+      {
+        "nome": "Fortuna Teimosa",
+        "subtitulo": "Passivo — Categoria: Utilidade",
+        "descricao": "A sorte parece insistir que você sobreviva.",
+        "efeito": "Quando falhar por 1 ou 2 pontos em qualquer teste, pode rolar 1d6 e adicionar ao resultado.",
+        "exclusivo": false
+      },
+      {
+        "nome": "Diplomata da Crise",
+        "subtitulo": "Ativação (1x por Cena) — Categoria: Interação",
+        "descricao": "Você sabe apaziguar situações tensas com poucas palavras.",
+        "efeito": "Escolha um grupo ou indivíduo hostil e faça um teste de Persuasão. Sucesso: a hostilidade do alvo reduz um nível. Crítico: todos no grupo reduzem a hostilidade em 2 níveis. Falha crítica: o grupo avança um nível para mais hostil.",
+        "exclusivo": false
+      }
+    ],
+    "talentos_obs": "",
+    "anotacoes": "Marcos Narrativos disponíveis (Veterano da Zona): 20.",
+    "armas_extra_lista": [],
+    "aprimoramentos_lista": [],
+    "recursos_narrativos_lista": [],
+    "marcos_narrativos_atual": "20",
+    "determinacao_comprada": false,
+    "historico_evolucao": []
+  },
+  "pericias": {
+    "Atletismo": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Constituição": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Furtividade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Luta": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pontaria": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Pilotagem": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Mecânica": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Medicina": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Percepção": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Sobrevivência": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Tecnologia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Intimidação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Empatia": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Enganação": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Liderança": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Persuasão": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Adestramento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Conhecimento": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Estratégia": {
+      "bonus": "+2",
+      "nv": "",
+      "esp": ""
+    },
+    "Iniciativa": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    },
+    "Investigação": {
+      "bonus": "+1",
+      "nv": "",
+      "esp": ""
+    },
+    "Vontade": {
+      "bonus": "",
+      "nv": "",
+      "esp": ""
+    }
+  },
+  "periciasObs": "Primária: Estratégia. Secundárias: Mecânica e Investigação. Livres: Persuasão, Percepção."
+}
